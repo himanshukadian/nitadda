@@ -42,13 +42,13 @@
             <a class="navbar-toggle collapsed" data-target="#navbar" data-toggle="collapse">
                 <i class="fa fa-chevron-down faa-vertical animated"></i>
             </a>
-            <a href="#" tabindex="0" class="navbar-brand faa-pulse faa-slow animated" data-toggle="popover" data-trigger="focus" data-html="true" data-placement="bottom" data-content="<img class='img-responsive' height='140' width='140' src='data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=='/">
-                <i class="fa fa-lg">NIT</i>
-                <i class="fa fa-lg">ADDA</i>
-            </a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
+              <li> <a href="#" class="navbar-brand faa-pulse faa-slow animated" data-toggle="popover" data-trigger="focus" data-html="true" data-placement="bottom" >
+                <i class="fa fa-lg">NIT</i>
+                <i class="fa fa-lg">ADDA</i>
+            </a></li>
                 <li>
                     <a class="faa-parent animated-hover" href="">
                        <i class="fa fa-fw fa-lg fa-home faa-tada faa-fast"></i>Home
