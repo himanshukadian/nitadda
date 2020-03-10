@@ -117,7 +117,6 @@ def Delete_Note(request, noteid):
 
 @csrf_exempt
 @login_required(login_url="/")
-@user_passes_test(checkuserifscrutinyuser, login_url="/owner/login/")
 def UploadNote(request):
     response = {}
     courses = Course.objects.all()

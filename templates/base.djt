@@ -56,24 +56,24 @@
                 </li>
                 <li>
                     <a class="faa-parent animated-hover" href="/owner/all_note">
-	                   <i class="fa fa-fw fa-lg fa-upload  faa-tada faa-fast"></i>All Notes
+	                   <i class="fa fa-fw fa-lg fa-sticky-note-o  faa-tada faa-fast"></i>All Notes
                     </a>
                 </li>
                  {% if user.is_authenticated and user.is_superuser %}
                 <li>
                     <a class="faa-parent animated-hover" href="/owner/add_course">
-                  <i class="fa fa-fw fa-lg fa-edit faa-tada faa-fast"></i>Add Course
+                  <i class="fa fa-fw fa-lg fa-graduation-cap faa-tada faa-fast"></i>Add Course
                     </a>
                 </li>
                  <li>
                     <a class="faa-parent animated-hover" href="/owner/add_subject">
-                  <i class="fa fa-fw fa-lg fa-edit faa-tada faa-fast"></i>Add Subject
+                  <i class="fa fa-fw fa-lg fa-book faa-tada faa-fast"></i>Add Subject
                     </a>
                 </li>
                 {%endif%}
                 <li class="dropdown">
                     <a class="faa-parent animated-hover" data-toggle="dropdown">
-    	               <i class="fa fa-fw fa-lg fa fa-question faa-tada faa-fast"></i>Select Course
+    	               <i class="fa fa-fw fa-lg fa fa-graduation-cap faa-tada faa-fast"></i>Select Course
     	               <span class="fa fa-caret-down"></span>
                     </a>
                     <ul class="dropdown-menu" role="menu">
@@ -89,12 +89,12 @@
     	               </li>
                     </ul>
                 </li>
-                {% if user.is_authenticated and user.is_superuser %}
                 <li>
                     <a class="faa-parent animated-hover" href="/owner/upload_note">
 	                   <i class="fa fa-fw fa-lg fa fa-upload faa-tada faa-fast"></i>Upload Notes
                     </a>
                 </li>
+                {% if user.is_authenticated and user.is_superuser %}
                 {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">

@@ -44,7 +44,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
                                            validators=[RegexValidator(regex=r'[0-9]{8}', message='Invalid Registration Number')])
     admin = models.CharField(max_length=1, default='N')
     password = models.CharField('password', max_length=128, validators=[validate_password])
-    is_active = models.BooleanField(default=False, verbose_name='Active',
+    is_active = models.BooleanField(default=True, verbose_name='Active',
                                     help_text='Designates whether this user should be treated as active. '
                                               'Unselect this instead of deleting accounts.')
     is_admin = models.BooleanField(default=False, verbose_name='Staff status',
