@@ -36,7 +36,7 @@
 </head>
 <body>
 <header>
-<nav class="navbar navbar-inverse navbar-static-top">
+<nav style="margin-bottom: 50px; background-color: #333" class="navbar navbar-dark navbar-static-top">
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-toggle collapsed" data-target="#navbar" data-toggle="collapse">
@@ -78,7 +78,7 @@
                 </li>
                 <li >
                     <a class="faa-parent animated-hover">
-    	               <i class="fa fa-fw fa-lg fa fa-graduation-cap faa-tada faa-fast"></i>Browse Subjects
+    	               <i class="fa fa-fw fa-lg fa fa-book faa-tada faa-fast"></i>Browse Subjects
                     </a>
                 </li>
                 <li>
