@@ -452,3 +452,22 @@ label {
         margin-top: 10px;
         display: block;
       }
+
+.dataTable > thead > tr > th[class*="sort"]:before,
+.dataTable > thead > tr > th[class*="sort"]:after {
+    content: "" !important;
+}
+tr:nth-of-type(odd) {
+	background: #eee;
+	}
+th {
+	background: #3498db;
+	color: white;
+	font-weight: bold;
+	}
+
+td, th {
+	border: 1px solid #ccc;
+	text-align: left;
+	font-size: 18px;
+	}
