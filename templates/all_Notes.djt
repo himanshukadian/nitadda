@@ -31,6 +31,7 @@ https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
                 <tr>
                   <th scope="col">S. No</th>
                   <th scope="col">Title</th>
+                  <th scope="col">Subject</th>
                   {% if user.is_authenticated and user.is_superuser %}
                   <th scope="col">Action</th>
                   {%endif%}
@@ -41,6 +42,7 @@ https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
  <tr>
                     <td>{{ forloop.counter }}</td>
                     <td><a href="shownotes/{{ i.note_id}}">{{ i.title }}</a></td>
+                    <td>{{ i.subject }}</td>
                     {% if user.is_authenticated and user.is_superuser %}
                     <td scope="col"><a href="deletenote/{{ i.note_id}}" class="btn btn-danger">Remove</a></td>
                     {%endif%}

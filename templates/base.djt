@@ -65,6 +65,11 @@
                   <i class="fa fa-fw fa-lg fa-edit faa-tada faa-fast"></i>Add Course
                     </a>
                 </li>
+                 <li>
+                    <a class="faa-parent animated-hover" href="/owner/add_subject">
+                  <i class="fa fa-fw fa-lg fa-edit faa-tada faa-fast"></i>Add Subject
+                    </a>
+                </li>
                 {%endif%}
                 <li class="dropdown">
                     <a class="faa-parent animated-hover" data-toggle="dropdown">

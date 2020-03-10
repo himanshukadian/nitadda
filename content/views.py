@@ -42,6 +42,23 @@ def Add_Course(request):
 @csrf_exempt
 @login_required(login_url="/")
 @user_passes_test(checkuserifscrutinyuser, login_url="/owner/login/")
+def Add_Subject(request):
+    response = {}
+    courses = Course.objects.all()
+    response["courses"] = courses
+    if request.method == 'POST':
+        subject = Subject()
+        subject.title = request.POST['title']
+        subject.course = Course.objects.get(id=request.POST['courses'])
+        subject.save()
+        return redirect('/owner/add_subject')
+
+    return render(request, 'add_subject.djt', response)
+
+
+@csrf_exempt
+@login_required(login_url="/")
+@user_passes_test(checkuserifscrutinyuser, login_url="/owner/login/")
 def index(request):
     response = {}
     return render(request, 'base.djt', response)
@@ -105,6 +122,14 @@ def UploadNote(request):
     response = {}
     courses = Course.objects.all()
     response["courses"] = courses
+    subjects=Subject.objects.all()
+    # subjects = []
+    # coursesubjects = Subject.objects.values('course', 'course_id')
+    # courses = {item['course'] for item in coursesubjects}
+    # for course in courses:
+    #     subject = Subject.objects.filter(course=course)
+    #     subjects.append(subject)
+    response["subjects"] = subjects
     if request.method == 'POST':
         cnt = Note_Count.objects.get()
         year = datetime.datetime.now().year
@@ -121,6 +146,7 @@ def UploadNote(request):
         note.note_id = noteID
         note.title = request.POST['title']
         # course.title=request.POST['courses']
+        note.subject = Subject.objects.get(id=request.POST['subjects'])
         note.course = Course.objects.get(id=request.POST['courses'])
         note.notes_pdf = request.FILES["files"]
         note.save()
@@ -140,7 +166,6 @@ def Get_Note(request):
     courses = {item['course'] for item in coursenotes}
     for course in courses:
         note = Note.objects.filter(course=course)
-        print(note[0].title)
         allnotes.append(note)
     response["allnotes"] = allnotes
     return render(request, 'all_Notes.djt', response)

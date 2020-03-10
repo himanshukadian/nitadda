@@ -6,6 +6,13 @@ class Course(models.Model):
     def __str__(self):
         return self.title
 
+
+class Subject(models.Model):
+    title = models.CharField(max_length=255,default='')
+    course = models.ForeignKey(Course, verbose_name="Course", on_delete=models.CASCADE, blank=True, null=True)
+    def __str__(self):
+        return self.title
+
 def get_path1(instance, filename):
     return 'Code/{0}/pdf/{1}'.format(instance.note_id, filename)
 
@@ -13,7 +20,8 @@ def get_path1(instance, filename):
 class Note(models.Model):
     note_id = models.CharField(max_length=20, primary_key=True)
     title = models.CharField(max_length=300, default="")
-    course = models.ForeignKey(Course, verbose_name="Course",on_delete=models.CASCADE,blank=True, null=True)
+    course = models.ForeignKey(Course, verbose_name="Course", on_delete=models.CASCADE, blank=True, null=True)
+    subject = models.ForeignKey(Subject, verbose_name="Subject",on_delete=models.CASCADE,blank=True, null=True)
     note_pdf = models.FileField(upload_to=get_path1,
                                    validators=[FileExtensionValidator(["pdf"])],
                                    null=True, blank=True, default=None)
@@ -27,3 +35,5 @@ class Note_Count(models.Model):
 
     def __unicode__(self):
         return str(self.note_cnt)
+
+
