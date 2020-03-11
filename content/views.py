@@ -9,6 +9,8 @@ from .models import *
 import datetime
 from django.views.decorators.csrf import csrf_exempt
 import os
+from wand.image import Image
+
 
 
 @csrf_exempt
@@ -149,7 +151,7 @@ def UploadNote(request):
         # course.title=request.POST['courses']
         note.subject = Subject.objects.get(id=request.POST['subjects'])
         note.course = Course.objects.get(id=request.POST['courses'])
-        note.notes_pdf = request.FILES["files"]
+        note.note_pdf = request.FILES["files"]
         note.save()
         return redirect('/owner/upload_note')
 

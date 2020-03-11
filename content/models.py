@@ -13,8 +13,8 @@ class Subject(models.Model):
     def __str__(self):
         return self.title
 
-def get_path1(instance, filename):
-    return 'Code/{0}/pdf/{1}'.format(instance.note_id, filename)
+def get_path(instance, filename):
+    return 'Note/{0}/pdf/{1}'.format(instance.note_id, filename)
 
 
 class Note(models.Model):
@@ -22,7 +22,7 @@ class Note(models.Model):
     title = models.CharField(max_length=300, default="")
     course = models.ForeignKey(Course, verbose_name="Course", on_delete=models.CASCADE, blank=True, null=True)
     subject = models.ForeignKey(Subject, verbose_name="Subject",on_delete=models.CASCADE,blank=True, null=True)
-    note_pdf = models.FileField(upload_to=get_path1,
+    note_pdf = models.FileField(upload_to=get_path,
                                    validators=[FileExtensionValidator(["pdf"])],
                                    null=True, blank=True, default=None)
 
