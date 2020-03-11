@@ -1,3 +1,5 @@
+import json
+
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, HttpRequest, Http404, JsonResponse, FileResponse
@@ -168,3 +170,87 @@ def Get_Note(request):
         allnotes.append(note)
     response["allnotes"] = allnotes
     return render(request, 'all_Notes.djt', response)
+
+
+@csrf_exempt
+@login_required(login_url="/")
+def Get_Course(request):
+    response = {}
+    courses = Course.objects.all()
+    response["courses"] = courses
+    return render(request, 'all_Courses.djt', response)
+
+
+@csrf_exempt
+@login_required(login_url="/")
+def Get_Subject(request):
+    response = {}
+    subjects = Subject.objects.all()
+    response["subjects"] = subjects
+    return render(request, 'all_Subjects.djt', response)
+
+
+
+@csrf_exempt
+@login_required(login_url="/")
+def Show_Note(request,courseid):
+    response = {}
+    notes = Note.objects.all()
+    allnotes = []
+    note = Note.objects.filter(course=courseid)
+    allnotes.append(note)
+    response["allnotes"] = allnotes
+    return render(request, 'all_Notes.djt', response)
+
+
+@csrf_exempt
+@login_required(login_url="/")
+def Get_Subject_Note(request):
+    response = {}
+    notes = Note.objects.all()
+    n = len(notes)
+    allnotes = []
+    subjectnotes = Note.objects.values('subject', 'subject_id')
+    subjects = {item['subject'] for item in subjectnotes}
+    for subject in subjects:
+        note = Note.objects.filter(subject=subject)
+        allnotes.append(note)
+    response["allnotes"] = allnotes
+    return render(request, 'all_Subject_Notes.djt', response)
+
+
+@csrf_exempt
+@login_required(login_url="/")
+def Show_Subject_Note(request,subjectid):
+    response = {}
+    notes = Note.objects.all()
+    allnotes = []
+    note = Note.objects.filter(subject=subjectid)
+    allnotes.append(note)
+    response["allnotes"] = allnotes
+    return render(request, 'all_Subject_Notes.djt', response)
+
+
+@csrf_exempt
+def getSubjects(request):
+    if request.method == 'POST':
+        course_name = request.POST.get('cn')
+        print("ajax course_name ", course_name," yo")
+        result_set = []
+        answer = str(course_name).strip()
+        try:
+            selected_course = Course.objects.get(title=answer)
+        except Course.DoesNotExist:
+            selected_course = Course.objects.all()[0]
+        print("selected course name ", selected_course)
+        all_cities = selected_course.subject_set.all()
+        for subject in all_cities:
+            print("Subject name ", subject.title)
+            result_set.append({'title': subject.title, 'id': subject.id})
+            # print("this",json.dumps(result_set));
+        return HttpResponse(json.dumps(result_set), content_type='application/json')
+    else:
+        return HttpResponse(
+            json.dumps({"nothing to see": "this isn't happening"}),
+            content_type="application/json"
+        )

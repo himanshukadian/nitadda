@@ -30,8 +30,6 @@ a:hover .fa {
     animation: fa-spin 1s
 }
 
-}
-
 .btnOutput, .btnInput, .btnLink {
     font-size: 15px;
     margin-top: 2px;
@@ -189,7 +187,16 @@ body {
 }
 
 /* New styles for footer and other elements  */
+.navbar .nav > li > a{
+    color : darkcyan;
+    font-size : 14px;
+    font-weight : bold;
+}
 
+.navbar-header > a{
+    color : cyan;
+    background-color: darkcyan;
+}
 footer {
     background-color: #4CB96B;
 }

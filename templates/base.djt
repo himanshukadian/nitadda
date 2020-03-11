@@ -59,6 +59,11 @@
 	                   <i class="fa fa-fw fa-lg fa-sticky-note-o  faa-tada faa-fast"></i>All Notes
                     </a>
                 </li>
+                <li>
+                    <a class="faa-parent animated-hover" href="/owner/all_subject_note">
+	                   <i class="fa fa-fw fa-lg fa-sticky-note-o  faa-tada faa-fast"></i>All Subject Notes
+                    </a>
+                </li>
                  {% if user.is_authenticated and user.is_superuser %}
                 <li>
                     <a class="faa-parent animated-hover" href="/owner/add_course">
@@ -72,12 +77,12 @@
                 </li>
                 {%endif%}
                 <li >
-                    <a class="faa-parent animated-hover">
+                    <a href="/owner/all_course" class="faa-parent animated-hover">
     	               <i class="fa fa-fw fa-lg fa fa-graduation-cap faa-tada faa-fast"></i>Browse Courses
                     </a>
                 </li>
                 <li >
-                    <a class="faa-parent animated-hover">
+                    <a href="/owner/all_subject" class="faa-parent animated-hover">
     	               <i class="fa fa-fw fa-lg fa fa-book faa-tada faa-fast"></i>Browse Subjects
                     </a>
                 </li>
@@ -123,16 +128,15 @@
           </div>
 
           <div class="col-xs-6 col-md-3">
-            <h6>Courses</h6>
+            <h6>Browse By </h6>
             <ul class="footer-links">
-              <li><a href="">B Tech</a></li>
-              <li><a href="">M Tech</a></li>
-              <li><a href="">MCA</a></li>
+              <li><a href="">Courses</a></li>
+              <li><a href="">Subjects</a></li>
             </ul>
           </div>
 
           <div class="col-xs-6 col-md-3">
-            <h6>Quick Links</h6>
+            <h6>We Offer</h6>
             <ul class="footer-links">
               <li><a href="">Notes</a></li>
               <li><a href="">Books</a></li>
