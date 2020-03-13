@@ -19,5 +19,6 @@ except ImportError:
     HAS_GEOIP2 = False
 else:
     from .base import GeoIP2, GeoIP2Exception
+
     HAS_GEOIP2 = True
     __all__ += ['GeoIP2', 'GeoIP2Exception']

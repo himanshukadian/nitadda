@@ -5,18 +5,18 @@ from .admin import UserCreationForm
 from django.contrib import messages
 
 
-
-def index(request) :
+def index(request):
     response = {}
-    return render(request,'base.djt',response)
+    return render(request, 'home.html', response)
+
 
 class UserFormView(generic.View):
     form_class = UserCreationForm
-    template_name = 'registration_form.djt'
+    template_name = 'registration_form.html'
 
     def get(self, request):
         form = self.form_class(None)
-        return render(request, self.template_name, {'form':form})
+        return render(request, self.template_name, {'form': form})
 
     def post(self, request):
         form = self.form_class(request.POST)
@@ -31,9 +31,7 @@ class UserFormView(generic.View):
             messages.success(request, f'Your account has been created')
             return redirect('accounts:index')
 
-        return render(request, self.template_name, {'form':form})
-
-
+        return render(request, self.template_name, {'form': form})
 
 
 def user_login(request):
@@ -45,4 +43,3 @@ def user_login(request):
             login(request, user)
             messages.success(request, f'You are loged in')
             return redirect('accounts:index')
-

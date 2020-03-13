@@ -10,7 +10,6 @@ import re
 import struct
 import binascii
 
-
 __all__ = [
     # Legacy interface exports traditional RFC 2045 Base64 encodings
     'encode', 'decode', 'encodebytes', 'decodebytes',
@@ -26,10 +25,10 @@ __all__ = [
     #
     # http://zgp.org/pipermail/p2p-hackers/2001-September/000316.html
     'urlsafe_b64encode', 'urlsafe_b64decode',
-    ]
-
+]
 
 bytes_types = (bytes, bytearray)  # Types acceptable as binary data
+
 
 def _bytes_from_decode_data(s):
     if isinstance(s, str):
@@ -94,6 +93,7 @@ def standard_b64encode(s):
     """
     return b64encode(s)
 
+
 def standard_b64decode(s):
     """Decode bytes encoded with the standard Base64 alphabet.
 
@@ -108,6 +108,7 @@ def standard_b64decode(s):
 _urlsafe_encode_translation = bytes.maketrans(b'+/', b'-_')
 _urlsafe_decode_translation = bytes.maketrans(b'-_', b'+/')
 
+
 def urlsafe_b64encode(s):
     """Encode bytes using the URL- and filesystem-safe Base64 alphabet.
 
@@ -116,6 +117,7 @@ def urlsafe_b64encode(s):
     '/'.
     """
     return b64encode(s).translate(_urlsafe_encode_translation)
+
 
 def urlsafe_b64decode(s):
     """Decode bytes using the URL- and filesystem-safe Base64 alphabet.
@@ -133,11 +135,11 @@ def urlsafe_b64decode(s):
     return b64decode(s)
 
 
-
 # Base32 encoding/decoding must be done in Python
 _b32alphabet = b'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567'
 _b32tab2 = None
 _b32rev = None
+
 
 def b32encode(s):
     """Encode the bytes-like object s using Base32 and return a bytes object.
@@ -161,11 +163,11 @@ def b32encode(s):
     b32tab2 = _b32tab2
     for i in range(0, len(s), 5):
         c = from_bytes(s[i: i + 5], 'big')
-        encoded += (b32tab2[c >> 30] +           # bits 1 - 10
-                    b32tab2[(c >> 20) & 0x3ff] + # bits 11 - 20
-                    b32tab2[(c >> 10) & 0x3ff] + # bits 21 - 30
-                    b32tab2[c & 0x3ff]           # bits 31 - 40
-                   )
+        encoded += (b32tab2[c >> 30] +  # bits 1 - 10
+                    b32tab2[(c >> 20) & 0x3ff] +  # bits 11 - 20
+                    b32tab2[(c >> 10) & 0x3ff] +  # bits 21 - 30
+                    b32tab2[c & 0x3ff]  # bits 31 - 40
+                    )
     # Adjust for any leftover partial quanta
     if leftover == 1:
         encoded[-6:] = b'======'
@@ -176,6 +178,7 @@ def b32encode(s):
     elif leftover == 4:
         encoded[-1:] = b'='
     return bytes(encoded)
+
 
 def b32decode(s, casefold=False, map01=None):
     """Decode the Base32 encoded bytes-like object or ASCII string s.
@@ -267,6 +270,7 @@ def b16decode(s, casefold=False):
         raise binascii.Error('Non-base16 digit found')
     return binascii.unhexlify(s)
 
+
 #
 # Ascii85 encoding/decoding
 #
@@ -275,6 +279,7 @@ _a85chars = None
 _a85chars2 = None
 _A85START = b"<~"
 _A85END = b"~>"
+
 
 def _85encode(b, chars, chars2, pad=False, foldnuls=False, foldspaces=False):
     # Helper function for a85encode and b85encode
@@ -299,6 +304,7 @@ def _85encode(b, chars, chars2, pad=False, foldnuls=False, foldspaces=False):
         chunks[-1] = chunks[-1][:-padding]
 
     return b''.join(chunks)
+
 
 def a85encode(b, *, foldspaces=False, wrapcol=0, pad=False, adobe=False):
     """Encode bytes-like object b using Ascii85 and return a bytes object.
@@ -341,6 +347,7 @@ def a85encode(b, *, foldspaces=False, wrapcol=0, pad=False, adobe=False):
 
     return result
 
+
 def a85decode(b, *, foldspaces=False, adobe=False, ignorechars=b' \t\n\r\v'):
     """Decode the Ascii85 encoded bytes-like object or ASCII string b.
 
@@ -363,7 +370,7 @@ def a85decode(b, *, foldspaces=False, adobe=False, ignorechars=b' \t\n\r\v'):
             raise ValueError(
                 "Ascii85 encoded byte sequences must end "
                 "with {!r}".format(_A85END)
-                )
+            )
         if b.startswith(_A85START):
             b = b[2:-2]  # Strip off start/end markers
         else:
@@ -411,6 +418,7 @@ def a85decode(b, *, foldspaces=False, adobe=False, ignorechars=b' \t\n\r\v'):
         result = result[:-padding]
     return result
 
+
 # The following code is originally taken (with permission) from Mercurial
 
 _b85alphabet = (b"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -418,6 +426,7 @@ _b85alphabet = (b"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 _b85chars = None
 _b85chars2 = None
 _b85dec = None
+
 
 def b85encode(b, pad=False):
     """Encode bytes-like object b in base85 format and return a bytes object.
@@ -432,6 +441,7 @@ def b85encode(b, pad=False):
         _b85chars = [bytes((i,)) for i in _b85alphabet]
         _b85chars2 = [(a + b) for a in _b85chars for b in _b85chars]
     return _85encode(b, _b85chars, _b85chars2, pad)
+
 
 def b85decode(b):
     """Decode the base85-encoded bytes-like object or ASCII string b
@@ -461,7 +471,7 @@ def b85decode(b):
             for j, c in enumerate(chunk):
                 if _b85dec[c] is None:
                     raise ValueError('bad base85 character at position %d'
-                                    % (i + j)) from None
+                                     % (i + j)) from None
             raise
         try:
             out.append(packI(acc))
@@ -474,12 +484,14 @@ def b85decode(b):
         result = result[:-padding]
     return result
 
+
 # Legacy interface.  This code could be cleaned up since I don't believe
 # binascii has any line length limitations.  It just doesn't seem worth it
 # though.  The files should be opened in binary mode.
 
-MAXLINESIZE = 76 # Excluding the CRLF
-MAXBINSIZE = (MAXLINESIZE//4)*3
+MAXLINESIZE = 76  # Excluding the CRLF
+MAXBINSIZE = (MAXLINESIZE // 4) * 3
+
 
 def encode(input, output):
     """Encode a file; input and output are binary files."""
@@ -488,7 +500,7 @@ def encode(input, output):
         if not s:
             break
         while len(s) < MAXBINSIZE:
-            ns = input.read(MAXBINSIZE-len(s))
+            ns = input.read(MAXBINSIZE - len(s))
             if not ns:
                 break
             s += ns
@@ -505,6 +517,7 @@ def decode(input, output):
         s = binascii.a2b_base64(line)
         output.write(s)
 
+
 def _input_type_check(s):
     try:
         m = memoryview(s)
@@ -513,11 +526,11 @@ def _input_type_check(s):
         raise TypeError(msg) from err
     if m.format not in ('c', 'b', 'B'):
         msg = ("expected single byte elements, not %r from %s" %
-                                          (m.format, s.__class__.__name__))
+               (m.format, s.__class__.__name__))
         raise TypeError(msg)
     if m.ndim != 1:
         msg = ("expected 1-D data, not %d-D data from %s" %
-                                          (m.ndim, s.__class__.__name__))
+               (m.ndim, s.__class__.__name__))
         raise TypeError(msg)
 
 
@@ -527,9 +540,10 @@ def encodebytes(s):
     _input_type_check(s)
     pieces = []
     for i in range(0, len(s), MAXBINSIZE):
-        chunk = s[i : i + MAXBINSIZE]
+        chunk = s[i: i + MAXBINSIZE]
         pieces.append(binascii.b2a_base64(chunk))
     return b"".join(pieces)
+
 
 def encodestring(s):
     """Legacy alias of encodebytes()."""
@@ -544,6 +558,7 @@ def decodebytes(s):
     """Decode a bytestring of base-64 data into a bytes object."""
     _input_type_check(s)
     return binascii.a2b_base64(s)
+
 
 def decodestring(s):
     """Legacy alias of decodebytes()."""
@@ -566,7 +581,7 @@ def main():
         print("""usage: %s [-d|-e|-u|-t] [file|-]
         -d, -u: decode
         -e: encode (default)
-        -t: encode and decode string 'Aladdin:open sesame'"""%sys.argv[0])
+        -t: encode and decode string 'Aladdin:open sesame'""" % sys.argv[0])
         sys.exit(2)
     func = encode
     for o, a in opts:

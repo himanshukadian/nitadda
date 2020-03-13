@@ -48,7 +48,6 @@ def _accept(prefix):
 
 
 class FpxImageFile(ImageFile.ImageFile):
-
     format = "FPX"
     format_description = "FlashPix"
 

@@ -33,7 +33,6 @@ def _accept(prefix):
 
 
 class BufrStubImageFile(ImageFile.StubImageFile):
-
     format = "BUFR"
     format_description = "BUFR"
 

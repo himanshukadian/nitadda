@@ -53,6 +53,7 @@ class Archive:
     """
     The external API class that encapsulates an archive implementation.
     """
+
     def __init__(self, file):
         self._archive = self._archive_cls(file)(file)
 
@@ -97,6 +98,7 @@ class BaseArchive:
     """
     Base Archive class.  Implementations should inherit this class.
     """
+
     @staticmethod
     def _copy_permissions(mode, filename):
         """

@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block title %}Home NIT ADDA{% endblock title %}
+{% load static %}
+{% block content %}
+    <head>
+        <link rel="stylesheet" type="text/css"
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css"
+              href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap.min.css">
+        <link rel="stylesheet" type="text/css"
+              href="https://cdn.datatables.net/fixedheader/3.1.6/css/fixedHeader.bootstrap.min.css">
+        <link rel="stylesheet" type="text/css"
+              href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
+
+        <script type="text/javascript" src="
+https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap.min.js"></script>
+        <script type="text/javascript"
+                src="https://cdn.datatables.net/fixedheader/3.1.6/js/dataTables.fixedHeader.min.js"></script>
+        <script type="text/javascript"
+                src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+        <script type="text/javascript"
+                src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
+
+    </head>
+    <body>
+    <div class="row main_header">
+        <!-- <center><h2><b>Registration</b></h2></center>
+         <br>-->
+    </div>
+
+    <div class="container">
+        {% for note in allnotes %}
+            <div class="row" style="margin-top: 4%;margin-bottom: 3em;">
+                <table class="table table-striped table-responsive-md" id="example"
+                       style="font-size: 20px;font-family: 'Palatino Linotype';">
+                    <caption><h3 style="text-align:center">{{ note.0.subject }} Notes</h3></caption>
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">S. No</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Course</th>
+                        {% if user.is_authenticated and user.is_superuser %}
+                            <th scope="col">Action</th>
+                        {% endif %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for i in note %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td><a href="../shownotes/{{ i.note_id }}">{{ i.title }}</a></td>
+                            <td>{{ i.course }}</td>
+                            {% if user.is_authenticated and user.is_superuser %}
+                                <td scope="col"><a href="deletenote/{{ i.note_id }}" class="btn btn-danger">Remove</a>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
+
+    </div>
+
+    </body>
+    <script>
+        $(document).ready(function () {
+            $('table.table').DataTable({
+                "bPaginate": true,
+                "bLengthChange": false,
+                "bFilter": true,
+                "bInfo": false,
+                "bAutoWidth": false
+            });
+        });
+
+
+    </script>
+    {# Main Section #}
+{% endblock content %}

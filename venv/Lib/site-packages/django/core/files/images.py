@@ -14,6 +14,7 @@ class ImageFile(File):
     A mixin for use alongside django.core.files.base.File, which provides
     additional features for dealing with images.
     """
+
     @property
     def width(self):
         return self._get_image_dimensions()[0]

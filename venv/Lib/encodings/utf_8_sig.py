@@ -9,11 +9,13 @@ This work similar to UTF-8 with the following changes:
 """
 import codecs
 
+
 ### Codec APIs
 
 def encode(input, errors='strict'):
     return (codecs.BOM_UTF8 + codecs.utf_8_encode(input, errors)[0],
             len(input))
+
 
 def decode(input, errors='strict'):
     prefix = 0
@@ -21,7 +23,8 @@ def decode(input, errors='strict'):
         input = input[3:]
         prefix = 3
     (output, consumed) = codecs.utf_8_decode(input, errors, True)
-    return (output, consumed+prefix)
+    return (output, consumed + prefix)
+
 
 class IncrementalEncoder(codecs.IncrementalEncoder):
     def __init__(self, errors='strict'):
@@ -46,6 +49,7 @@ class IncrementalEncoder(codecs.IncrementalEncoder):
     def setstate(self, state):
         self.first = state
 
+
 class IncrementalDecoder(codecs.BufferedIncrementalDecoder):
     def __init__(self, errors='strict'):
         codecs.BufferedIncrementalDecoder.__init__(self, errors)
@@ -64,8 +68,8 @@ class IncrementalDecoder(codecs.BufferedIncrementalDecoder):
                 self.first = 0
                 if input[:3] == codecs.BOM_UTF8:
                     (output, consumed) = \
-                       codecs.utf_8_decode(input[3:], errors, final)
-                    return (output, consumed+3)
+                        codecs.utf_8_decode(input[3:], errors, final)
+                    return (output, consumed + 3)
         return codecs.utf_8_decode(input, errors, final)
 
     def reset(self):
@@ -82,6 +86,7 @@ class IncrementalDecoder(codecs.BufferedIncrementalDecoder):
         codecs.BufferedIncrementalDecoder.setstate(self, state)
         self.first = state[1]
 
+
 class StreamWriter(codecs.StreamWriter):
     def reset(self):
         codecs.StreamWriter.reset(self)
@@ -93,6 +98,7 @@ class StreamWriter(codecs.StreamWriter):
     def encode(self, input, errors='strict'):
         self.encode = codecs.utf_8_encode
         return encode(input, errors)
+
 
 class StreamReader(codecs.StreamReader):
     def reset(self):
@@ -110,11 +116,12 @@ class StreamReader(codecs.StreamReader):
                 return ("", 0)
         elif input[:3] == codecs.BOM_UTF8:
             self.decode = codecs.utf_8_decode
-            (output, consumed) = codecs.utf_8_decode(input[3:],errors)
-            return (output, consumed+3)
+            (output, consumed) = codecs.utf_8_decode(input[3:], errors)
+            return (output, consumed + 3)
         # (else) no BOM present
         self.decode = codecs.utf_8_decode
         return codecs.utf_8_decode(input, errors)
+
 
 ### encodings module API
 

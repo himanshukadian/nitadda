@@ -107,6 +107,7 @@ try:
                       _reset_registry, _reset_caches)
 except ImportError:
     from _py_abc import ABCMeta, get_cache_token
+
     ABCMeta.__module__ = 'abc'
 else:
     class ABCMeta(type):
@@ -122,6 +123,7 @@ else:
         implementations defined by the registering ABC be callable (not
         even via super()).
         """
+
         def __new__(mcls, name, bases, namespace, **kwargs):
             cls = super().__new__(mcls, name, bases, namespace, **kwargs)
             _abc_init(cls)

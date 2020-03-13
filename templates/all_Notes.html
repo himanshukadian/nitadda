@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% block title %}Home NIT ADDA{% endblock title %}
+{% load static %}
+{% block content %}
+    <head>
+        <link rel="stylesheet" type="text/css"
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css"
+              href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap.min.css">
+        <link rel="stylesheet" type="text/css"
+              href="https://cdn.datatables.net/fixedheader/3.1.6/css/fixedHeader.bootstrap.min.css">
+        <link rel="stylesheet" type="text/css"
+              href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
+
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap.min.js"></script>
+        <script type="text/javascript"
+                src="https://cdn.datatables.net/fixedheader/3.1.6/js/dataTables.fixedHeader.min.js"></script>
+        <script type="text/javascript"
+                src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+        <script type="text/javascript"
+                src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
+        {#    <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>#}
+    </head>
+    <body class="main_body">
+    <div class="row main_header">
+        <!-- <center><h2><b>Registration</b></h2></center>
+         <br>-->
+    </div>
+
+    <div class="container">
+        {% for note in allnotes %}
+            <div class="row" style="margin-top: 4%;margin-bottom: 3em;">
+                <table class="table table-striped table-responsive-md" id="example" style="font-size: 1px;">
+                    <caption><h3 style="font-weight: bold;text-align:center">{{ note.0.course }} Notes</h3></caption>
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">S. No</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Subject</th>
+                        <th scope="col">Upvotes</th>
+                        {% if user.is_authenticated and user.is_superuser %}
+                            <th scope="col">Actions</th>
+                        {% endif %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for i in note %}
+                        {% if  user.is_authenticated and user.is_superuser or i.is_approved %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td><a href="shownotes/{{ i.note_id }}">{{ i.title }}</a></td>
+                                <td>{{ i.subject }}</td>
+                                {#                    href = {% url 'upvote/ i.note_id / user.id ' %}#}
+                                <td>
+                                    <a class="upvoteButton" id="{{ i.note_id }}" onclick="updateVote( this.id )"
+                                       href="#">
+                                        <svg class="arrowIcon " xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                                             viewBox="0 0 24 24">
+                                            <g id="{{ i.note_id }}1" class="icon_svg-stroke icon_svg-fill"
+                                               stroke="darkcyan" stroke-width="1.5" fill="none" fill-rule="evenodd"
+                                               stroke-linejoin="round">
+                                                <polygon points="12 4 3 15 9 15 9 20 15 20 15 15 21 15"></polygon>
+                                            </g>
+                                        </svg>
+                                        <span class="font-weight:bold"
+                                              id="{{ i.note_id }}2">{{ i.total_upvotes }}</span></a>
+                                </td>
+                                {% if user.is_authenticated and user.is_superuser %}
+                                    <td scope="col">
+                                        {% if  i.is_approved %}
+                                            <a class="btn">Approved</a>
+                                        {% else %}
+                                            <a href="approvenote/{{ i.note_id }}" class="btn btn-danger">Approve</a>
+                                        {% endif %}
+                                        <a href="deletenote/{{ i.note_id }}" class="btn btn-danger">Remove</a>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
+
+    </div>
+
+    </body>
+    <script>
+        $(document).ready(function () {
+            $('table.table').DataTable({
+                "bPaginate": true,
+                "bLengthChange": false,
+                "bFilter": true,
+                "bInfo": false,
+                "bAutoWidth": false
+            });
+        });
+
+        function updateVote(note_id) {
+            console.log("note id value: " + note_id);
+
+            $.ajax({
+                url: "/owner/upvote/",
+                type: "POST",
+                {#async: true,#}
+                data: {'noteid': note_id, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                {#dataType: "json",#}
+                success: function (data) {
+                    if (data[0]) {
+                        document.getElementById(data[1] + "2").innerHTML = parseInt(document.getElementById(data[1] + "2").innerHTML)-1;
+                        document.getElementById(data[1] + "1").style.fill = "darkcyan"
+                    } else {
+                        document.getElementById(data[1] + "1").style.fill = "none";
+                         document.getElementById(data[1] + "2").innerHTML = parseInt(document.getElementById(data[1] + "2").innerHTML)+1;
+                    }
+                }
+            });
+        }
+
+    </script>
+    {# Main Section #}
+{% endblock content %}

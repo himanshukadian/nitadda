@@ -54,6 +54,7 @@ except NameError:
 if sys.platform == "win32":
     from distutils.command.build_ext import build_ext as old_build_ext
 
+
     class build_ext(old_build_ext):
         def finalize_options(self):
             if self.library_dirs is None:
@@ -63,6 +64,7 @@ if sys.platform == "win32":
 
             self.library_dirs.insert(0, os.path.join(sys.real_prefix, "Libs"))
             old_build_ext.finalize_options(self)
+
 
     from distutils.command import build_ext as build_ext_module
 

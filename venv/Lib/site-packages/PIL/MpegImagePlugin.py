@@ -17,6 +17,7 @@
 from . import Image, ImageFile
 from ._binary import i8
 
+
 #
 # Bitstream parser
 
@@ -58,12 +59,10 @@ class BitStream:
 
 
 class MpegImageFile(ImageFile.ImageFile):
-
     format = "MPEG"
     format_description = "MPEG"
 
     def _open(self):
-
         s = BitStream(self.fp)
 
         if s.read(32) != 0x1B3:

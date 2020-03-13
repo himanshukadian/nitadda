@@ -47,7 +47,6 @@ __all__ = ["BlockingIOError", "open", "IOBase", "RawIOBase", "FileIO",
            "BufferedRandom", "TextIOBase", "TextIOWrapper",
            "UnsupportedOperation", "SEEK_SET", "SEEK_CUR", "SEEK_END"]
 
-
 import _io
 import abc
 
@@ -56,7 +55,7 @@ from _io import (DEFAULT_BUFFER_SIZE, BlockingIOError, UnsupportedOperation,
                  BufferedWriter, BufferedRWPair, BufferedRandom,
                  IncrementalNewlineDecoder, TextIOWrapper)
 
-OpenWrapper = _io.open # for compatibility with _pyio
+OpenWrapper = _io.open  # for compatibility with _pyio
 
 # Pretend this exception was created here.
 UnsupportedOperation.__module__ = "io"
@@ -66,20 +65,25 @@ SEEK_SET = 0
 SEEK_CUR = 1
 SEEK_END = 2
 
+
 # Declaring ABCs in C is tricky so we do it here.
 # Method descriptions and default implementations are inherited from the C
 # version however.
 class IOBase(_io._IOBase, metaclass=abc.ABCMeta):
     __doc__ = _io._IOBase.__doc__
 
+
 class RawIOBase(_io._RawIOBase, IOBase):
     __doc__ = _io._RawIOBase.__doc__
+
 
 class BufferedIOBase(_io._BufferedIOBase, IOBase):
     __doc__ = _io._BufferedIOBase.__doc__
 
+
 class TextIOBase(_io._TextIOBase, IOBase):
     __doc__ = _io._TextIOBase.__doc__
+
 
 RawIOBase.register(FileIO)
 

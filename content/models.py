@@ -1,17 +1,24 @@
 from django.db import models
 from django.core.validators import FileExtensionValidator
+from django.utils.text import slugify
+
+from accounts.models import CustomUser
+
 
 class Course(models.Model):
-    title = models.CharField(max_length=255,default='')
+    title = models.CharField(max_length=255, default='')
+
     def __str__(self):
         return self.title
 
 
 class Subject(models.Model):
-    title = models.CharField(max_length=255,default='')
+    title = models.CharField(max_length=255, default='')
     course = models.ForeignKey(Course, verbose_name="Course", on_delete=models.CASCADE, blank=True, null=True)
+
     def __str__(self):
         return self.title
+
 
 def get_path(instance, filename):
     return 'Note/{0}/pdf/{1}'.format(instance.note_id, filename)
@@ -26,8 +33,19 @@ class Note(models.Model):
                                    validators=[FileExtensionValidator(["pdf"])],
                                    null=True, blank=True, default=None)
 
+    upvotes = models.ManyToManyField(CustomUser, related_name='upvotes')
+    @property
+    def total_upvotes(self):
+        return self.upvotes.count()
+
+    is_approved = models.BooleanField(default=False)
     def __unicode__(self):
         return str(self.note_id)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Note, self).save(*args, **kwargs)
+
 
 
 class Note_Count(models.Model):
@@ -35,5 +53,3 @@ class Note_Count(models.Model):
 
     def __unicode__(self):
         return str(self.note_cnt)
-
-

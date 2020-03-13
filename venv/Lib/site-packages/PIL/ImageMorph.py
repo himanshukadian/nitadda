@@ -22,6 +22,8 @@ MIRROR_MATRIX = [
     5, 4, 3,
     8, 7, 6,
 ]
+
+
 # fmt: on
 
 

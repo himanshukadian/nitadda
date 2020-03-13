@@ -24,6 +24,7 @@ work. One should use importlib as the public-facing version of this module.
 
 _bootstrap_external = None
 
+
 def _wrap(new, old):
     """Simple substitute for functools.update_wrapper."""
     for replace in ['__module__', '__name__', '__qualname__', '__doc__']:
@@ -207,6 +208,7 @@ def _lock_unlock_module(name):
     else:
         lock.release()
 
+
 # Frame stripping magic ###############################################
 def _call_with_frames_removed(f, *args, **kwds):
     """remove_importlib_frames in import.c will always remove sequences
@@ -229,22 +231,26 @@ def _verbose_message(message, *args, verbosity=1):
 
 def _requires_builtin(fxn):
     """Decorator to verify the named module is built-in."""
+
     def _requires_builtin_wrapper(self, fullname):
         if fullname not in sys.builtin_module_names:
             raise ImportError('{!r} is not a built-in module'.format(fullname),
                               name=fullname)
         return fxn(self, fullname)
+
     _wrap(_requires_builtin_wrapper, fxn)
     return _requires_builtin_wrapper
 
 
 def _requires_frozen(fxn):
     """Decorator to verify the named module is frozen."""
+
     def _requires_frozen_wrapper(self, fullname):
         if not _imp.is_frozen(fullname):
             raise ImportError('{!r} is not a frozen module'.format(fullname),
                               name=fullname)
         return fxn(self, fullname)
+
     _wrap(_requires_frozen_wrapper, fxn)
     return _requires_frozen_wrapper
 
@@ -263,6 +269,7 @@ def _load_module_shim(self, fullname):
         return sys.modules[fullname]
     else:
         return _load(spec)
+
 
 # Module specifications #######################################################
 
@@ -660,6 +667,7 @@ def _load_backward_compatible(spec):
             pass
     return module
 
+
 def _load_unlocked(spec):
     # A helper for direct use by the import system.
     if spec.loader is not None:
@@ -681,6 +689,7 @@ def _load_unlocked(spec):
     # their own.
     return sys.modules[spec.name]
 
+
 # A method used during testing of _load_unlocked() and by
 # _load_module_shim().
 def _load(spec):
@@ -699,7 +708,6 @@ def _load(spec):
 # Loaders #####################################################################
 
 class BuiltinImporter:
-
     """Meta path import for built-in modules.
 
     All methods are either class or static methods to avoid the need to
@@ -772,7 +780,6 @@ class BuiltinImporter:
 
 
 class FrozenImporter:
-
     """Meta path import for frozen modules.
 
     All methods are either class or static methods to avoid the need to
@@ -849,7 +856,6 @@ class FrozenImporter:
 # Import itself ###############################################################
 
 class _ImportLockContext:
-
     """Context manager for the import lock."""
 
     def __enter__(self):
@@ -945,6 +951,7 @@ def _sanity_check(name, package, level):
 _ERR_MSG_PREFIX = 'No module named '
 _ERR_MSG = _ERR_MSG_PREFIX + '{!r}'
 
+
 def _find_and_load_unlocked(name, import_):
     path = None
     parent = name.rpartition('.')[0]
@@ -1038,7 +1045,7 @@ def _handle_fromlist(module, fromlist, import_, *, recursive=False):
                     # imports triggered by fromlist for modules that don't
                     # exist.
                     if (exc.name == from_name and
-                        sys.modules.get(from_name, _NEEDS_LOADING) is not None):
+                            sys.modules.get(from_name, _NEEDS_LOADING) is not None):
                         continue
                     raise
     return module
@@ -1101,7 +1108,7 @@ def __import__(name, globals=None, locals=None, fromlist=(), level=0):
             cut_off = len(name) - len(name.partition('.')[0])
             # Slice end needs to be positive to alleviate need to special-case
             # when ``'.' not in name``.
-            return sys.modules[module.__name__[:len(module.__name__)-cut_off]]
+            return sys.modules[module.__name__[:len(module.__name__) - cut_off]]
     else:
         return _handle_fromlist(module, fromlist, _gcd_import)
 

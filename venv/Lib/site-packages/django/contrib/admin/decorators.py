@@ -27,4 +27,5 @@ def register(*models, site=None):
         admin_site.register(models, admin_class=admin_class)
 
         return admin_class
+
     return _model_admin_wrapper

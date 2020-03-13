@@ -30,7 +30,6 @@ def _accept(prefix):
 
 
 class SunImageFile(ImageFile.ImageFile):
-
     format = "SUN"
     format_description = "Sun Raster File"
 

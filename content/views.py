@@ -1,7 +1,7 @@
 import json
 
 from django.conf import settings
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, HttpRequest, Http404, JsonResponse, FileResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -9,8 +9,6 @@ from .models import *
 import datetime
 from django.views.decorators.csrf import csrf_exempt
 import os
-from wand.image import Image
-
 
 
 @csrf_exempt
@@ -40,7 +38,7 @@ def Add_Course(request):
         course.save()
         return redirect('/owner/add_course')
 
-    return render(request, 'add_course.djt', response)
+    return render(request, 'add_course.html', response)
 
 
 @csrf_exempt
@@ -57,7 +55,7 @@ def Add_Subject(request):
         subject.save()
         return redirect('/owner/add_subject')
 
-    return render(request, 'add_subject.djt', response)
+    return render(request, 'add_subject.html', response)
 
 
 @csrf_exempt
@@ -65,7 +63,7 @@ def Add_Subject(request):
 @user_passes_test(checkuserifscrutinyuser, login_url="/owner/login/")
 def index(request):
     response = {}
-    return render(request, 'base.djt', response)
+    return render(request, 'home.html', response)
 
 
 @csrf_exempt
@@ -98,7 +96,7 @@ def admin_login(request):
             else:
                 response['message'] = 'User is invalid'
 
-        return render(request, 'signin.djt', response)
+        return render(request, 'signin.html', response)
 
 
 def Display_Note(request, noteid):
@@ -125,7 +123,7 @@ def UploadNote(request):
     response = {}
     courses = Course.objects.all()
     response["courses"] = courses
-    subjects=Subject.objects.all()
+    subjects = Subject.objects.all()
     # subjects = []
     # coursesubjects = Subject.objects.values('course', 'course_id')
     # courses = {item['course'] for item in coursesubjects}
@@ -155,7 +153,7 @@ def UploadNote(request):
         note.save()
         return redirect('/owner/upload_note')
 
-    return render(request, 'Upload_Notes.djt', response)
+    return render(request, 'Upload_Notes.html', response)
 
 
 @csrf_exempt
@@ -171,7 +169,7 @@ def Get_Note(request):
         note = Note.objects.filter(course=course)
         allnotes.append(note)
     response["allnotes"] = allnotes
-    return render(request, 'all_Notes.djt', response)
+    return render(request, 'all_Notes.html', response)
 
 
 @csrf_exempt
@@ -180,7 +178,7 @@ def Get_Course(request):
     response = {}
     courses = Course.objects.all()
     response["courses"] = courses
-    return render(request, 'all_Courses.djt', response)
+    return render(request, 'all_Courses.html', response)
 
 
 @csrf_exempt
@@ -189,20 +187,19 @@ def Get_Subject(request):
     response = {}
     subjects = Subject.objects.all()
     response["subjects"] = subjects
-    return render(request, 'all_Subjects.djt', response)
-
+    return render(request, 'all_Subjects.html', response)
 
 
 @csrf_exempt
 @login_required(login_url="/")
-def Show_Note(request,courseid):
+def Show_Note(request, courseid):
     response = {}
     notes = Note.objects.all()
     allnotes = []
     note = Note.objects.filter(course=courseid)
     allnotes.append(note)
     response["allnotes"] = allnotes
-    return render(request, 'all_Notes.djt', response)
+    return render(request, 'all_Notes.html', response)
 
 
 @csrf_exempt
@@ -218,41 +215,76 @@ def Get_Subject_Note(request):
         note = Note.objects.filter(subject=subject)
         allnotes.append(note)
     response["allnotes"] = allnotes
-    return render(request, 'all_Subject_Notes.djt', response)
+    return render(request, 'all_Subject_Notes.html', response)
 
 
 @csrf_exempt
 @login_required(login_url="/")
-def Show_Subject_Note(request,subjectid):
+def Show_Subject_Note(request, subjectid):
     response = {}
     notes = Note.objects.all()
     allnotes = []
     note = Note.objects.filter(subject=subjectid)
     allnotes.append(note)
     response["allnotes"] = allnotes
-    return render(request, 'all_Subject_Notes.djt', response)
+    return render(request, 'all_Subject_Notes.html', response)
 
 
 @csrf_exempt
 def getSubjects(request):
     if request.method == 'POST':
         course_name = request.POST.get('cn')
-        print("ajax course_name ", course_name," yo")
         result_set = []
         answer = str(course_name).strip()
         try:
             selected_course = Course.objects.get(title=answer)
         except Course.DoesNotExist:
             selected_course = Course.objects.all()[0]
-        print("selected course name ", selected_course)
         all_cities = selected_course.subject_set.all()
         for subject in all_cities:
-            print("Subject name ", subject.title)
             result_set.append({'title': subject.title, 'id': subject.id})
-            # print("this",json.dumps(result_set));
         return HttpResponse(json.dumps(result_set), content_type='application/json')
     else:
         return HttpResponse(
             json.dumps({"nothing to see": "this isn't happening"}),
             content_type="application/json"
         )
+
+
+
+def Display_Pdf(request,noteid) :
+    response = {}
+    cd = Note.objects.get(note_id=noteid)
+    response["data"] = cd
+    return render(request, 'show_note_pdf.html', response)
+
+
+@login_required(login_url="/")
+def Upvote(request):
+    print("yaa Upvote called")
+    if request.method == 'POST':
+        user = request.user
+        noteid = request.POST.get('noteid')
+        answer = str(noteid).strip()
+        print(noteid)
+        note = Note.objects.get(note_id=answer)
+        if note.upvotes.filter(id=user.id).exists():
+            note.upvotes.remove(user)
+            alreadyVoted = True;
+        else:
+            note.upvotes.add(user)
+            alreadyVoted = False;
+    data=[]
+    data.append(alreadyVoted);
+    data.append(noteid)
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
+
+@csrf_exempt
+@login_required(login_url="/")
+def Approve_Note(request, noteid):
+    print("deleted id : ",noteid)
+    cd = Note.objects.get(note_id=noteid)
+    cd.is_approved = True
+    cd.save()
+    return redirect('/owner/all_note')

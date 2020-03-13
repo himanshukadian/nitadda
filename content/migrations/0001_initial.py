@@ -7,7 +7,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -33,7 +32,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(default='', max_length=255)),
-                ('course', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='content.Course', verbose_name='Course')),
+                ('course', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                             to='content.Course', verbose_name='Course')),
             ],
         ),
         migrations.CreateModel(
@@ -41,9 +41,12 @@ class Migration(migrations.Migration):
             fields=[
                 ('note_id', models.CharField(max_length=20, primary_key=True, serialize=False)),
                 ('title', models.CharField(default='', max_length=300)),
-                ('note_pdf', models.FileField(blank=True, default=None, null=True, upload_to=content.models.get_path, validators=[django.core.validators.FileExtensionValidator(['pdf'])])),
-                ('course', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='content.Course', verbose_name='Course')),
-                ('subject', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='content.Subject', verbose_name='Subject')),
+                ('note_pdf', models.FileField(blank=True, default=None, null=True, upload_to=content.models.get_path,
+                                              validators=[django.core.validators.FileExtensionValidator(['pdf'])])),
+                ('course', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                             to='content.Course', verbose_name='Course')),
+                ('subject', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              to='content.Subject', verbose_name='Subject')),
             ],
         ),
     ]

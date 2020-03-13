@@ -21,6 +21,7 @@ import olefile
 
 from . import Image, TiffImagePlugin
 
+
 #
 # --------------------------------------------------------------------
 
@@ -34,7 +35,6 @@ def _accept(prefix):
 
 
 class MicImageFile(TiffImagePlugin.TiffImageFile):
-
     format = "MIC"
     format_description = "Microsoft Image Composer"
     _close_exclusive_fp_after_loading = False

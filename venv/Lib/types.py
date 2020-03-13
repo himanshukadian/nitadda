@@ -3,38 +3,53 @@ Define names for built-in types that aren't directly accessible as a builtin.
 """
 import sys
 
+
 # Iterators in Python aren't a matter of type but of protocol.  A large
 # and changing number of builtin types implement *some* flavor of
 # iterator.  Don't check the type!  Use hasattr to check for both
 # "__iter__" and "__next__" attributes instead.
 
 def _f(): pass
+
+
 FunctionType = type(_f)
-LambdaType = type(lambda: None)         # Same as FunctionType
+LambdaType = type(lambda: None)  # Same as FunctionType
 CodeType = type(_f.__code__)
 MappingProxyType = type(type.__dict__)
 SimpleNamespace = type(sys.implementation)
 
+
 def _g():
     yield 1
+
+
 GeneratorType = type(_g())
 
+
 async def _c(): pass
+
+
 _c = _c()
 CoroutineType = type(_c)
 _c.close()  # Prevent ResourceWarning
 
+
 async def _ag():
     yield
+
+
 _ag = _ag()
 AsyncGeneratorType = type(_ag)
 
+
 class _C:
     def _m(self): pass
+
+
 MethodType = type(_C()._m)
 
 BuiltinFunctionType = type(len)
-BuiltinMethodType = type([].append)     # Same as BuiltinFunctionType
+BuiltinMethodType = type([].append)  # Same as BuiltinFunctionType
 
 WrapperDescriptorType = type(object.__init__)
 MethodWrapperType = type(object().__str__)
@@ -49,7 +64,8 @@ except TypeError:
     tb = sys.exc_info()[2]
     TracebackType = type(tb)
     FrameType = type(tb.tb_frame)
-    tb = None; del tb
+    tb = None;
+    del tb
 
 # For Jython, the following two types are identical
 GetSetDescriptorType = type(FunctionType.__code__)
@@ -69,6 +85,7 @@ def new_class(name, bases=(), kwds=None, exec_body=None):
         ns['__orig_bases__'] = bases
     return meta(name, resolved_bases, ns, **kwds)
 
+
 def resolve_bases(bases):
     """Resolve MRO entries dynamically as specified by PEP 560."""
     new_bases = list(bases)
@@ -84,11 +101,12 @@ def resolve_bases(bases):
         if not isinstance(new_base, tuple):
             raise TypeError("__mro_entries__ must return a tuple")
         else:
-            new_bases[i+shift:i+shift+1] = new_base
+            new_bases[i + shift:i + shift + 1] = new_base
             shift += len(new_base) - 1
     if not updated:
         return bases
     return tuple(new_bases)
+
 
 def prepare_class(name, bases=(), kwds=None):
     """Call the __prepare__ method of the appropriate metaclass.
@@ -104,7 +122,7 @@ def prepare_class(name, bases=(), kwds=None):
     if kwds is None:
         kwds = {}
     else:
-        kwds = dict(kwds) # Don't alter the provided mapping
+        kwds = dict(kwds)  # Don't alter the provided mapping
     if 'metaclass' in kwds:
         meta = kwds.pop('metaclass')
     else:
@@ -121,6 +139,7 @@ def prepare_class(name, bases=(), kwds=None):
     else:
         ns = {}
     return meta, ns, kwds
+
 
 def _calculate_meta(meta, bases):
     """Calculate the most derived metaclass."""
@@ -139,6 +158,7 @@ def _calculate_meta(meta, bases):
                         "of the metaclasses of all its bases")
     return winner
 
+
 class DynamicClassAttribute:
     """Route attribute access on a class to __getattr__.
 
@@ -151,6 +171,7 @@ class DynamicClassAttribute:
     attributes on the class with the same name (see Enum for an example).
 
     """
+
     def __init__(self, fget=None, fset=None, fdel=None, doc=None):
         self.fget = fget
         self.fset = fset
@@ -204,35 +225,47 @@ class _GeneratorWrapper:
         self.__isgen = gen.__class__ is GeneratorType
         self.__name__ = getattr(gen, '__name__', None)
         self.__qualname__ = getattr(gen, '__qualname__', None)
+
     def send(self, val):
         return self.__wrapped.send(val)
+
     def throw(self, tp, *rest):
         return self.__wrapped.throw(tp, *rest)
+
     def close(self):
         return self.__wrapped.close()
+
     @property
     def gi_code(self):
         return self.__wrapped.gi_code
+
     @property
     def gi_frame(self):
         return self.__wrapped.gi_frame
+
     @property
     def gi_running(self):
         return self.__wrapped.gi_running
+
     @property
     def gi_yieldfrom(self):
         return self.__wrapped.gi_yieldfrom
+
     cr_code = gi_code
     cr_frame = gi_frame
     cr_running = gi_running
     cr_await = gi_yieldfrom
+
     def __next__(self):
         return next(self.__wrapped)
+
     def __iter__(self):
         if self.__isgen:
             return self.__wrapped
         return self
+
     __await__ = __iter__
+
 
 def coroutine(func):
     """Convert regular generator function to a coroutine."""
@@ -241,7 +274,7 @@ def coroutine(func):
         raise TypeError('types.coroutine() expects a callable')
 
     if (func.__class__ is FunctionType and
-        getattr(func, '__code__', None).__class__ is CodeType):
+            getattr(func, '__code__', None).__class__ is CodeType):
 
         co_flags = func.__code__.co_flags
 
@@ -276,11 +309,11 @@ def coroutine(func):
     def wrapped(*args, **kwargs):
         coro = func(*args, **kwargs)
         if (coro.__class__ is CoroutineType or
-            coro.__class__ is GeneratorType and coro.gi_code.co_flags & 0x100):
+                coro.__class__ is GeneratorType and coro.gi_code.co_flags & 0x100):
             # 'coro' is a native coroutine object or an iterable coroutine
             return coro
         if (isinstance(coro, _collections_abc.Generator) and
-            not isinstance(coro, _collections_abc.Coroutine)):
+                not isinstance(coro, _collections_abc.Coroutine)):
             # 'coro' is either a pure Python generator iterator, or it
             # implements collections.abc.Generator (and does not implement
             # collections.abc.Coroutine).

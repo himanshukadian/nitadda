@@ -10,14 +10,14 @@ http://www.python.org/dev/peps/pep-0205/
 # the module-global ref() function imported from _weakref.
 
 from _weakref import (
-     getweakrefcount,
-     getweakrefs,
-     ref,
-     proxy,
-     CallableProxyType,
-     ProxyType,
-     ReferenceType,
-     _remove_dead_weakref)
+    getweakrefcount,
+    getweakrefs,
+    ref,
+    proxy,
+    CallableProxyType,
+    ProxyType,
+    ReferenceType,
+    _remove_dead_weakref)
 
 from _weakrefset import WeakSet, _IterationGuard
 
@@ -48,6 +48,7 @@ class WeakMethod(ref):
         except AttributeError:
             raise TypeError("argument should be a bound method, not {}"
                             .format(type(meth))) from None
+
         def _cb(arg):
             # The self-weakref trick is needed to avoid creating a reference
             # cycle.
@@ -56,6 +57,7 @@ class WeakMethod(ref):
                 self._alive = False
                 if callback is not None:
                     callback(self)
+
         self = ref.__new__(cls, obj, _cb)
         self._func_ref = ref(func, _cb)
         self._meth_type = type(meth)
@@ -93,6 +95,7 @@ class WeakValueDictionary(_collections_abc.MutableMapping):
     Entries in the dictionary will be discarded when no strong
     reference to the value exists anymore
     """
+
     # We inherit the constructor without worrying about the input
     # dictionary; since it uses our .update() method, we get the right
     # checks (if the other dictionary is a WeakValueDictionary,
@@ -106,6 +109,7 @@ class WeakValueDictionary(_collections_abc.MutableMapping):
         self, *args = args
         if len(args) > 1:
             raise TypeError('expected at most 1 arguments, got %d' % len(args))
+
         def remove(wr, selfref=ref(self), _atomic_removal=_remove_dead_weakref):
             self = selfref()
             if self is not None:
@@ -115,6 +119,7 @@ class WeakValueDictionary(_collections_abc.MutableMapping):
                     # Atomic removal is necessary since this function
                     # can be called asynchronously by the GC
                     _atomic_removal(self.data, wr.key)
+
         self._remove = remove
         # A list of keys to be removed
         self._pending_removals = []
@@ -355,6 +360,7 @@ class WeakKeyDictionary(_collections_abc.MutableMapping):
 
     def __init__(self, dict=None):
         self.data = {}
+
         def remove(k, selfref=ref(self)):
             self = selfref()
             if self is not None:
@@ -362,6 +368,7 @@ class WeakKeyDictionary(_collections_abc.MutableMapping):
                     self._pending_removals.append(k)
                 else:
                     del self.data[k]
+
         self._remove = remove
         # A list of dead weakrefs (keys to be removed)
         self._pending_removals = []
@@ -430,7 +437,7 @@ class WeakKeyDictionary(_collections_abc.MutableMapping):
         return new
 
     def get(self, key, default=None):
-        return self.data.get(ref(key),default)
+        return self.data.get(ref(key), default)
 
     def __contains__(self, key):
         try:
@@ -486,7 +493,7 @@ class WeakKeyDictionary(_collections_abc.MutableMapping):
         return self.data.pop(ref(key), *args)
 
     def setdefault(self, key, default=None):
-        return self.data.setdefault(ref(key, self._remove),default)
+        return self.data.setdefault(ref(key, self._remove), default)
 
     def update(self, dict=None, **kwargs):
         d = self.data
@@ -536,14 +543,14 @@ class finalize:
         else:
             if 'func' not in kwargs:
                 raise TypeError('finalize expected at least 2 positional '
-                                'arguments, got %d' % (len(args)-1))
+                                'arguments, got %d' % (len(args) - 1))
             func = kwargs.pop('func')
             if len(args) >= 2:
                 self, obj, *args = args
             else:
                 if 'obj' not in kwargs:
                     raise TypeError('finalize expected at least 2 positional '
-                                    'arguments, got %d' % (len(args)-1))
+                                    'arguments, got %d' % (len(args) - 1))
                 obj = kwargs.pop('obj')
                 self, *args = args
         args = tuple(args)
@@ -611,14 +618,14 @@ class finalize:
             return '<%s object at %#x; dead>' % (type(self).__name__, id(self))
         else:
             return '<%s object at %#x; for %r at %#x>' % \
-                (type(self).__name__, id(self), type(obj).__name__, id(obj))
+                   (type(self).__name__, id(self), type(obj).__name__, id(obj))
 
     @classmethod
     def _select_for_exit(cls):
         # Return live finalizers marked for exit, oldest first
-        L = [(f,i) for (f,i) in cls._registry.items() if i.atexit]
-        L.sort(key=lambda item:item[1].index)
-        return [f for (f,i) in L]
+        L = [(f, i) for (f, i) in cls._registry.items() if i.atexit]
+        L.sort(key=lambda item: item[1].index)
+        return [f for (f, i) in L]
 
     @classmethod
     def _exitfunc(cls):

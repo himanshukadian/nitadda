@@ -13,6 +13,7 @@ import errno
 
 try:
     import zlib
+
     del zlib
     _ZLIB_SUPPORTED = True
 except ImportError:
@@ -20,6 +21,7 @@ except ImportError:
 
 try:
     import bz2
+
     del bz2
     _BZ2_SUPPORTED = True
 except ImportError:
@@ -27,6 +29,7 @@ except ImportError:
 
 try:
     import lzma
+
     del lzma
     _LZMA_SUPPORTED = True
 except ImportError:
@@ -50,36 +53,44 @@ __all__ = ["copyfileobj", "copyfile", "copymode", "copystat", "copy", "copy2",
            "unregister_unpack_format", "unpack_archive",
            "ignore_patterns", "chown", "which", "get_terminal_size",
            "SameFileError"]
-           # disk_usage is added later, if available on the platform
+
+
+# disk_usage is added later, if available on the platform
 
 class Error(OSError):
     pass
 
+
 class SameFileError(Error):
     """Raised when source and destination are the same file."""
+
 
 class SpecialFileError(OSError):
     """Raised when trying to do a kind of operation (e.g. copying) which is
     not supported on a special file (e.g. a named pipe)"""
 
+
 class ExecError(OSError):
     """Raised when a command could not be executed"""
 
+
 class ReadError(OSError):
     """Raised when an archive cannot be read"""
+
 
 class RegistryError(Exception):
     """Raised when a registry operation with the archiving
     and unpacking registries fails"""
 
 
-def copyfileobj(fsrc, fdst, length=16*1024):
+def copyfileobj(fsrc, fdst, length=16 * 1024):
     """copy data from file-like object fsrc to file-like object fdst"""
     while 1:
         buf = fsrc.read(length)
         if not buf:
             break
         fdst.write(buf)
+
 
 def _samefile(src, dst):
     # Macintosh, Unix.
@@ -92,6 +103,7 @@ def _samefile(src, dst):
     # All other platforms: check for same pathname.
     return (os.path.normcase(os.path.abspath(src)) ==
             os.path.normcase(os.path.abspath(dst)))
+
 
 def copyfile(src, dst, *, follow_symlinks=True):
     """Copy data from src to dst.
@@ -122,6 +134,7 @@ def copyfile(src, dst, *, follow_symlinks=True):
                 copyfileobj(fsrc, fdst)
     return dst
 
+
 def copymode(src, dst, *, follow_symlinks=True):
     """Copy mode bits from src to dst.
 
@@ -142,6 +155,7 @@ def copymode(src, dst, *, follow_symlinks=True):
 
     st = stat_func(src)
     chmod_func(dst, stat.S_IMODE(st.st_mode))
+
 
 if hasattr(os, 'listxattr'):
     def _copyxattr(src, dst, *, follow_symlinks=True):
@@ -171,6 +185,7 @@ else:
     def _copyxattr(*args, **kwargs):
         pass
 
+
 def copystat(src, dst, *, follow_symlinks=True):
     """Copy file metadata
 
@@ -182,6 +197,7 @@ def copystat(src, dst, *, follow_symlinks=True):
     If the optional flag `follow_symlinks` is not set, symlinks aren't
     followed if and only if both `src` and `dst` are symlinks.
     """
+
     def _nop(*args, ns=None, follow_symlinks=None):
         pass
 
@@ -203,7 +219,7 @@ def copystat(src, dst, *, follow_symlinks=True):
     st = lookup("stat")(src, follow_symlinks=follow)
     mode = stat.S_IMODE(st.st_mode)
     lookup("utime")(dst, ns=(st.st_atime_ns, st.st_mtime_ns),
-        follow_symlinks=follow)
+                    follow_symlinks=follow)
     # We must copy extended attributes before the file is (potentially)
     # chmod()'ed read-only, otherwise setxattr() will error with -EACCES.
     _copyxattr(src, dst, follow_symlinks=follow)
@@ -231,6 +247,7 @@ def copystat(src, dst, *, follow_symlinks=True):
             else:
                 raise
 
+
 def copy(src, dst, *, follow_symlinks=True):
     """Copy data and mode bits ("cp src dst"). Return the file's destination.
 
@@ -248,6 +265,7 @@ def copy(src, dst, *, follow_symlinks=True):
     copyfile(src, dst, follow_symlinks=follow_symlinks)
     copymode(src, dst, follow_symlinks=follow_symlinks)
     return dst
+
 
 def copy2(src, dst, *, follow_symlinks=True):
     """Copy data and metadata. Return the file's destination.
@@ -267,17 +285,21 @@ def copy2(src, dst, *, follow_symlinks=True):
     copystat(src, dst, follow_symlinks=follow_symlinks)
     return dst
 
+
 def ignore_patterns(*patterns):
     """Function that can be used as copytree() ignore parameter.
 
     Patterns is a sequence of glob-style patterns
     that are used to exclude files"""
+
     def _ignore_patterns(path, names):
         ignored_names = []
         for pattern in patterns:
             ignored_names.extend(fnmatch.filter(names, pattern))
         return set(ignored_names)
+
     return _ignore_patterns
+
 
 def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
              ignore_dangling_symlinks=False):
@@ -368,6 +390,7 @@ def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
         raise Error(errors)
     return dst
 
+
 # version vulnerable to race conditions
 def _rmtree_unsafe(path, onerror):
     try:
@@ -402,6 +425,7 @@ def _rmtree_unsafe(path, onerror):
         os.rmdir(path)
     except OSError:
         onerror(os.rmdir, path, sys.exc_info())
+
 
 # Version using fd-based APIs to protect against races
 def _rmtree_safe_fd(topfd, path, onerror):
@@ -451,10 +475,12 @@ def _rmtree_safe_fd(topfd, path, onerror):
             except OSError:
                 onerror(os.unlink, fullname, sys.exc_info())
 
+
 _use_fd_functions = ({os.open, os.stat, os.unlink, os.rmdir} <=
                      os.supports_dir_fd and
                      os.scandir in os.supports_fd and
                      os.stat in os.supports_follow_symlinks)
+
 
 def rmtree(path, ignore_errors=False, onerror=None):
     """Recursively delete a directory tree.
@@ -515,15 +541,18 @@ def rmtree(path, ignore_errors=False, onerror=None):
             return
         return _rmtree_unsafe(path, onerror)
 
+
 # Allow introspection of whether or not the hardening against symlink
 # attacks is supported on the current platform
 rmtree.avoids_symlink_attacks = _use_fd_functions
+
 
 def _basename(path):
     # A basename() variant which first strips the trailing slash, if present.
     # Thus we always get the last component of the path, even for directories.
     sep = os.path.sep + (os.path.altsep or '')
     return os.path.basename(path.rstrip(sep))
+
 
 def move(src, dst, copy_function=copy2):
     """Recursively move a file or directory to another location. This is
@@ -581,6 +610,7 @@ def move(src, dst, copy_function=copy2):
             os.unlink(src)
     return real_dst
 
+
 def _destinsrc(src, dst):
     src = os.path.abspath(src)
     dst = os.path.abspath(dst)
@@ -589,6 +619,7 @@ def _destinsrc(src, dst):
     if not dst.endswith(os.path.sep):
         dst += os.path.sep
     return dst.startswith(src)
+
 
 def _get_gid(name):
     """Returns a gid, given a group name."""
@@ -602,6 +633,7 @@ def _get_gid(name):
         return result[2]
     return None
 
+
 def _get_uid(name):
     """Returns an uid, given a user name."""
     if getpwnam is None or name is None:
@@ -613,6 +645,7 @@ def _get_uid(name):
     if result is not None:
         return result[2]
     return None
+
 
 def _make_tarball(base_name, base_dir, compress="gzip", verbose=0, dry_run=0,
                   owner=None, group=None, logger=None):
@@ -679,6 +712,7 @@ def _make_tarball(base_name, base_dir, compress="gzip", verbose=0, dry_run=0,
 
     return archive_name
 
+
 def _make_zipfile(base_name, base_dir, verbose=0, dry_run=0, logger=None):
     """Create a zip file from all the files under 'base_dir'.
 
@@ -723,22 +757,24 @@ def _make_zipfile(base_name, base_dir, verbose=0, dry_run=0, logger=None):
 
     return zip_filename
 
+
 _ARCHIVE_FORMATS = {
-    'tar':   (_make_tarball, [('compress', None)], "uncompressed tar file"),
+    'tar': (_make_tarball, [('compress', None)], "uncompressed tar file"),
 }
 
 if _ZLIB_SUPPORTED:
     _ARCHIVE_FORMATS['gztar'] = (_make_tarball, [('compress', 'gzip')],
-                                "gzip'ed tar-file")
+                                 "gzip'ed tar-file")
     _ARCHIVE_FORMATS['zip'] = (_make_zipfile, [], "ZIP file")
 
 if _BZ2_SUPPORTED:
     _ARCHIVE_FORMATS['bztar'] = (_make_tarball, [('compress', 'bzip2')],
-                                "bzip2'ed tar-file")
+                                 "bzip2'ed tar-file")
 
 if _LZMA_SUPPORTED:
     _ARCHIVE_FORMATS['xztar'] = (_make_tarball, [('compress', 'xz')],
-                                "xz'ed tar-file")
+                                 "xz'ed tar-file")
+
 
 def get_archive_formats():
     """Returns a list of supported formats for archiving and unarchiving.
@@ -749,6 +785,7 @@ def get_archive_formats():
                _ARCHIVE_FORMATS.items()]
     formats.sort()
     return formats
+
 
 def register_archive_format(name, function, extra_args=None, description=''):
     """Registers an archive format.
@@ -766,13 +803,15 @@ def register_archive_format(name, function, extra_args=None, description=''):
     if not isinstance(extra_args, (tuple, list)):
         raise TypeError('extra_args needs to be a sequence')
     for element in extra_args:
-        if not isinstance(element, (tuple, list)) or len(element) !=2:
+        if not isinstance(element, (tuple, list)) or len(element) != 2:
             raise TypeError('extra_args elements are : (arg_name, value)')
 
     _ARCHIVE_FORMATS[name] = (function, extra_args, description)
 
+
 def unregister_archive_format(name):
     del _ARCHIVE_FORMATS[name]
+
 
 def make_archive(base_name, format, root_dir=None, base_dir=None, verbose=0,
                  dry_run=0, owner=None, group=None, logger=None):
@@ -840,6 +879,7 @@ def get_unpack_formats():
     formats.sort()
     return formats
 
+
 def _check_unpack_options(extensions, function, extra_args):
     """Checks what gets registered as an unpacker."""
     # first make sure no other unpacker is registered for this extension
@@ -880,15 +920,18 @@ def register_unpack_format(name, extensions, function, extra_args=None,
     _check_unpack_options(extensions, function, extra_args)
     _UNPACK_FORMATS[name] = extensions, function, extra_args, description
 
+
 def unregister_unpack_format(name):
     """Removes the pack format from the registry."""
     del _UNPACK_FORMATS[name]
+
 
 def _ensure_directory(path):
     """Ensure that the parent directory of `path` exists"""
     dirname = os.path.dirname(path)
     if not os.path.isdir(dirname):
         os.makedirs(dirname)
+
 
 def _unpack_zipfile(filename, extract_dir):
     """Unpack zip `filename` to `extract_dir`
@@ -924,6 +967,7 @@ def _unpack_zipfile(filename, extract_dir):
     finally:
         zip.close()
 
+
 def _unpack_tarfile(filename, extract_dir):
     """Unpack tar/tar.gz/tar.bz2/tar.xz `filename` to `extract_dir`
     """
@@ -938,9 +982,10 @@ def _unpack_tarfile(filename, extract_dir):
     finally:
         tarobj.close()
 
+
 _UNPACK_FORMATS = {
-    'tar':   (['.tar'], _unpack_tarfile, [], "uncompressed tar file"),
-    'zip':   (['.zip'], _unpack_zipfile, [], "ZIP file"),
+    'tar': (['.tar'], _unpack_tarfile, [], "uncompressed tar file"),
+    'zip': (['.zip'], _unpack_zipfile, [], "ZIP file"),
 }
 
 if _ZLIB_SUPPORTED:
@@ -955,12 +1000,14 @@ if _LZMA_SUPPORTED:
     _UNPACK_FORMATS['xztar'] = (['.tar.xz', '.txz'], _unpack_tarfile, [],
                                 "xz'ed tar-file")
 
+
 def _find_unpack_format(filename):
     for name, info in _UNPACK_FORMATS.items():
         for extension in info[0]:
             if filename.endswith(extension):
                 return name
     return None
+
 
 def unpack_archive(filename, extract_dir=None, format=None):
     """Unpack an archive.
@@ -1010,6 +1057,7 @@ if hasattr(os, 'statvfs'):
     _ntuple_diskusage.used.__doc__ = 'Used space in bytes'
     _ntuple_diskusage.free.__doc__ = 'Free space in bytes'
 
+
     def disk_usage(path):
         """Return disk usage statistics about the given path.
 
@@ -1025,8 +1073,10 @@ if hasattr(os, 'statvfs'):
 elif os.name == 'nt':
 
     import nt
+
     __all__.append('disk_usage')
     _ntuple_diskusage = collections.namedtuple('usage', 'total used free')
+
 
     def disk_usage(path):
         """Return disk usage statistics about the given path.
@@ -1069,6 +1119,7 @@ def chown(path, user=None, group=None):
             raise LookupError("no such group: {!r}".format(group))
 
     os.chown(path, _user, _group)
+
 
 def get_terminal_size(fallback=(80, 24)):
     """Get the size of the terminal window.
@@ -1115,6 +1166,7 @@ def get_terminal_size(fallback=(80, 24)):
 
     return os.terminal_size((columns, lines))
 
+
 def which(cmd, mode=os.F_OK | os.X_OK, path=None):
     """Given a command, mode, and a PATH string, return the path which
     conforms to the given mode on the PATH, or None if there is no such
@@ -1125,6 +1177,7 @@ def which(cmd, mode=os.F_OK | os.X_OK, path=None):
     path.
 
     """
+
     # Check that a given file can be accessed with the correct mode.
     # Additionally check that `file` is not a directory, as on Windows
     # directories pass the os.access check.

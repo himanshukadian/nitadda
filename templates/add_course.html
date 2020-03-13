@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Home NIT ADDA{% endblock title %}
+{% load static %}
+{% block content %}
+    <head>
+        <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    </head>
+    <body onload="init()">
+    <div class="row main_header">
+        <!-- <center><h2><b>Registration</b></h2></center>
+         <br>-->
+    </div>
+
+    <div class="container">
+
+        <div class=" md-3" style="margin-top:3%;">
+
+            <div class=" sm-3 ">
+                <div class="well well-lg">
+                    <form method="POST" action="/owner/add_course" enctype="multipart/form-data"
+                          onsubmit="return validateForm();">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="firstName">Course Title</label>
+                            <input for="firstName" class="form-control" name="title" id="fn" required>
+                        </div>
+                        <button type="submit" id="btn" class="btn btn-info btn-md">Save</button>
+                    </form>
+                    <br>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </body>
+
+    {# Main Section #}
+{% endblock content %}

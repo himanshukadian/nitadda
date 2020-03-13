@@ -30,7 +30,6 @@ def _accept(s):
 
 
 class McIdasImageFile(ImageFile.ImageFile):
-
     format = "MCIDAS"
     format_description = "McIdas area file"
 

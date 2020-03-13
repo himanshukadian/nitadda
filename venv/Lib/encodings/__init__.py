@@ -26,7 +26,7 @@ Written by Marc-Andre Lemburg (mal@lemburg.com).
 
 (c) Copyright CNRI, All Rights Reserved. NO WARRANTY.
 
-"""#"
+"""  # "
 
 import codecs
 import sys
@@ -37,11 +37,12 @@ _unknown = '--unknown--'
 _import_tail = ['*']
 _aliases = aliases.aliases
 
+
 class CodecRegistryError(LookupError, SystemError):
     pass
 
-def normalize_encoding(encoding):
 
+def normalize_encoding(encoding):
     """ Normalize an encoding name.
 
         Normalization works as follows: all non-alphanumeric
@@ -68,8 +69,8 @@ def normalize_encoding(encoding):
             punct = True
     return ''.join(chars)
 
-def search_function(encoding):
 
+def search_function(encoding):
     # Cache lookup
     entry = _cache.get(encoding, _unknown)
     if entry is not _unknown:
@@ -125,14 +126,14 @@ def search_function(encoding):
             raise CodecRegistryError('module "%s" (%s) failed to register'
                                      % (mod.__name__, mod.__file__))
         if not callable(entry[0]) or not callable(entry[1]) or \
-           (entry[2] is not None and not callable(entry[2])) or \
-           (entry[3] is not None and not callable(entry[3])) or \
-           (len(entry) > 4 and entry[4] is not None and not callable(entry[4])) or \
-           (len(entry) > 5 and entry[5] is not None and not callable(entry[5])):
+                (entry[2] is not None and not callable(entry[2])) or \
+                (entry[3] is not None and not callable(entry[3])) or \
+                (len(entry) > 4 and entry[4] is not None and not callable(entry[4])) or \
+                (len(entry) > 5 and entry[5] is not None and not callable(entry[5])):
             raise CodecRegistryError('incompatible codecs in module "%s" (%s)'
                                      % (mod.__name__, mod.__file__))
-        if len(entry)<7 or entry[6] is None:
-            entry += (None,)*(6-len(entry)) + (mod.__name__.split(".", 1)[1],)
+        if len(entry) < 7 or entry[6] is None:
+            entry += (None,) * (6 - len(entry)) + (mod.__name__.split(".", 1)[1],)
         entry = codecs.CodecInfo(*entry)
 
     # Cache the codec registry entry
@@ -152,6 +153,7 @@ def search_function(encoding):
     # Return the registry entry
     return entry
 
+
 # Register the search_function in the Python codec registry
 codecs.register(search_function)
 
@@ -166,5 +168,6 @@ if sys.platform == 'win32':
         except ImportError:
             # Imports may fail while we are shutting down
             pass
+
 
     codecs.register(_alias_mbcs)

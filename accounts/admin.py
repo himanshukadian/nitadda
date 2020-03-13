@@ -7,12 +7,14 @@ from django.contrib.auth.password_validation import validate_password, password_
 
 
 class UserCreationForm(forms.ModelForm):
-    password1 = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class':'myfieldclass'}),
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class': 'myfieldclass'}),
                                 help_text="<br>".join(password_validators_help_texts()))
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
+
     class Meta:
         model = CustomUser
-        fields = ['username', 'email','name', 'mobile','gender','registration_number','image']
+        fields = ['username', 'email', 'name', 'mobile', 'gender', 'registration_number', 'image']
+
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
         password2 = self.cleaned_data.get("password2")
@@ -21,11 +23,11 @@ class UserCreationForm(forms.ModelForm):
         validate_password(password1)
         return password2
 
+
 class UserCreationFormAdmin(forms.ModelForm):
-    password1 = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class':'myfieldclass'}),
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class': 'myfieldclass'}),
                                 help_text="<br>".join(password_validators_help_texts()))
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
-
 
     class Meta:
         model = CustomUser
@@ -47,12 +49,10 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ['email','name', 'mobile','gender','registration_number','image']
-
+        fields = ['email', 'name', 'mobile', 'gender', 'registration_number', 'image']
 
     def clean_password(self):
         return self.initial["password"]
-
 
 
 class UserChangeFormAdmin(forms.ModelForm):
@@ -67,33 +67,34 @@ class UserChangeFormAdmin(forms.ModelForm):
     def clean_password(self):
         return self.initial["password"]
 
+
 class UserAdmin(BaseUserAdmin):
     form = UserChangeFormAdmin
     add_form = UserCreationFormAdmin
 
-    list_display = ('username', 'name', 'mobile', 'is_superuser','admin','id')
+    list_display = ('username', 'name', 'mobile', 'is_superuser', 'admin', 'id')
     list_filter = ( )
 
     fieldsets = (
         ('Login', {'fields': ('username', 'password')}),
-        ('Profile', {'fields': ('name', 'mobile', 'email', 'gender','registration_number','image', 'notifications', 'noti_messages')}),
+        ('Profile', {'fields': (
+        'name', 'mobile', 'email', 'gender', 'registration_number', 'image', 'notifications', 'noti_messages')}),
         ('Permissions', {'fields': (
-            'is_admin','admin', 'is_active', 'groups', 'user_permissions',
+            'is_admin', 'admin', 'is_active', 'groups', 'user_permissions',
         )}),
 
     )
 
     add_fieldsets = (
         ('Login', {'fields': ('username', 'password1', 'password2')}),
-        ('Profile', {'fields': ('name', 'mobile', 'email', 'gender','image')}),
+        ('Profile', {'fields': ('name', 'mobile', 'email', 'gender', 'image')}),
     )
     search_fields = ('username',)
     ordering = ('username',)
 
-
-
     def get_form(self, request, obj=None, **kwargs):
         form = super(UserAdmin, self).get_form(request, obj, **kwargs)
         return form
+
 
 admin.site.register(CustomUser, UserAdmin)

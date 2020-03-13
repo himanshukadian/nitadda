@@ -16,6 +16,7 @@ try:
     import _frozen_importlib as _bootstrap
 except ImportError:
     from . import _bootstrap
+
     _bootstrap._setup(sys, _imp)
 else:
     # importlib._bootstrap is the built-in import, ensure we don't create
@@ -34,6 +35,7 @@ try:
     import _frozen_importlib_external as _bootstrap_external
 except ImportError:
     from . import _bootstrap_external
+
     _bootstrap_external._setup(_bootstrap)
     _bootstrap._bootstrap_external = _bootstrap_external
 else:
@@ -56,7 +58,6 @@ _r_long = _bootstrap_external._r_long
 
 import types
 import warnings
-
 
 # Public API #########################################################
 

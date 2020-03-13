@@ -23,7 +23,6 @@ from collections import namedtuple
 from reprlib import recursive_repr
 from _thread import RLock
 
-
 ################################################################################
 ### update_wrapper() and wraps() decorator
 ################################################################################
@@ -34,10 +33,12 @@ from _thread import RLock
 WRAPPER_ASSIGNMENTS = ('__module__', '__name__', '__qualname__', '__doc__',
                        '__annotations__')
 WRAPPER_UPDATES = ('__dict__',)
+
+
 def update_wrapper(wrapper,
                    wrapped,
-                   assigned = WRAPPER_ASSIGNMENTS,
-                   updated = WRAPPER_UPDATES):
+                   assigned=WRAPPER_ASSIGNMENTS,
+                   updated=WRAPPER_UPDATES):
     """Update a wrapper function to look like the wrapped function
 
        wrapper is the function to be updated
@@ -64,9 +65,10 @@ def update_wrapper(wrapper,
     # Return the wrapper so this can be used as a decorator via partial()
     return wrapper
 
+
 def wraps(wrapped,
-          assigned = WRAPPER_ASSIGNMENTS,
-          updated = WRAPPER_UPDATES):
+          assigned=WRAPPER_ASSIGNMENTS,
+          updated=WRAPPER_UPDATES):
     """Decorator factory to apply update_wrapper() to a wrapper function
 
        Returns a decorator that invokes update_wrapper() with the decorated
@@ -95,10 +97,12 @@ def _gt_from_lt(self, other, NotImplemented=NotImplemented):
         return op_result
     return not op_result and self != other
 
+
 def _le_from_lt(self, other, NotImplemented=NotImplemented):
     'Return a <= b.  Computed by @total_ordering from (a < b) or (a == b).'
     op_result = self.__lt__(other)
     return op_result or self == other
+
 
 def _ge_from_lt(self, other, NotImplemented=NotImplemented):
     'Return a >= b.  Computed by @total_ordering from (not a < b).'
@@ -107,12 +111,14 @@ def _ge_from_lt(self, other, NotImplemented=NotImplemented):
         return op_result
     return not op_result
 
+
 def _ge_from_le(self, other, NotImplemented=NotImplemented):
     'Return a >= b.  Computed by @total_ordering from (not a <= b) or (a == b).'
     op_result = self.__le__(other)
     if op_result is NotImplemented:
         return op_result
     return not op_result or self == other
+
 
 def _lt_from_le(self, other, NotImplemented=NotImplemented):
     'Return a < b.  Computed by @total_ordering from (a <= b) and (a != b).'
@@ -121,12 +127,14 @@ def _lt_from_le(self, other, NotImplemented=NotImplemented):
         return op_result
     return op_result and self != other
 
+
 def _gt_from_le(self, other, NotImplemented=NotImplemented):
     'Return a > b.  Computed by @total_ordering from (not a <= b).'
     op_result = self.__le__(other)
     if op_result is NotImplemented:
         return op_result
     return not op_result
+
 
 def _lt_from_gt(self, other, NotImplemented=NotImplemented):
     'Return a < b.  Computed by @total_ordering from (not a > b) and (a != b).'
@@ -135,10 +143,12 @@ def _lt_from_gt(self, other, NotImplemented=NotImplemented):
         return op_result
     return not op_result and self != other
 
+
 def _ge_from_gt(self, other, NotImplemented=NotImplemented):
     'Return a >= b.  Computed by @total_ordering from (a > b) or (a == b).'
     op_result = self.__gt__(other)
     return op_result or self == other
+
 
 def _le_from_gt(self, other, NotImplemented=NotImplemented):
     'Return a <= b.  Computed by @total_ordering from (not a > b).'
@@ -147,12 +157,14 @@ def _le_from_gt(self, other, NotImplemented=NotImplemented):
         return op_result
     return not op_result
 
+
 def _le_from_ge(self, other, NotImplemented=NotImplemented):
     'Return a <= b.  Computed by @total_ordering from (not a >= b) or (a == b).'
     op_result = self.__ge__(other)
     if op_result is NotImplemented:
         return op_result
     return not op_result or self == other
+
 
 def _gt_from_ge(self, other, NotImplemented=NotImplemented):
     'Return a > b.  Computed by @total_ordering from (a >= b) and (a != b).'
@@ -161,12 +173,14 @@ def _gt_from_ge(self, other, NotImplemented=NotImplemented):
         return op_result
     return op_result and self != other
 
+
 def _lt_from_ge(self, other, NotImplemented=NotImplemented):
     'Return a < b.  Computed by @total_ordering from (not a >= b).'
     op_result = self.__ge__(other)
     if op_result is NotImplemented:
         return op_result
     return not op_result
+
 
 _convert = {
     '__lt__': [('__gt__', _gt_from_lt),
@@ -183,13 +197,14 @@ _convert = {
                ('__lt__', _lt_from_ge)]
 }
 
+
 def total_ordering(cls):
     """Class decorator that fills in missing ordering methods"""
     # Find user-defined comparisons (not those inherited from object).
     roots = {op for op in _convert if getattr(cls, op, None) is not getattr(object, op, None)}
     if not roots:
         raise ValueError('must define at least one ordering operation: < > <= >=')
-    root = max(roots)       # prefer __lt__ to __le__ to __gt__ to __ge__
+    root = max(roots)  # prefer __lt__ to __le__ to __gt__ to __ge__
     for opname, opfunc in _convert[root]:
         if opname not in roots:
             opfunc.__name__ = opname
@@ -203,22 +218,32 @@ def total_ordering(cls):
 
 def cmp_to_key(mycmp):
     """Convert a cmp= function into a key= function"""
+
     class K(object):
         __slots__ = ['obj']
+
         def __init__(self, obj):
             self.obj = obj
+
         def __lt__(self, other):
             return mycmp(self.obj, other.obj) < 0
+
         def __gt__(self, other):
             return mycmp(self.obj, other.obj) > 0
+
         def __eq__(self, other):
             return mycmp(self.obj, other.obj) == 0
+
         def __le__(self, other):
             return mycmp(self.obj, other.obj) <= 0
+
         def __ge__(self, other):
             return mycmp(self.obj, other.obj) >= 0
+
         __hash__ = None
+
     return K
+
 
 try:
     from _functools import cmp_to_key
@@ -283,7 +308,7 @@ class partial:
 
     def __reduce__(self):
         return type(self), (self.func,), (self.func, self.args,
-               self.keywords or None, self.__dict__ or None)
+                                          self.keywords or None, self.__dict__ or None)
 
     def __setstate__(self, state):
         if not isinstance(state, tuple):
@@ -292,14 +317,14 @@ class partial:
             raise TypeError(f"expected 4 items in state, got {len(state)}")
         func, args, kwds, namespace = state
         if (not callable(func) or not isinstance(args, tuple) or
-           (kwds is not None and not isinstance(kwds, dict)) or
-           (namespace is not None and not isinstance(namespace, dict))):
+                (kwds is not None and not isinstance(kwds, dict)) or
+                (namespace is not None and not isinstance(namespace, dict))):
             raise TypeError("invalid partial state")
 
-        args = tuple(args) # just in case it's a subclass
+        args = tuple(args)  # just in case it's a subclass
         if kwds is None:
             kwds = {}
-        elif type(kwds) is not dict: # XXX does it need to be *exactly* dict?
+        elif type(kwds) is not dict:  # XXX does it need to be *exactly* dict?
             kwds = dict(kwds)
         if namespace is None:
             namespace = {}
@@ -309,10 +334,12 @@ class partial:
         self.args = args
         self.keywords = kwds
 
+
 try:
     from _functools import partial
 except ImportError:
     pass
+
 
 # Descriptor version
 class partialmethod(object):
@@ -334,12 +361,12 @@ class partialmethod(object):
             self, *args = args
         else:
             raise TypeError("type 'partialmethod' takes at least one argument, "
-                            "got %d" % (len(args)-1))
+                            "got %d" % (len(args) - 1))
         args = tuple(args)
 
         if not callable(func) and not hasattr(func, "__get__"):
             raise TypeError("{!r} is not callable or a descriptor"
-                                 .format(func))
+                            .format(func))
 
         # func could be a descriptor like classmethod which isn't callable,
         # so we can't inherit from partial (it verifies func is callable)
@@ -359,7 +386,7 @@ class partialmethod(object):
     def __repr__(self):
         args = ", ".join(map(repr, self.args))
         keywords = ", ".join("{}={!r}".format(k, v)
-                                 for k, v in self.keywords.items())
+                             for k, v in self.keywords.items())
         format_string = "{module}.{cls}({func}, {args}, {keywords})"
         return format_string.format(module=self.__class__.__module__,
                                     cls=self.__class__.__qualname__,
@@ -374,6 +401,7 @@ class partialmethod(object):
             cls_or_self, *rest = args
             call_args = (cls_or_self,) + self.args + tuple(rest)
             return self.func(*call_args, **call_keywords)
+
         _method.__isabstractmethod__ = self.__isabstractmethod__
         _method._partialmethod = self
         return _method
@@ -408,6 +436,7 @@ class partialmethod(object):
 
 _CacheInfo = namedtuple("CacheInfo", ["hits", "misses", "maxsize", "currsize"])
 
+
 class _HashedSeq(list):
     """ This class guarantees that hash() will be called no more than once
         per element.  This is important because the lru_cache() will hash
@@ -424,10 +453,11 @@ class _HashedSeq(list):
     def __hash__(self):
         return self.hashvalue
 
+
 def _make_key(args, kwds, typed,
-             kwd_mark = (object(),),
-             fasttypes = {int, str},
-             tuple=tuple, type=type, len=len):
+              kwd_mark=(object(),),
+              fasttypes={int, str},
+              tuple=tuple, type=type, len=len):
     """Make a cache key from optionally typed positional and keyword arguments
 
     The key is constructed in a way that is flat as possible rather than
@@ -454,6 +484,7 @@ def _make_key(args, kwds, typed,
     elif len(key) == 1 and type(key[0]) in fasttypes:
         return key[0]
     return _HashedSeq(key)
+
 
 def lru_cache(maxsize=128, typed=False):
     """Least-recently-used cache decorator.
@@ -495,20 +526,21 @@ def lru_cache(maxsize=128, typed=False):
 
     return decorating_function
 
+
 def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
     # Constants shared by all lru cache instances:
-    sentinel = object()          # unique object used to signal cache misses
-    make_key = _make_key         # build a key from the function arguments
-    PREV, NEXT, KEY, RESULT = 0, 1, 2, 3   # names for the link fields
+    sentinel = object()  # unique object used to signal cache misses
+    make_key = _make_key  # build a key from the function arguments
+    PREV, NEXT, KEY, RESULT = 0, 1, 2, 3  # names for the link fields
 
     cache = {}
     hits = misses = 0
     full = False
-    cache_get = cache.get    # bound method to lookup a key or return None
+    cache_get = cache.get  # bound method to lookup a key or return None
     cache_len = cache.__len__  # get cache size without calling len()
-    lock = RLock()           # because linkedlist updates aren't threadsafe
-    root = []                # root of the circular doubly linked list
-    root[:] = [root, root, None, None]     # initialize by pointing to self
+    lock = RLock()  # because linkedlist updates aren't threadsafe
+    root = []  # root of the circular doubly linked list
+    root[:] = [root, root, None, None]  # initialize by pointing to self
 
     if maxsize == 0:
 
@@ -611,6 +643,7 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
     wrapper.cache_clear = cache_clear
     return wrapper
 
+
 try:
     from _functools import _lru_cache_wrapper
 except ImportError:
@@ -629,15 +662,15 @@ def _c3_merge(sequences):
     """
     result = []
     while True:
-        sequences = [s for s in sequences if s]   # purge empty sequences
+        sequences = [s for s in sequences if s]  # purge empty sequences
         if not sequences:
             return result
-        for s1 in sequences:   # find merge candidates among seq heads
+        for s1 in sequences:  # find merge candidates among seq heads
             candidate = s1[0]
             for s2 in sequences:
                 if candidate in s2[1:]:
                     candidate = None
-                    break      # reject the current head, it appears later
+                    break  # reject the current head, it appears later
             else:
                 break
         if candidate is None:
@@ -647,6 +680,7 @@ def _c3_merge(sequences):
         for seq in sequences:
             if seq[0] == candidate:
                 del seq[0]
+
 
 def _c3_mro(cls, abcs=None):
     """Computes the method resolution order using extended C3 linearization.
@@ -668,7 +702,7 @@ def _c3_mro(cls, abcs=None):
     for i, base in enumerate(reversed(cls.__bases__)):
         if hasattr(base, '__abstractmethods__'):
             boundary = len(cls.__bases__) - i
-            break   # Bases up to the last explicit ABC are considered first.
+            break  # Bases up to the last explicit ABC are considered first.
     else:
         boundary = 0
     abcs = list(abcs) if abcs else []
@@ -678,7 +712,7 @@ def _c3_mro(cls, abcs=None):
     for base in abcs:
         if issubclass(cls, base) and not any(
                 issubclass(b, base) for b in cls.__bases__
-            ):
+        ):
             # If *cls* is the class that introduces behaviour described by
             # an ABC *base*, insert said ABC to its MRO.
             abstract_bases.append(base)
@@ -693,6 +727,7 @@ def _c3_mro(cls, abcs=None):
         [explicit_bases] + [abstract_bases] + [other_bases]
     )
 
+
 def _compose_mro(cls, types):
     """Calculates the method resolution order for a given class *cls*.
 
@@ -701,11 +736,14 @@ def _compose_mro(cls, types):
 
     """
     bases = set(cls.__mro__)
+
     # Remove entries which are already present in the __mro__ or unrelated.
     def is_related(typ):
         return (typ not in bases and hasattr(typ, '__mro__')
-                                 and issubclass(cls, typ))
+                and issubclass(cls, typ))
+
     types = [n for n in types if is_related(n)]
+
     # Remove entries which are strict bases of other entries (they will end up
     # in the MRO anyway.
     def is_strict_base(typ):
@@ -713,6 +751,7 @@ def _compose_mro(cls, types):
             if typ != other and typ in other.__mro__:
                 return True
         return False
+
     types = [n for n in types if not is_strict_base(n)]
     # Subclasses of the ABCs in *types* which are also implemented by
     # *cls* can be used to stabilize ABC ordering.
@@ -734,6 +773,7 @@ def _compose_mro(cls, types):
                     mro.append(subcls)
     return _c3_mro(cls, abcs=mro)
 
+
 def _find_impl(cls, registry):
     """Returns the best matching implementation from *registry* for type *cls*.
 
@@ -751,14 +791,15 @@ def _find_impl(cls, registry):
             # If *match* is an implicit ABC but there is another unrelated,
             # equally matching implicit ABC, refuse the temptation to guess.
             if (t in registry and t not in cls.__mro__
-                              and match not in cls.__mro__
-                              and not issubclass(match, t)):
+                    and match not in cls.__mro__
+                    and not issubclass(match, t)):
                 raise RuntimeError("Ambiguous dispatch: {} or {}".format(
                     match, t))
             break
         if t in registry:
             match = t
     return registry.get(match)
+
 
 def singledispatch(func):
     """Single-dispatch generic function decorator.

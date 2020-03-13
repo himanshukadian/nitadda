@@ -44,17 +44,20 @@ if os.name == 'nt':
         ULONG_PTR = c_ulong
     PVOID = c_void_p
 
+
     # --- Union inside Structure by stackoverflow:3480240 ---
     class _OFFSET(Structure):
         _fields_ = [
             ('Offset', DWORD),
             ('OffsetHigh', DWORD)]
 
+
     class _OFFSET_UNION(Union):
         _anonymous_ = ['_offset']
         _fields_ = [
             ('_offset', _OFFSET),
             ('Pointer', PVOID)]
+
 
     class OVERLAPPED(Structure):
         _anonymous_ = ['_offset_union']
@@ -63,6 +66,7 @@ if os.name == 'nt':
             ('InternalHigh', ULONG_PTR),
             ('_offset_union', _OFFSET_UNION),
             ('hEvent', HANDLE)]
+
 
     LPOVERLAPPED = POINTER(OVERLAPPED)
 
@@ -74,11 +78,13 @@ if os.name == 'nt':
     UnlockFileEx.restype = BOOL
     UnlockFileEx.argtypes = [HANDLE, DWORD, DWORD, DWORD, LPOVERLAPPED]
 
+
     def lock(f, flags):
         hfile = msvcrt.get_osfhandle(_fd(f))
         overlapped = OVERLAPPED()
         ret = LockFileEx(hfile, flags, 0, 0, 0xFFFF0000, byref(overlapped))
         return bool(ret)
+
 
     def unlock(f):
         hfile = msvcrt.get_osfhandle(_fd(f))
@@ -88,6 +94,7 @@ if os.name == 'nt':
 else:
     try:
         import fcntl
+
         LOCK_SH = fcntl.LOCK_SH  # shared lock
         LOCK_NB = fcntl.LOCK_NB  # non-blocking
         LOCK_EX = fcntl.LOCK_EX
@@ -95,10 +102,12 @@ else:
         # File locking is not supported.
         LOCK_EX = LOCK_SH = LOCK_NB = 0
 
+
         # Dummy functions that don't do anything.
         def lock(f, flags):
             # File is not locked
             return False
+
 
         def unlock(f):
             # File is unlocked
@@ -107,6 +116,7 @@ else:
         def lock(f, flags):
             ret = fcntl.flock(_fd(f), flags)
             return ret == 0
+
 
         def unlock(f):
             ret = fcntl.flock(_fd(f), fcntl.LOCK_UN)

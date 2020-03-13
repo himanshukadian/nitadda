@@ -26,6 +26,7 @@ import time
 
 from . import Image, ImageFile, ImageSequence, PdfParser, __version__
 
+
 #
 # --------------------------------------------------------------------
 

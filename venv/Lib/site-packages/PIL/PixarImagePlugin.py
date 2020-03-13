@@ -22,6 +22,7 @@
 from . import Image, ImageFile
 from ._binary import i16le as i16
 
+
 #
 # helpers
 
@@ -35,7 +36,6 @@ def _accept(prefix):
 
 
 class PixarImageFile(ImageFile.ImageFile):
-
     format = "PIXAR"
     format_description = "PIXAR raster image"
 
