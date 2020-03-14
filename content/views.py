@@ -1,6 +1,8 @@
 import json
 
+
 from django.conf import settings
+from django.db.models import Count
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, HttpRequest, Http404, JsonResponse, FileResponse
 from django.contrib.auth import authenticate, login, logout
@@ -156,20 +158,20 @@ def UploadNote(request):
     return render(request, 'Upload_Notes.html', response)
 
 
-@csrf_exempt
-@login_required(login_url="/")
-def Get_Note(request):
-    response = {}
-    notes = Note.objects.all()
-    n = len(notes)
-    allnotes = []
-    coursenotes = Note.objects.values('course', 'course_id')
-    courses = {item['course'] for item in coursenotes}
-    for course in courses:
-        note = Note.objects.filter(course=course)
-        allnotes.append(note)
-    response["allnotes"] = allnotes
-    return render(request, 'all_Notes.html', response)
+# @csrf_exempt
+# @login_required(login_url="/")
+# def Get_Note(request):
+#     response = {}
+#     notes = Note.objects.all()
+#     n = len(notes)
+#     allnotes = []
+#     coursenotes = Note.objects.values('course', 'course_id')
+#     courses = {item['course'] for item in coursenotes}
+#     for course in courses:
+#         note = Note.objects.filter(course=course)
+#         allnotes.append(note)
+#     response["allnotes"] = allnotes
+#     return render(request, 'all_Notes.html', response)
 
 
 @csrf_exempt
@@ -194,11 +196,17 @@ def Get_Subject(request):
 @login_required(login_url="/")
 def Show_Note(request, courseid):
     response = {}
+    print(request.user)
     notes = Note.objects.all()
-    allnotes = []
-    note = Note.objects.filter(course=courseid)
-    allnotes.append(note)
-    response["allnotes"] = allnotes
+    note = Note.objects.filter(course=courseid).annotate(num_votes=Count('upvotes')).order_by('-num_votes')
+    lstatus=[]
+    for n in note:
+        if n.upvotes.filter(id=request.user.id).exists():
+            lstatus.append(True)
+        else:
+            lstatus.append(False)
+            lstatus.append(False)
+    response['data']=zip(note,lstatus)
     return render(request, 'all_Notes.html', response)
 
 

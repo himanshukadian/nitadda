@@ -714,13 +714,7 @@ color: #fff;
   .block-2.teal .wrap-icon {
     background-color: #16c3b0; }
 
-.arrowIcon{
-    transition: all .1s ease-in-out;
-    /*transform: scale(1.2 , 1.2);*/
-}
-.arrowIcon:hover{
-    transform: scale(1.1 , 1.1);
-}
+
 
 
 
