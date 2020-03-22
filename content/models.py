@@ -26,6 +26,7 @@ def get_path(instance, filename):
 
 class Note(models.Model):
     note_id = models.CharField(max_length=20, primary_key=True)
+    user = models.ForeignKey(CustomUser, verbose_name="Provider", on_delete=models.CASCADE, blank=True, null=True)
     title = models.CharField(max_length=300, default="")
     course = models.ForeignKey(Course, verbose_name="Course", on_delete=models.CASCADE, blank=True, null=True)
     subject = models.ForeignKey(Subject, verbose_name="Subject",on_delete=models.CASCADE,blank=True, null=True)

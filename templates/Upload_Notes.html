@@ -31,7 +31,7 @@
             });
         </script>
     </head>
-    <body onload="init()">
+    <body>
     <div class="row main_header">
         <!-- <center><h2><b>Registration</b></h2></center>
          <br>-->
@@ -40,18 +40,18 @@
     <div class="container">
 
         <div class=" md-3" style="margin-top:3%;">
-
+            <caption><h3 class="table_title">Upload Notes</h3></caption>
             <div class=" sm-3 ">
-                <div class="well well-lg">
+                <div id="uploadForm" class="well well-lg">
                     <form method="POST" action="/owner/upload_note/" enctype="multipart/form-data"
                           onsubmit="return validateForm();">
                         {% csrf_token %}
                         <div class="form-group">
-                            <label for="firstName">Note Title</label>
+                            <label class="formText" for="firstName">Note Title</label>
                             <input for="firstName" class="form-control" name="title" id="fn" required>
                         </div>
                         <div class="form-group">
-                            <label for="course">Select Course</label>
+                            <label class="formText" for="course">Select Course</label>
                             <select class="form-control" id="selectCourse" name="courses">
                                 <option selected disabled>Choose course</option>
                                 {% for course in courses %}
@@ -62,13 +62,13 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="course">Select Subject</label>
+                            <label class="formText" for="course">Select Subject</label>
                             <select class="form-control" id="selectSubject" name="subjects">
                                 <option selected disabled>Choose subject</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="lastName">Select File</label>
+                            <label class="formText" for="lastName">Select File</label>
                             <input for="lastName" class="form-control" type="File" name="files" id="upload" required>
                         </div>
                         <center>

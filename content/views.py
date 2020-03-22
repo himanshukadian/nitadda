@@ -1,6 +1,4 @@
 import json
-
-
 from django.conf import settings
 from django.db.models import Count
 from django.shortcuts import render, redirect, get_object_or_404
@@ -26,7 +24,7 @@ def checkuserifscrutinyuser(user):
 @user_passes_test(checkuserifscrutinyuser, login_url="/owner/login/")
 def course_list(request):
     course = Course.objects.all()
-    return render(request, 'course_list.djt', {'course': coursee})
+    return render(request, 'course_list.djt', {'course': course})
 
 
 @csrf_exempt
@@ -65,7 +63,37 @@ def Add_Subject(request):
 @user_passes_test(checkuserifscrutinyuser, login_url="/owner/login/")
 def index(request):
     response = {}
-    return render(request, 'home.html', response)
+    print(request.user)
+    note = Note.objects.all()
+    # note = Note.objects.filter(course=courseid).annotate(num_votes=Count('upvotes')).order_by('-num_votes')
+
+    lstatus = []
+    providers = []
+    for n in note:
+        prv = CustomUser.objects.get(id=n.user_id)
+        providers.append(prv.username)
+        if n.upvotes.filter(id=request.user.id).exists():
+            lstatus.append(True)
+        else:
+            lstatus.append(False)
+    response['data'] = zip(note, lstatus, providers)
+    return render(request, 'all_Notes.html', response)
+
+    # response = {}
+    # print("index was called!!")
+    # print(request.user)
+    # notes = Note.objects.all()
+    # lstatus = []
+    # providers = []
+    # for n in notes:
+    #     prv = CustomUser.objects.get(id=n.user_id)
+    #     providers.append(prv.username)
+    #     if n.upvotes.filter(id=request.user.id).exists():
+    #         lstatus.append(True)
+    #     else:
+    #         lstatus.append(False)
+    # response['data'] = zip(notes, lstatus, providers)
+    # return render(request, 'home.html', response)
 
 
 @csrf_exempt
@@ -152,6 +180,7 @@ def UploadNote(request):
         note.subject = Subject.objects.get(id=request.POST['subjects'])
         note.course = Course.objects.get(id=request.POST['courses'])
         note.note_pdf = request.FILES["files"]
+        note.user_id = request.user.id;
         note.save()
         return redirect('/owner/upload_note')
 
@@ -199,14 +228,17 @@ def Show_Note(request, courseid):
     print(request.user)
     notes = Note.objects.all()
     note = Note.objects.filter(course=courseid).annotate(num_votes=Count('upvotes')).order_by('-num_votes')
+
     lstatus=[]
+    providers = []
     for n in note:
+        prv = CustomUser.objects.get(id=n.user_id)
+        providers.append(prv.username)
         if n.upvotes.filter(id=request.user.id).exists():
             lstatus.append(True)
         else:
             lstatus.append(False)
-            lstatus.append(False)
-    response['data']=zip(note,lstatus)
+    response['data'] = zip(note, lstatus, providers)
     return render(request, 'all_Notes.html', response)
 
 
@@ -278,12 +310,12 @@ def Upvote(request):
         note = Note.objects.get(note_id=answer)
         if note.upvotes.filter(id=user.id).exists():
             note.upvotes.remove(user)
-            alreadyVoted = True;
+            alreadyVoted = True
         else:
             note.upvotes.add(user)
-            alreadyVoted = False;
+            alreadyVoted = False
     data=[]
-    data.append(alreadyVoted);
+    data.append(alreadyVoted)
     data.append(noteid)
     return HttpResponse(json.dumps(data), content_type='application/json')
 
@@ -291,8 +323,49 @@ def Upvote(request):
 @csrf_exempt
 @login_required(login_url="/")
 def Approve_Note(request, noteid):
-    print("deleted id : ",noteid)
+    print("approved id : ", noteid)
     cd = Note.objects.get(note_id=noteid)
+    course = Course.objects.get(title=cd.course)
+    print("course id :", course.id)
     cd.is_approved = True
+    url = "/owner/shownote/" + str(course.id)
+    print("url " + url)
     cd.save()
-    return redirect('/owner/all_note')
+    return redirect(url)
+
+
+@login_required(login_url="/")
+def Show_Liked_Notes(request):
+    all_notes = Note.objects.all()
+    liked_notes = []
+    lstatus = []
+    providers = []
+    response = {}
+    for note in all_notes:
+        if note.upvotes.filter(id=request.user.id).exists():
+            liked_notes.append(note)
+            prv = CustomUser.objects.get(id=note.user_id)
+            providers.append(prv.username)
+            lstatus.append(True)
+
+    response['data'] = zip(liked_notes, lstatus, providers)
+    if len(liked_notes) > 0:
+        response['user_has_liked'] = True;
+    else:
+        response['user_has_liked'] = False;
+    return render(request, 'liked_notes.html', response)
+
+
+@login_required(login_url="/")
+def Show_Uploaded_Notes(request):
+    uploaded_notes = Note.objects.filter(user_id=request.user.id)
+    print("got length: ", len(uploaded_notes))
+    print("name :", uploaded_notes[0].title)
+    response = {}
+
+    response['data'] = uploaded_notes
+    if len(uploaded_notes) > 0:
+        response['user_has_uploaded'] = True;
+    else:
+        response['user_has_uploaded'] = False;
+    return render(request, 'uploaded_notes.html', response)

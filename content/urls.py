@@ -24,4 +24,8 @@ urlpatterns = [
                   url(r'^all_course$', views.Get_Course, name='Get_Course'),
                   url(r'^all_subject$', views.Get_Subject, name='Get_Subject'),
                   # url(r'^course/(?P<pk>\d+)/$', views.course_detail, name='course_detail'),
+
+                  url(r'^show_liked_notes$', views.Show_Liked_Notes, name='Show_Liked_Notes'),
+                  url(r'^show_uploaded_notes$', views.Show_Uploaded_Notes, name='Show_Uploaded_Notes'),
+                  # url(r'^recent_note/(?P<courseid>\w+)', views.Recent_Note, name='Recent_Note'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

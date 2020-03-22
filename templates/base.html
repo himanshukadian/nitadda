@@ -29,14 +29,42 @@
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
             <!--FONT AWESOME CDN LINK FOR FONT-AWESOME FONT -->
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+            <link href="https://fonts.googleapis.com/css?family=Amarante|Amaranth&display=swap" rel="stylesheet">
         {% endblock head_css_site %}
         {% block head_css_section %}{% endblock head_css_section %}
         {% block head_css_page %}{% endblock head_css_page %}
     {% endblock head_css %}
+    <script>
+        function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        window.onclick = function (e) {
+            if (!e.target.matches('.dropbtn')) {
+                var myDropdown = document.getElementById("myDropdown");
+                if (myDropdown.classList.contains('show')) {
+                    myDropdown.classList.remove('show');
+                }
+            }
+        }
+        {#   dsaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa #}
+        $(document).ready(function () {
+            $('#mynav > li').on('click', function (e) {
+                console.log("here ")
+                actives = document.getElementsByClassName('active');
+                for (i = 0; i < actives.length; i++) {
+                    console.log("At i= " + i + " val=" + actives[i].innerHTML);
+                }
+                $('#mynav>li.active').removeClass('active');
+                $(this).addClass('active');
+            });
+        });
+    </script>
 </head>
-<body style="background:#ECF0F5">
+<body style="background:#ced2d7">
 <header>
-    <nav style="margin-bottom: 50px; background-color:fff;font-size: 14px;z-index: 1000;" class="navbar navbar-static-top navbar-light bg-faded ">
+    <nav style="margin-bottom: 50px; background-color:#fff;font-size: 14px;z-index: 1000;"
+         class="navbar navbar-static-top navbar-light bg-faded ">
         <div class="container-fluid">
         <a id="nitadda" href="#" class="navbar-brand faa-pulse faa-slow animated" data-toggle="popover"
                            data-trigger="focus" data-html="true" data-placement="bottom">
@@ -50,8 +78,8 @@
                 </a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>
+                <ul id="mynav" class="nav navbar-nav">
+                    <li class="active">
                         <a class="faa-parent animated-hover" href="/">
                             <i class="fa fa-fw fa-lg fa-home faa-tada faa-fast"></i>Home
                         </a>
@@ -86,8 +114,21 @@
                     {% if user.is_authenticated and user.is_superuser %}
                     {% endif %}
                 </ul>
-                <ul class="nav navbar-nav navbar-right">
+                <ul id="rightnav" class="nav navbar-nav navbar-right">
                     {% if user.is_authenticated %}
+                        <li class="menu_dropdown">
+                            <button class="dropbtn" onclick="myFunction()">
+                                Hi, {{ user.username }} <i class="fa fa-caret-down"></i>
+                            </button>
+                            <img style="float: right; margin-top: 6px" src="media/{{ user.image }}" height="40px"
+                                 width="40px">
+                            <div class="dropdown-content" id="myDropdown">
+                                <a href="/owner/show_liked_notes">My Likes</a>
+                                <a href="/owner/show_uploaded_notes">My uploads</a>
+                                <a href="#">Edit Profile</a>
+                            </div>
+
+                        </li>
                         <li>
                             <a class="faa-parent animated-hover" href="/owner/logout">
                                 <i class="fa fa-fw fa-lg fa-sign-out  faa-tada faa-fast"></i>Logout

@@ -6,7 +6,9 @@ from django.contrib import messages
 
 
 def index(request):
-    response = {}
+    info = messages.get_messages(request)
+    response = {'message': info}
+    print("msg :", info)
     return render(request, 'home.html', response)
 
 
@@ -28,18 +30,23 @@ class UserFormView(generic.View):
             password = form.cleaned_data['password1']
             user.set_password(password)
             user.save()
-            messages.success(request, f'Your account has been created')
+            messages.success(request, 'Your account has been successfully created.')
             return redirect('accounts:index')
 
         return render(request, self.template_name, {'form': form})
 
 
 def user_login(request):
-    username = request.POST['username']
-    password = request.POST['password']
+    username = request.POST.get('username')
+    password = request.POST.get('password')
     user = authenticate(username=username, password=password)
+    print("no. 1")
     if user is not None:
+        print("no. 2")
         if user.is_active:
+            print("no. 3")
             login(request, user)
-            messages.success(request, f'You are loged in')
+            messages.success(request, 'You are successfully logged in.')
             return redirect('accounts:index')
+        return render(request, "signin.html")
+    return render(request, "signin.html")
