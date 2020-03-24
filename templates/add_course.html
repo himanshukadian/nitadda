@@ -16,7 +16,7 @@
         <div class=" md-3" style="margin-top:3%;">
 
             <div class=" sm-3 ">
-                <div class="well well-lg">
+                <div id="uploadForm" class="well well-lg">
                     <form method="POST" action="/owner/add_course" enctype="multipart/form-data"
                           onsubmit="return validateForm();">
                         {% csrf_token %}
@@ -24,7 +24,9 @@
                             <label for="firstName">Course Title</label>
                             <input for="firstName" class="form-control" name="title" id="fn" required>
                         </div>
-                        <button type="submit" id="btn" class="btn btn-info btn-md">Save</button>
+                        <center>
+                            <button type="submit" id="btn" class="btn btn-info btn-md">Save</button>
+                        </center>
                     </form>
                     <br>
 

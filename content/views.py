@@ -9,6 +9,7 @@ from .models import *
 import datetime
 from django.views.decorators.csrf import csrf_exempt
 import os
+from django.contrib import messages
 
 
 @csrf_exempt
@@ -63,10 +64,8 @@ def Add_Subject(request):
 @user_passes_test(checkuserifscrutinyuser, login_url="/owner/login/")
 def index(request):
     response = {}
-    print(request.user)
-    note = Note.objects.all()
-    # note = Note.objects.filter(course=courseid).annotate(num_votes=Count('upvotes')).order_by('-num_votes')
-
+    print(request.user," home tab clicked : RENDER HOME ")
+    note = Note.objects.all()[:3]
     lstatus = []
     providers = []
     for n in note:
@@ -77,8 +76,11 @@ def index(request):
         else:
             lstatus.append(False)
     response['data'] = zip(note, lstatus, providers)
-    return render(request, 'all_Notes.html', response)
-
+    messages.add_message(request, 20, 'Home tab')
+    info = messages.get_messages(request)
+    response = {'message': info}
+    return render(request, 'home.html', response)
+111
     # response = {}
     # print("index was called!!")
     # print(request.user)
@@ -280,10 +282,11 @@ def getSubjects(request):
             selected_course = Course.objects.get(title=answer)
         except Course.DoesNotExist:
             selected_course = Course.objects.all()[0]
-        all_cities = selected_course.subject_set.all()
-        for subject in all_cities:
+        all_subjects = selected_course.subject_set.all()
+        for subject in all_subjects:
             result_set.append({'title': subject.title, 'id': subject.id})
         return HttpResponse(json.dumps(result_set), content_type='application/json')
+
     else:
         return HttpResponse(
             json.dumps({"nothing to see": "this isn't happening"}),

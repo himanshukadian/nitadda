@@ -16,7 +16,7 @@
         <div class=" md-3" style="margin-top:3%;">
 
             <div class=" sm-3 ">
-                <div class="well well-lg">
+                <div id="uploadForm" class="well well-lg">
                     <form method="POST" action="/owner/add_subject" enctype="multipart/form-data"
                           onsubmit="return validateForm();">
                         {% csrf_token %}

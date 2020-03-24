@@ -3,14 +3,26 @@ from django.contrib.auth import authenticate, login
 from django.views import generic
 from .admin import UserCreationForm
 from django.contrib import messages
-
+from content.models import *
 
 def index(request):
-    info = messages.get_messages(request)
-    response = {'message': info}
-    print("msg :", info)
+    response = {}
+    print(request.user," logged in : RENDER HOME ")
+    note = Note.objects.all()[:5]
+    lstatus = []
+    providers = []
+    for n in note:
+        prv = CustomUser.objects.get(id=n.user_id)
+        providers.append(prv.username)
+        if n.upvotes.filter(id=request.user.id).exists():
+            lstatus.append(True)
+        else:
+            lstatus.append(False)
+    response['data'] = zip(note, lstatus, providers)
+    # messages.add_message(request, 20, 'Login Successful!')
+    # info = messages.get_messages(request)
+    # response = {'message': info}
     return render(request, 'home.html', response)
-
 
 class UserFormView(generic.View):
     form_class = UserCreationForm

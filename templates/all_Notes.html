@@ -43,13 +43,29 @@
             {#    -webkit-transform: translate(-50%);#}
             {#    -ms-transform: translate(-50%);#}
             {#    transform: translate(-50%);#}
-            {
             #}#}
         </style>
         {#    <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>#}
     </head>
     <body class="main_body">
+    <div  style="position: absolute;" class="container">
+        <ul class="sideMenu">
+            <li class="sideTab">
+                <a style=" background-color: #fd4d40;">
+                    <span class="icon-home"><i class="fa fa-fw fa-lg fa-edit faa-tada faa-fast"></i></span>
+                    Notes</a>
+            </li>
+            <li class="sideTab">
+                <a style="background-color: #fdb62f;">
+                    <span class="icon-person"><i class="fa fa-fw fa-lg fa-file-powerpoint-o faa-tada faa-fast"></i></span>
+                Previous Year Papers</a></li>
+            <li class="sideTab">
 
+                <a style="background-color: dodgerblue;">
+                    <span class="icon-cog"><i class="fa fa-fw fa-lg fa-book faa-tada faa-fast"></i></span>
+                    Books</a></li>
+        </ul>
+    </div>
     <div class="container">
         <caption><h3 class="table_title">{{ data.0.0.course }} Notes</h3></caption>
         <div class="row">

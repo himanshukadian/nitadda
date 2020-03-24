@@ -52,7 +52,7 @@
                         </div>
                         <div class="form-group">
                             <label class="formText" for="course">Select Course</label>
-                            <select class="form-control" id="selectCourse" name="courses">
+                            <select class="form-control" id="selectCourse" name="courses" required>
                                 <option selected disabled>Choose course</option>
                                 {% for course in courses %}
                                     <option value="{{ course.id }}">
@@ -63,7 +63,7 @@
                         </div>
                         <div class="form-group">
                             <label class="formText" for="course">Select Subject</label>
-                            <select class="form-control" id="selectSubject" name="subjects">
+                            <select class="form-control" id="selectSubject" name="subjects" required>
                                 <option selected disabled>Choose subject</option>
                             </select>
                         </div>
