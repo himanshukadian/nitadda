@@ -49,16 +49,25 @@ class UserFormView(generic.View):
 
 
 def user_login(request):
-    username = request.POST.get('username')
-    password = request.POST.get('password')
-    user = authenticate(username=username, password=password)
-    print("no. 1")
-    if user is not None:
-        print("no. 2")
-        if user.is_active:
-            print("no. 3")
-            login(request, user)
-            messages.success(request, 'You are successfully logged in.')
-            return redirect('accounts:index')
-        return render(request, "signin.html")
-    return render(request, "signin.html")
+    response = {}
+    if request.user.is_authenticated:
+        logout(request)
+    else:
+        response = {}
+        if request.method == 'POST':
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    messages.success(request, 'You are successfully logged in.')
+                    return redirect('accounts:index')
+                else:
+                    messages.warning(request, 'User is not active yet')
+                    response['message'] = 'User is not active yet'
+            else:
+                messages.warning(request, 'User is invalid')
+                response['message'] = 'User is invalid'
+
+        return render(request, 'signin.html', response)

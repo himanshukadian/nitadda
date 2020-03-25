@@ -46,8 +46,8 @@ https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
                     <tr>
                         <td style="vertical-align:middle">{{ forloop.counter }}</td>
                         <td style="vertical-align:middle"><a
-                                href="showsubjectnote/{{ subject.id }}">{{ subject.title }}</a></td>
-                        <td style="vertical-align:middle">{{ subject.course }}</td>
+                                href="showsubjectnote/{{ subject.id }}">{{ subject.title|title }}</a></td>
+                        <td style="vertical-align:middle">{{ subject.course|title }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>

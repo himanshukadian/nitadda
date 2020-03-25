@@ -15,16 +15,15 @@
             }, 3000);
         });
     </script>
-    {% if messages %}
-        {% for mes in messages %}
-            <div class="alert alert-warning message_container">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>{{ mes }}</strong>
-            </div>
-        {% endfor %}
-    {% endif %}
     <div class="container">
-
+        {% if messages %}
+            {% for mes in messages %}
+                <div class="alert alert-warning message_container">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>{{ mes }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
         <div class="row" style="margin-top: 10%;">
             <div class="col-sm-6 col-sm-offset-3">
 

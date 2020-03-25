@@ -865,7 +865,6 @@ color: #fff;
 }
 
 .sideMenu{
-
     list-style: none;
 }
 .sideTab{
@@ -899,4 +898,10 @@ color: #fff;
     margin-bottom: 2px;
     max-width: 640px;
     background-color: #e1efe7;
+}
+
+@media (max-width: 767px) {
+    .col-xs-12 {
+        margin-top: 40px;
+    }
 }

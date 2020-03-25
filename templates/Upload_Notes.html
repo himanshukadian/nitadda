@@ -37,7 +37,14 @@
         <!-- <center><h2><b>Registration</b></h2></center>
          <br>-->
     </div>
-
+    {% if messages %}
+        {% for mes in messages %}
+            <div class="alert alert-success message_container">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>{{ mes }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
     <div class="container">
 
         <div class=" md-3" style="margin-top:3%;">

@@ -49,9 +49,10 @@ https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
                     {% for i in note %}
                         <tr>
                             <td style="vertical-align:middle">{{ forloop.counter }}</td>
-                            <td style="vertical-align:middle"><a href="../shownotes/{{ i.note_id }}">{{ i.title }}</a>
+                            <td style="vertical-align:middle"><a
+                                    href="../shownotes/{{ i.note_id }}">{{ i.title|title }}</a>
                             </td>
-                            <td style="vertical-align:middle">{{ i.course }}</td>
+                            <td style="vertical-align:middle">{{ i.course|title }}</td>
                             {% if user.is_authenticated and user.is_superuser %}
                                 <td style="vertical-align:middle" scope="col"><a href="deletenote/{{ i.note_id }}"
                                                                                  class="btn btn-danger">Remove</a>

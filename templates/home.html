@@ -22,7 +22,7 @@
     <div class="site-section">
         <div class="container">
             <div class="row">
-                <div class="col-lg-4">
+                <div class="col-lg-4 col-md-6 col-xs-12">
                     <div id="redBlock" class="block-2 red">
               <span class="wrap-icon">
                 <span class="icon-home"><i class="fa fa-fw fa-lg fa-edit faa-tada faa-fast"></i></span>
@@ -32,7 +32,7 @@
                             id culpa.</p>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-4 col-md-6 col-xs-12">
                     <div id="yellowBlock" class="block-2 yellow">
               <span class="wrap-icon">
                 <span class="icon-person"><i class="fa fa-fw fa-lg fa-file-powerpoint-o faa-tada faa-fast"></i></span>
@@ -42,7 +42,7 @@
                             id culpa.</p>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-4 col-md-6 col-xs-12">
                     <div id="tealBlock" class="block-2 teal">
               <span class="wrap-icon">
                 <span class="icon-cog"><i class="fa fa-fw fa-lg fa-book faa-tada faa-fast"></i></span>
@@ -77,11 +77,11 @@
                     {% if  user.is_authenticated and user.is_superuser or i.is_approved %}
                         <tr>
                             <td style="vertical-align:middle"><a style="font-weight: bold"
-                                                                 href="../shownotes/{{ i.note_id }}">{{ i.title }}</a>
+                                                                 href="content/shownotes/{{ i.note_id }}">{{ i.title }}</a>
                                 <br>
-                                <span class="ref"> - contributed by <b>{{ k }}</b></span>
+                                <span class="ref"> - contributed by <b>{{ k|title }}</b></span>
                             </td>
-                            <td style="vertical-align:middle"><span>{{ i.subject }}</span></td>
+                            <td style="vertical-align:middle"><span>{{ i.subject|title }}</span></td>
                             {#                    href = {% url 'upvote/ i.note_id / user.id ' %}#}
                             {% if  j %}
                                 <td style="vertical-align:middle">

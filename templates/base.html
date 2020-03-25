@@ -118,16 +118,15 @@
                     {% if user.is_authenticated %}
                         <li class="menu_dropdown">
                             <button class="dropbtn" onclick="myFunction()">
-                                Hi, {{ user.username }} <i class="fa fa-caret-down"></i>
+                                Hi, {{ user.username|title }} <i class="fa fa-caret-down"></i>
                             </button>
                             <img style="float: right; margin-top: 6px" src={% block content3 %}"media/{{ user.image }}"{%  endblock content3 %} height="40px"
                                  width="40px">
                             <div class="dropdown-content" id="myDropdown">
                                 <a href="/content/show_liked_notes">My Likes</a>
-                                <a href="/content/show_uploaded_notes">My uploads</a>
+                                <a href="/content/show_uploaded_notes">My Uploads</a>
                                 <a href="#">Edit Profile</a>
                             </div>
-
                         </li>
                         <li>
                             <a class="faa-parent animated-hover" href="/content/logout">
