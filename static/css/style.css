@@ -899,3 +899,9 @@ color: #fff;
     max-width: 640px;
     background-color: #e1efe7;
 }
+
+@media (max-width: 767px) {
+    .col-xs-12 {
+        margin-top: 40px;
+    }
+}

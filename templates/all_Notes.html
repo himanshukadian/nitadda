@@ -85,11 +85,11 @@
                         <tr>
 
                             <td style="vertical-align:middle"><a style="font-weight: bold"
-                                                                 href="../shownotes/{{ i.note_id }}">{{ i.title }}</a>
+                                                                 href="../shownotes/{{ i.note_id }}">{{ i.title|title }}</a>
                                 <br>
-                                <span class="ref"> - contributed by <b>{{ k }}</b></span>
+                                <span class="ref"> - contributed by <b>{{ k|title }}</b></span>
                             </td>
-                            <td style="vertical-align:middle"><span>{{ i.subject }}</span></td>
+                            <td style="vertical-align:middle"><span>{{ i.subject|title }}</span></td>
                             {#                    href = {% url 'upvote/ i.note_id / user.id ' %}#}
                             {% if  j %}
                                 <td style="vertical-align:middle">

@@ -11,6 +11,8 @@ import datetime
 from django.views.decorators.csrf import csrf_exempt
 import os
 from django.contrib import messages
+from content.decorators import login_required_message
+from django.contrib.auth.decorators import login_required
 
 
 @csrf_exempt
@@ -30,7 +32,7 @@ def course_list(request):
 
 
 @csrf_exempt
-@login_required(login_url="/")
+@login_required(login_url="/content/login")
 @user_passes_test(checkuserifscrutinyuser, login_url="/content/login/")
 def Add_Course(request):
     response = {}
@@ -44,7 +46,7 @@ def Add_Course(request):
 
 
 @csrf_exempt
-@login_required(login_url="/")
+@login_required(login_url="/content/login")
 @user_passes_test(checkuserifscrutinyuser, login_url="/content/login/")
 def Add_Subject(request):
     response = {}
@@ -61,7 +63,7 @@ def Add_Subject(request):
 
 
 @csrf_exempt
-@login_required(login_url="/")
+@login_required(login_url="/content/login")
 @user_passes_test(checkuserifscrutinyuser, login_url="/content/login/")
 def index(request):
     response = {}
@@ -102,6 +104,7 @@ def index(request):
 @csrf_exempt
 def admin_logout(request):
     logout(request)
+    messages.success(request, "you have been logged out.")
     return HttpResponseRedirect('/content/login/')
 
 
@@ -144,7 +147,7 @@ def Display_Note(request, noteid):
 
 
 @csrf_exempt
-@login_required(login_url="/")
+@login_required(login_url="/content/login")
 def Delete_Note(request, noteid):
     response = {}
     cd = Note.objects.get(note_id=noteid)
@@ -153,7 +156,8 @@ def Delete_Note(request, noteid):
 
 
 @csrf_exempt
-@login_required(login_url="/")
+@login_required_message(message="You should be logged in, in order to perform this")
+@login_required
 def UploadNote(request):
     response = {}
     courses = Course.objects.all()
@@ -187,13 +191,14 @@ def UploadNote(request):
         note.note_pdf = request.FILES["files"]
         note.user_id = request.user.id;
         note.save()
+        messages.success(request, "Successfully Uploaded")
         return redirect('/content/upload_note')
 
     return render(request, 'Upload_Notes.html', response)
 
 
 # @csrf_exempt
-# @login_required(login_url="/")
+# @login_required(login_url="/content/login")
 # def Get_Note(request):
 #     response = {}
 #     notes = Note.objects.all()
@@ -208,8 +213,10 @@ def UploadNote(request):
 #     return render(request, 'all_Notes.html', response)
 
 
+
 @csrf_exempt
-@login_required(login_url="/")
+@login_required_message(message="You should be logged in, in order to perform this")
+@login_required
 def Get_Course(request):
     response = {}
     courses = Course.objects.all()
@@ -218,7 +225,8 @@ def Get_Course(request):
 
 
 @csrf_exempt
-@login_required(login_url="/")
+@login_required_message(message="You should be logged in, in order to perform this")
+@login_required
 def Get_Subject(request):
     response = {}
     subjects = Subject.objects.all()
@@ -227,7 +235,8 @@ def Get_Subject(request):
 
 
 @csrf_exempt
-@login_required(login_url="/")
+@login_required_message(message="You should be logged in, in order to perform this")
+@login_required
 def Show_Note(request, courseid):
     response = {}
     print(request.user)
@@ -248,7 +257,8 @@ def Show_Note(request, courseid):
 
 
 @csrf_exempt
-@login_required(login_url="/")
+@login_required_message(message="You should be logged in, in order to perform this")
+@login_required
 def Get_Subject_Note(request):
     response = {}
     notes = Note.objects.all()
@@ -264,7 +274,8 @@ def Get_Subject_Note(request):
 
 
 @csrf_exempt
-@login_required(login_url="/")
+@login_required_message(message="You should be logged in, in order to perform this")
+@login_required
 def Show_Subject_Note(request, subjectid):
     response = {}
     notes = Note.objects.all()
@@ -305,7 +316,7 @@ def Display_Pdf(request,noteid) :
     return render(request, 'show_note_pdf.html', response)
 
 
-@login_required(login_url="/")
+@login_required(login_url="/content/login")
 def Upvote(request):
     print("yaa Upvote called")
     if request.method == 'POST':
@@ -327,7 +338,7 @@ def Upvote(request):
 
 
 @csrf_exempt
-@login_required(login_url="/")
+@login_required(login_url="/content/login")
 def Approve_Note(request, noteid):
     print("approved id : ", noteid)
     cd = Note.objects.get(note_id=noteid)
@@ -340,7 +351,7 @@ def Approve_Note(request, noteid):
     return redirect(url)
 
 
-@login_required(login_url="/")
+@login_required(login_url="/content/login")
 def Show_Liked_Notes(request):
     all_notes = Note.objects.all()
     liked_notes = []
@@ -362,7 +373,7 @@ def Show_Liked_Notes(request):
     return render(request, 'liked_notes.html', response)
 
 
-@login_required(login_url="/")
+@login_required(login_url="/content/login")
 def Show_Uploaded_Notes(request):
     uploaded_notes = Note.objects.filter(user_id=request.user.id)
     print("got length: ", len(uploaded_notes))
