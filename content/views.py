@@ -365,8 +365,9 @@ def Show_Liked_Notes(request):
 @login_required(login_url="/")
 def Show_Uploaded_Notes(request):
     uploaded_notes = Note.objects.filter(user_id=request.user.id)
-    print("got length: ", len(uploaded_notes))
-    print("name :", uploaded_notes[0].title)
+    print("Total uploaded notes: ", len(uploaded_notes))
+    if(len(uploaded_notes)>0):
+        print("name :", uploaded_notes[0].title)
     response = {}
 
     response['data'] = uploaded_notes

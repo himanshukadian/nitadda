@@ -39,8 +39,7 @@
                     <tbody>
                     {% for i in data %}
                         <tr>
-                            <td style="vertical-align:middle"><a style="font-weight: bold"
-                                                                 href="/content/shownotes/{{ i.note_id }}">{{ i.title }}</a>
+                            <td style="vertical-align:middle"><a style="font-weight: bold" href="/content/shownotes/{{ i.note_id }}">{{ i.title }}</a>
                                 <br>
                                 <span class="ref"> - contributed by <b>you</b></span>
                             </td>
@@ -74,9 +73,10 @@
                 </table>
             </div>
         </div>
+
     {% else %}
-        <div class="table_info">
-            You have not uploaded any notes yet.
+        <div class="table_title">
+            You have not uploaded any note yet.
         </div>
     {% endif %}
     </body>

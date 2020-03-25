@@ -20,16 +20,16 @@
         <div class="row" style="margin-top: 10%;">
             <div class="col-sm-6 col-sm-offset-3">
 
-                <div class="well well-lg">
+                <div id="uploadForm" class="well well-lg">
                     <form method="POST" action="/content/login/" onsubmit="return validateForm();">
                         {% csrf_token %}
                         <div class="form-group">
-                            <label for="firstName">Username</label>
+                            <label class="formText" for="firstName">Username</label>
                             <input for="firstName" class="form-control" name="username" id="fn" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="password1">Password</label>
+                            <label class="formText" for="password1">Password</label>
                             <input for="password1" class="form-control" id="password" name="password" type="password"
                                    required>
                         </div>
