@@ -173,7 +173,7 @@ a.products:hover, a.products:active {
 }
 
 body {
-    background-color: #EFECE9;
+    background: #5bc787 url(https://d20ohkaloyme4g.cloudfront.net/img/hero-illustration-module.png) repeat;
 }
 
 .navbar-default {
@@ -867,4 +867,5 @@ color: #fff;
     font-size: 14px;
     font-weight: bold;
 }
+
 

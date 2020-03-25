@@ -7,14 +7,21 @@
         <!-- <center><h2><b>Registration</b></h2></center>
          <br>-->
     </div>
-
+    {% if messages %}
+        {% for mes in messages %}
+            <div class="alert alert-warning">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>{{ mes }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
     <div class="container">
 
         <div class="row" style="margin-top: 10%;">
             <div class="col-sm-6 col-sm-offset-3">
 
                 <div class="well well-lg">
-                    <form method="POST" action="/owner/login/" onsubmit="return validateForm();">
+                    <form method="POST" action="/content/login/" onsubmit="return validateForm();">
                         {% csrf_token %}
                         <div class="form-group">
                             <label for="firstName">Username</label>
@@ -33,7 +40,7 @@
                     </form>
                     <div class="border-top pt-3">
                         <small class="text-muted">
-                            Need An Account? <a class="ml-2" href="/owner/register">Sign Up Now</a>
+                            Need An Account? <a class="ml-2" href="/content/register">Sign Up Now</a>
                         </small>
                     </div>
                     <br>

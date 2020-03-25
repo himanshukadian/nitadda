@@ -7,7 +7,7 @@
         <div class="row" style="margin-top: 3%;">
             <div class="col-sm-6 col-sm-offset-3">
                 <div class="well well-lg">
-                    <form method="POST" enctype='multipart/form-data'>
+                    <form method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="form-group">
                             {% for field in form %}
@@ -26,7 +26,7 @@
                     </form>
                     <div class="border-top pt-3">
                         <small class="text-muted">
-                            Already Have An Account? <a class="ml-2" href="/owner/login">Sign In</a>
+                            Already Have An Account? <a class="ml-2" href="/content/login">Sign In</a>
                         </small>
                     </div>
                     <br>

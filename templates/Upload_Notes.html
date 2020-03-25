@@ -12,7 +12,7 @@
                     let course_name = optionSelected.text();
                     console.log("Course selected is :", course_name);
                     $.ajax({
-                        url: "/owner/getSubjects/",
+                        url: "/content/getSubjects/",
                         type: "POST",
                         data: {'cn': course_name},
                         success: function (subjects) {
@@ -43,7 +43,7 @@
             <caption><h3 class="table_title">Upload Notes</h3></caption>
             <div class=" sm-3 ">
                 <div id="uploadForm" class="well well-lg">
-                    <form method="POST" action="/owner/upload_note/" enctype="multipart/form-data"
+                    <form method="POST" action="/content/upload_note/" enctype="multipart/form-data"
                           onsubmit="return validateForm();">
                         {% csrf_token %}
                         <div class="form-group">

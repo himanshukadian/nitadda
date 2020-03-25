@@ -132,7 +132,7 @@
             console.log("note id value: " + note_id);
 
             $.ajax({
-                url: "/owner/upvote/",
+                url: "/content/upvote/",
                 type: "POST",
                 {#async: true,#}
                 data: {'noteid': note_id, 'csrfmiddlewaretoken': '{{ csrf_token }}'},

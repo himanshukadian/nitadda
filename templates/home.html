@@ -13,43 +13,47 @@
     </script>
     {% if messages %}
         {% for mes in messages %}
-            <div align="center" class="message_container">
-                {{ mes }}
+            <div class="alert alert-success">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>{{ mes }}</strong>
             </div>
         {% endfor %}
     {% endif %}
     <div class="site-section">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-4">
-              <div id="redBlock" class="block-2 red">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div id="redBlock" class="block-2 red">
               <span class="wrap-icon">
                 <span class="icon-home"><i class="fa fa-fw fa-lg fa-edit faa-tada faa-fast"></i></span>
               </span>
-              <h2>Notes</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima nesciunt, mollitia, hic enim id culpa.</p>
-            </div>
-          </div>
-          <div class="col-lg-4">
-              <div id="yellowBlock" class="block-2 yellow">
+                        <h2>Notes</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima nesciunt, mollitia, hic enim
+                            id culpa.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div id="yellowBlock" class="block-2 yellow">
               <span class="wrap-icon">
                 <span class="icon-person"><i class="fa fa-fw fa-lg fa-file-powerpoint-o faa-tada faa-fast"></i></span>
               </span>
-              <h2>Previous Year Papers</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima nesciunt, mollitia, hic enim id culpa.</p>
-            </div>
-          </div>
-          <div class="col-lg-4">
-              <div id="tealBlock" class="block-2 teal">
+                        <h2>Previous Year Papers</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima nesciunt, mollitia, hic enim
+                            id culpa.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div id="tealBlock" class="block-2 teal">
               <span class="wrap-icon">
                 <span class="icon-cog"><i class="fa fa-fw fa-lg fa-book faa-tada faa-fast"></i></span>
               </span>
-              <h2>Books</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima nesciunt, mollitia, hic enim id culpa.</p>
+                        <h2>Books</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima nesciunt, mollitia, hic enim
+                            id culpa.</p>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
     <div class="container">
         <div class="row">
@@ -119,23 +123,22 @@
     </div>
 
 
-
-
     {# Main Section #}
 {% endblock content %}
 {% block content1 %}
-<div class="sect sect--violet ">
-  <img src="https://image.ibb.co/fWyVtb/path3762.png" class="career-img">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <h1 class="career_title">Oh! Your have digged our website in search for Study Materials?</h1>
-        <h1 class="career_sub">We will pleased to have you onboard! Check the Notes, Previous Examination Papers and much more.</h1>
-        <a href="#nitadda" class="btn btn--white btn--width">Check</a>
-      </div>
-    </div>
-  </div>
+    <div class="sect sect--violet ">
+        <img src="https://image.ibb.co/fWyVtb/path3762.png" class="career-img">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="career_title">Oh! Your have digged our website in search for Study Materials?</h1>
+                    <h1 class="career_sub">We will pleased to have you onboard! Check the Notes, Previous Examination
+                        Papers and much more.</h1>
+                    <a href="#nitadda" class="btn btn--white btn--width">Check</a>
+                </div>
+            </div>
+        </div>
 
-</div>
-</body>
+    </div>
+    </body>
 {% endblock content1 %}
