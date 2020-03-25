@@ -3,7 +3,6 @@
 {% load static %}
 {% block content %}
     <body>
-        <h4>Jhinga lala hu ...   commit testing</h4>
     <script>
         $(document).ready(function () {
             // messages timeout for 10 sec
@@ -14,7 +13,7 @@
     </script>
     {% if messages %}
         {% for mes in messages %}
-            <div class="alert alert-success">
+            <div class="alert alert-success message_container">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 <strong>{{ mes }}</strong>
             </div>
