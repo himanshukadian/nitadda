@@ -26,7 +26,7 @@ from django.views.static import serve
 urlpatterns = [
                   url('admin/', admin.site.urls),
                   url(r'^', include(('accounts.urls', 'accounts'), namespace='accounts')),
-                  url(r'owner/', include(('content.urls', 'content'), namespace='content')),
+                  url(r'content/', include(('content.urls', 'content'), namespace='content')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

@@ -1,5 +1,6 @@
 import json
 from django.conf import settings
+from django.contrib import messages
 from django.db.models import Count
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, HttpRequest, Http404, JsonResponse, FileResponse
@@ -21,8 +22,8 @@ def checkuserifscrutinyuser(user):
 
 
 @csrf_exempt
-@login_required(login_url='/owner/login')
-@user_passes_test(checkuserifscrutinyuser, login_url="/owner/login/")
+@login_required(login_url='/content/login')
+@user_passes_test(checkuserifscrutinyuser, login_url="/content/login/")
 def course_list(request):
     course = Course.objects.all()
     return render(request, 'course_list.djt', {'course': course})
@@ -30,21 +31,21 @@ def course_list(request):
 
 @csrf_exempt
 @login_required(login_url="/")
-@user_passes_test(checkuserifscrutinyuser, login_url="/owner/login/")
+@user_passes_test(checkuserifscrutinyuser, login_url="/content/login/")
 def Add_Course(request):
     response = {}
     if request.method == 'POST':
         course = Course()
         course.title = request.POST['title']
         course.save()
-        return redirect('/owner/add_course')
+        return redirect('/content/add_course')
 
     return render(request, 'add_course.html', response)
 
 
 @csrf_exempt
 @login_required(login_url="/")
-@user_passes_test(checkuserifscrutinyuser, login_url="/owner/login/")
+@user_passes_test(checkuserifscrutinyuser, login_url="/content/login/")
 def Add_Subject(request):
     response = {}
     courses = Course.objects.all()
@@ -54,14 +55,14 @@ def Add_Subject(request):
         subject.title = request.POST['title']
         subject.course = Course.objects.get(id=request.POST['courses'])
         subject.save()
-        return redirect('/owner/add_subject')
+        return redirect('/content/add_subject')
 
     return render(request, 'add_subject.html', response)
 
 
 @csrf_exempt
 @login_required(login_url="/")
-@user_passes_test(checkuserifscrutinyuser, login_url="/owner/login/")
+@user_passes_test(checkuserifscrutinyuser, login_url="/content/login/")
 def index(request):
     response = {}
     print(request.user," home tab clicked : RENDER HOME ")
@@ -101,7 +102,7 @@ def index(request):
 @csrf_exempt
 def admin_logout(request):
     logout(request)
-    return HttpResponseRedirect('/owner/login/')
+    return HttpResponseRedirect('/content/login/')
 
 
 @csrf_exempt
@@ -119,13 +120,15 @@ def admin_login(request):
                 if user.is_active:
                     login(request, user)
                     if user.groups.filter(name="owner").exists() and user.is_superuser:
-                        return HttpResponseRedirect('/owner/')
+                        return HttpResponseRedirect('/content/')
                     else:
-                        # logout(request)
+                        messages.success(request, 'You are successfully logged in.')
                         return HttpResponseRedirect('/')
                 else:
+                    messages.warning(request, 'User is not active yet')
                     response['message'] = 'User is not active yet'
             else:
+                messages.warning(request, 'User is invalid')
                 response['message'] = 'User is invalid'
 
         return render(request, 'signin.html', response)
@@ -146,7 +149,7 @@ def Delete_Note(request, noteid):
     response = {}
     cd = Note.objects.get(note_id=noteid)
     cd.delete()
-    return redirect('/owner/all_note')
+    return redirect('/content/all_note')
 
 
 @csrf_exempt
@@ -184,7 +187,7 @@ def UploadNote(request):
         note.note_pdf = request.FILES["files"]
         note.user_id = request.user.id;
         note.save()
-        return redirect('/owner/upload_note')
+        return redirect('/content/upload_note')
 
     return render(request, 'Upload_Notes.html', response)
 
@@ -331,7 +334,7 @@ def Approve_Note(request, noteid):
     course = Course.objects.get(title=cd.course)
     print("course id :", course.id)
     cd.is_approved = True
-    url = "/owner/shownote/" + str(course.id)
+    url = "/content/shownote/" + str(course.id)
     print("url " + url)
     cd.save()
     return redirect(url)

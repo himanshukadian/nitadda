@@ -6,15 +6,13 @@
     <div class="container">
         <div class="row" style="margin-top: 3%;">
             <div class="col-sm-6 col-sm-offset-3">
-                <div id="uploadForm" class="well well-lg">
-                    <form method="POST" enctype='multipart/form-data'>
+                <div class="well well-lg">
+                    <form method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="form-group">
                             {% for field in form %}
-                                #check why its not working
-                                <label class="formText">
-                                    {{ field.label_tag }}
-                                </label><br>
+                                <p>
+                                    {{ field.label_tag }}<br>
                                     {{ field }}
                                     {% for error in field.errors %}
                                         <p style="color: red">{{ error }}</p>
@@ -28,7 +26,7 @@
                     </form>
                     <div class="border-top pt-3">
                         <small class="text-muted">
-                            Already Have An Account? <a class="ml-2" href="/owner/login">Sign In</a>
+                            Already Have An Account? <a class="ml-2" href="/content/login">Sign In</a>
                         </small>
                     </div>
                     <br>

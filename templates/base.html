@@ -61,7 +61,7 @@
         });
     </script>
 </head>
-<body style="background:#ced2d7">
+<body>
 <header>
     <nav style="margin-bottom: 50px; background-color:#fff;font-size: 14px;z-index: 1000;"
          class="navbar navbar-static-top navbar-light bg-faded ">
@@ -86,28 +86,28 @@
                     </li>
                     {% if user.is_authenticated and user.is_superuser %}
                         <li>
-                            <a class="faa-parent animated-hover" href="/owner/add_course">
+                            <a class="faa-parent animated-hover" href="/content/add_course">
                                 <i class="fa fa-fw fa-lg fa-graduation-cap faa-tada faa-fast"></i>Add Course
                             </a>
                         </li>
                         <li>
-                            <a class="faa-parent animated-hover" href="/owner/add_subject">
+                            <a class="faa-parent animated-hover" href="/content/add_subject">
                                 <i class="fa fa-fw fa-lg fa-book faa-tada faa-fast"></i>Add Subject
                             </a>
                         </li>
                     {% endif %}
                     <li>
-                        <a href="/owner/all_course" class="faa-parent animated-hover">
+                        <a href="/content/all_course" class="faa-parent animated-hover">
                             <i class="fa fa-fw fa-lg fa fa-graduation-cap faa-tada faa-fast"></i>Browse Courses
                         </a>
                     </li>
                     <li>
-                        <a href="/owner/all_subject" class="faa-parent animated-hover">
+                        <a href="/content/all_subject" class="faa-parent animated-hover">
                             <i class="fa fa-fw fa-lg fa fa-book faa-tada faa-fast"></i>Browse Subjects
                         </a>
                     </li>
                     <li>
-                        <a class="faa-parent animated-hover" href="/owner/upload_note">
+                        <a class="faa-parent animated-hover" href="/content/upload_note">
                             <i class="fa fa-fw fa-lg fa fa-upload faa-tada faa-fast"></i>Upload Notes
                         </a>
                     </li>
@@ -123,20 +123,20 @@
                             <img style="float: right; margin-top: 6px" src="media/{{ user.image }}" height="40px"
                                  width="40px">
                             <div class="dropdown-content" id="myDropdown">
-                                <a href="/owner/show_liked_notes">My Likes</a>
-                                <a href="/owner/show_uploaded_notes">My uploads</a>
+                                <a href="/content/show_liked_notes">My Likes</a>
+                                <a href="/content/show_uploaded_notes">My uploads</a>
                                 <a href="#">Edit Profile</a>
                             </div>
 
                         </li>
                         <li>
-                            <a class="faa-parent animated-hover" href="/owner/logout">
+                            <a class="faa-parent animated-hover" href="/content/logout">
                                 <i class="fa fa-fw fa-lg fa-sign-out  faa-tada faa-fast"></i>Logout
                             </a>
                         </li>
                     {% else %}
                         <li>
-                            <a class="faa-parent animated-hover" href="/owner/login">
+                            <a class="faa-parent animated-hover" href="/content/login">
                                 <i class="fa fa-fw fa-lg fa-sign-in faa-tada faa-fast"></i>Login
                             </a>
                         </li>
@@ -146,8 +146,9 @@
         </div>
     </nav>
 </header>
-<div class="container" style="min-height:100vh;min-width:min-content;background: #FFFFFF;margin-top: -2%; margin-bottom:1%">
-<section class="content box-primary">
+<div class="container" style="min-height:100vh;min-width:min-content;background: #FFFFFF;margin-bottom: 3%">
+
+    <section class="content box-primary">
     {% block content %}
         MAIN CONTENT FOR PROJECT
     {% endblock content %}
