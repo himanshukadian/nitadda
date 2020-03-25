@@ -3,17 +3,17 @@
 {% load static %}
 {% block content %}
     <body>
-        <script>
+    <script>
         $(document).ready(function () {
             // messages timeout for 10 sec
             setTimeout(function () {
-                $('.alert-success').fadeOut('slow');
-            }, 3000);
+                $('.message_container').fadeOut('slow');
+            }, 10000);
         });
     </script>
     {% if messages %}
         {% for mes in messages %}
-            <div class="alert alert-success">
+            <div class="alert alert-success message_container">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 <strong>{{ mes }}</strong>
             </div>
