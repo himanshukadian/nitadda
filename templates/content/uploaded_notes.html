@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% block title %}Home NIT ADDA{% endblock title %}
+{% load static %}
+{% block content %}
+    <head>
+        <link rel="stylesheet" type="text/css"
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css"
+              href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap.min.css">
+        <link rel="stylesheet" type="text/css"
+              href="https://cdn.datatables.net/fixedheader/3.1.6/css/fixedHeader.bootstrap.min.css">
+        <link rel="stylesheet" type="text/css"
+              href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
+
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap.min.js"></script>
+        <script type="text/javascript"
+                src="https://cdn.datatables.net/fixedheader/3.1.6/js/dataTables.fixedHeader.min.js"></script>
+        <script type="text/javascript"
+                src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+        <script type="text/javascript"
+                src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
+    </head>
+    <body class="main_body">
+    {% if user_has_uploaded %}
+        <div class="container" style="min-width:min-content;margin-bottom: 8%">
+            <caption><h3 class="table_title">Notes uploaded by you</h3></caption>
+            <div class="row" style="margin: 0%">
+                <table class="table table-striped table-responsive-md" id="example">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Subject</th>
+                        <th scope="col">Rating</th>
+                        <th scope="col">Status</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for i in data %}
+                        <tr>
+                            <td style="vertical-align:middle"><a style="font-weight: bold" href="/content/shownotes/{{ i.note_id }}">{{ i.title }}</a>
+                                <br>
+                                <span class="ref"> - contributed by <b>you</b></span>
+                            </td>
+                            <td style="vertical-align:middle"><span>{{ i.subject }}</span></td>
+
+                            {% if  i.is_approved %}
+                                <td style="vertical-align:middle">
+                                    <div class="like_grow" id="{{ i.note_id }}">
+                                        <i id="{{ i.note_id }}1" class="fa fa-thumbs-up fa-2x like active"
+                                           aria-hidden="true"></i>
+                                    </div>
+                                    <span class="likes_counter" style="font-family:'Amaranth', sans-serif;"
+                                          id="{{ i.note_id }}2">
+                                        {{ i.total_upvotes }}
+                                    </span>
+                                </td>
+                                <td style="color:green ; vertical-align:middle">
+                                    <div class="info info-success">Approved</div>
+                                </td>
+                            {% else %}
+                                <td style="color:red ; vertical-align:middle">
+                                    <div class="info info-failure">N/A</div>
+                                </td>
+                                <td style="color:blue; vertical-align:middle">
+                                    <div class="info info-waiting">Approval Pending</div>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    {% else %}
+        <div class="table_title">
+            You have not uploaded any note yet.
+        </div>
+    {% endif %}
+    </body>
+    <script>
+        $(document).ready(function () {
+            $('table.table').DataTable({
+                "bPaginate": true,
+                "bLengthChange": false,
+                "bFilter": true,
+                "bInfo": false,
+                "aaSorting": [],
+                "bAutoWidth": false,
+            });
+        });
+
+        function updateVote(note_id) {
+            console.log("note id value: " + note_id);
+
+            $.ajax({
+                url: "/content/upvote/",
+                type: "POST",
+                {#async: true,#}
+                data: {'noteid': note_id, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                {#dataType: "json",#}
+                success: function (data) {
+                    if (data[0]) {
+                        document.getElementById(data[1] + "2").innerHTML = parseInt(document.getElementById(data[1] + "2").innerHTML) - 1;
+                        document.getElementById(data[1] + "1").classList.remove("active");
+                        {#document.getElementById(data[1] + "3").classList.remove("active");#}
+                    } else {
+                        document.getElementById(data[1] + "1").classList.add("active");
+                        {#document.getElementById(data[1] + "3").classList.rekmove("active");#}
+                        document.getElementById(data[1] + "2").innerHTML = parseInt(document.getElementById(data[1] + "2").innerHTML) + 1;
+                    }
+                }
+            });
+        }
+
+    </script>
+    {# Main Section #}
+{% endblock content %}

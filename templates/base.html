@@ -126,15 +126,6 @@
                 <ul id="rightnav" class="nav navbar-nav navbar-right">
                     {% if user.is_authenticated %}
                         <li class="menu_dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                            aria-expanded="false">Dropdown <span class="caret"></span></a>
-                            <ul class="dropdown-content">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                            </ul>
-                        </li>
-                        <li class="menu_dropdown">
                             <button class="dropbtn" onclick="myFunction()">
                                 Hi, {{ user.username|title }} <i class="fa fa-caret-down"></i>
                             </button>
@@ -163,14 +154,11 @@
         </div>
     </nav>
 </header>
-{#<div class="container ext_container" style="min-height:100vh;min-width:min-content;background: #FFFFFF;margin-top: -2%;margin-bottom: 1%">#}
 
-    <section class="content box-primary">
     {% block content %}
         MAIN CONTENT FOR PROJECT
     {% endblock content %}
-    </section>
-</div>
+
 {% block content1 %}
 
 {% endblock content1 %}
@@ -209,7 +197,7 @@
         <div class="row">
             <div class="col-md-8 col-sm-6 col-xs-12">
                 <p class="copyright-text">Copyright &copy; 2020 All Rights Reserved by
-                    <a href="#">NITW ADDA</a>.
+                    <a href="#">NITADDA</a>.
                 </p>
             </div>
 

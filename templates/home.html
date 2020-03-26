@@ -65,8 +65,8 @@
             </div>
         </div>
     </div>
-    <div class="container">
-        <div class="row">
+    <div class="container" style="min-width:min-content;margin-bottom: 8%">
+        <div class="row" style="margin: 0%;">
             <caption><h3 class="table_title">Recently Uploaded Notes</h3></caption>
             <table class="table table-striped table-responsive-md" id="example">
                 <thead class="thead-dark">
@@ -121,9 +121,9 @@
                                     {% if  i.is_approved %}
                                         <a class="btn">Approved</a>
                                     {% else %}
-                                        <a href="../approvenote/{{ i.note_id }}" class="btn btn-danger">Approve</a>
+                                        <a href="content/approvenote/{{ i.note_id }}" class="btn btn-danger">Approve</a>
                                     {% endif %}
-                                    <a href="../deletenote/{{ i.note_id }}" class="btn btn-danger">Remove</a>
+                                    <a href="content/deletenote/{{ i.note_id }}" class="btn btn-danger">Remove</a>
                                 </td>
                             {% endif %}
                         </tr>
@@ -133,6 +133,7 @@
             </table>
         </div>
     </div>
+
 
     {# Main Section #}
 {#{% endblock content %}#}

@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %}Home NIT ADDA{% endblock title %}
+{% load static %}
+{% block content %}
+    <body onload="Check()">
+    <div class="row main_header">
+        <!-- <center><h2><b>Registration</b></h2></center>
+         <br>-->
+    </div>
+    <script>
+        $(document).ready(function () {
+            // messages timeout for 10 sec
+            setTimeout(function () {
+                $('.message_container').fadeOut('slow');
+            }, 3000);
+        });
+    </script>
+    <div class="container" style="min-width:min-content;margin-bottom: 8%">
+        {% if messages %}
+            {% for mes in messages %}
+                <div class="alert alert-warning message_container">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>{{ mes }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="row" style="margin-top: 4%;">
+            <div class="col-sm-6 col-sm-offset-3">
+
+                <div id="updateForm" class="well well-lg">
+                    <formset>
+                        <legend>Login</legend>
+                        <form method="POST" action="/content/login/" onsubmit="return validateForm();">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="firstName">Username</label>
+                                <input for="firstName" class="form-control" name="username" id="fn"
+                                       placeholder="username, email, or registration number" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password1">Password</label>
+                                <input for="password1" class="form-control" id="password" name="password"
+                                       placeholder="password" type="password"
+                                       required>
+                            </div>
+
+                            <center>
+                                <button type="submit" id="btn" class="btn btn-info btn-md">Login</button>
+                            </center>
+                        </form>
+                        <div class="border-top pt-3">
+                            <small class="text-muted">
+                                Need An Account? <a class="ml-2" href="/content/register">Sign Up Now</a>
+                            </small>
+                        </div>
+                    </formset>
+                    <br>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </body>
+
+    {# Main Section #}
+{% endblock content %}

@@ -31,7 +31,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     GENDERS = (('M', 'Male'), ('F', 'Female'))
 
     username = models.CharField(max_length=50, unique=True)
-    email = models.EmailField(blank=True)
+    email = models.EmailField(unique=True)
     name = models.CharField(max_length=200, blank=True)
     mobile = models.CharField(max_length=10,
                               validators=[RegexValidator(regex=r'[0-9]{10}', message='Invalid Mobile Number')],
@@ -39,8 +39,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     gender = models.CharField(max_length=1, choices=GENDERS, default='M')
 
-    registration_number = models.CharField('Registration number', max_length=8,
-                                           validators=[RegexValidator(regex=r'[0-9]{8}',
+    registration_number = models.CharField('Registration number', max_length=7, unique=True,
+                                           validators=[RegexValidator(regex=r'[a-zA-Z]{2}[0-9]{5}',
                                                                       message='Invalid Registration Number')])
     admin = models.CharField(max_length=1, default='N')
     password = models.CharField('password', max_length=128, validators=[validate_password])
@@ -49,7 +49,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
                                               'Unselect this instead of deleting accounts.')
     is_admin = models.BooleanField(default=False, verbose_name='Staff status',
                                    help_text='Designates whether the user can log into this admin site.')
-    image = models.ImageField(default='download.jpg', upload_to='')
+    image = models.ImageField(default='download.jpg', upload_to='profile/')
     notifications = models.IntegerField(default=0)
     noti_messages = models.CharField(max_length=500, blank=True)
     USERNAME_FIELD = 'username'
