@@ -11,7 +11,7 @@
             }, 3000);
         });
     </script>
-    <div class="container">
+    <div class="container" style="min-width:min-content;margin-bottom: 8%">
         {% for field in form %}
             {% for error in field.errors %}
                 <div class="alert alert-warning message_container">
@@ -20,7 +20,7 @@
                 </div>
             {% endfor %}
         {% endfor %}
-        <div class="row" style="margin-top: 3%;">
+        <div class="row" style="margin-top: 2%;">
             <div class="col-sm-6 col-sm-offset-3">
                 <div class="well well-lg">
                     <formset>
