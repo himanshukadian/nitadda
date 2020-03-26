@@ -40,87 +40,101 @@
             </div>
         {% endfor %}
     {% endif %}
-    <ul class="sideMenu">
-            <li class="sideTab">
-                <a style=" background-color: #fd4d40;">
-                    <span class="icon-home"><i class="fa fa-fw fa-lg fa-edit faa-tada faa-fast"></i></span>
-                    Notes</a>
-            </li>
-            <li class="sideTab">
-                <a style="background-color: #fdb62f;">
-                    <span class="icon-person"><i class="fa fa-fw fa-lg fa-file-powerpoint-o faa-tada faa-fast"></i></span>
-                Previous Year Papers</a></li>
-            <li class="sideTab">
+    <div class="container-fluid" style="clear:both;min-width:min-content;margin-bottom: 8%">
+        <div class="row">
+            <div class="col-sm-10 col-md-10">
+                <div class="col-sm-12 col-md-4 content">
+                    <div class='col-md-12 wrapper'>
+                        <ul class="sideMenu">
+                            <li class="sideTab">
+                                <a style="background-color: #fd4d40;">
+                                    <span class="icon-home"><i
+                                            class="fa fa-fw fa-lg fa-edit faa-tada faa-fast"></i></span>
+                                    Notes</a>
+                            </li>
+                            <li class="sideTab">
+                                <a style="background-color: #fdb62f;">
+                                    <span class="icon-person"><i
+                                            class="fa fa-fw fa-lg fa-file-powerpoint-o faa-tada faa-fast"></i></span>
+                                    Previous Year Papers</a></li>
+                            <li class="sideTab">
 
-                <a style="background-color: dodgerblue;">
-                    <span class="icon-cog"><i class="fa fa-fw fa-lg fa-book faa-tada faa-fast"></i></span>
-                    Books</a></li>
-        </ul>
-    <div class="container" style="clear: both;min-width:min-content;margin-bottom: 8%">
-        <caption><h3 class="table_title">{{ cname }} Notes</h3></caption>
-        <div class="row" style="margin: 1%;">
-            <table class="table table-striped table-responsive-md" id="example">
-                <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Title</th>
-                    <th scope="col">Subject</th>
-                    <th scope="col">Rating</th>
-                    {% if user.is_authenticated and user.is_superuser %}
-                        <th scope="col">Actions</th>
-                    {% endif %}
-                </tr>
-                </thead>
-                <tbody>
-                {% for i, j, k in data %}
-                    {% if  user.is_authenticated and user.is_superuser or i.is_approved %}
+                                <a style="background-color: dodgerblue;">
+                                    <span class="icon-cog"><i
+                                            class="fa fa-fw fa-lg fa-book faa-tada faa-fast"></i></span>
+                                    Books</a></li>
+                        </ul>
+                        <div style="clear: both"></div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-8">
+                    <caption><h3 class="table_title">{{ cname|title }} Notes</h3></caption>
+                    <table class="table table-striped table-responsive-md" id="example">
+                        <thead class="thead-dark">
                         <tr>
-
-                            <td style="vertical-align:middle"><a style="font-weight: bold"
-                                                                 href="../../view/{{ i.note_id }}">{{ i.title|title }}</a>
-                                <br>
-                                <span class="ref"> - contributed by <b>{{ k|title }}</b></span>
-                            </td>
-                            <td style="vertical-align:middle"><span>{{ i.subject|title }}</span></td>
-                            {#                    href = {% url 'upvote/ i.note_id / user.id ' %}#}
-                            {% if  j %}
-                                <td style="vertical-align:middle">
-                                    <div class="like_grow" id="{{ i.note_id }}" onclick="updateVote( this.id )">
-                                        <i id="{{ i.note_id }}1" class="fa fa-thumbs-up fa-2x like active"
-                                           aria-hidden="true"></i>
-                                    </div>
-                                    <span class="likes_counter" style="font-family:'Amaranth'" id="{{ i.note_id }}2">
-                                            {{ i.total_upvotes }}
-                                        </span>
-                                </td>
-                            {% else %}
-                                <td style="vertical-align:middle">
-                                    <div class="like_grow" id="{{ i.note_id }}" onclick="updateVote( this.id )">
-                                        <i id="{{ i.note_id }}1" class="fa fa-thumbs-up fa-2x like"
-                                           aria-hidden="true"></i>
-                                    </div>
-                                    <span class="likes_counter" style="font-family:'Amaranth'" id="{{ i.note_id }}2">
-                                        {{ i.total_upvotes }}
-                                    </span>
-                                </td>
-                            {% endif %}
+                            <th scope="col">Title</th>
+                            <th scope="col">Subject</th>
+                            <th scope="col">Rating</th>
                             {% if user.is_authenticated and user.is_superuser %}
-                                <td scope="col">
-                                    {% if  i.is_approved %}
-                                        <a class="btn">Approved</a>
-                                    {% else %}
-                                        <a href="../approvenote/{{ i.note_id }}" class="btn btn-danger">Approve</a>
-                                    {% endif %}
-                                    <a href="../deletenote/{{ i.note_id }}" class="btn btn-danger">Remove</a>
-                                </td>
+                                <th scope="col">Actions</th>
                             {% endif %}
                         </tr>
-                    {% endif %}
-                {% endfor %}
-                </tbody>
-            </table>
+                        </thead>
+                        <tbody>
+                        {% for i, j, k in data %}
+                            {% if  user.is_authenticated and user.is_superuser or i.is_approved %}
+                                <tr>
+
+                                    <td style="vertical-align:middle"><a style="font-weight: bold"
+                                                                         href="../../view/{{ i.note_id }}">{{ i.title|title }}</a>
+                                        <br>
+                                        <span class="ref"> - contributed by <b>{{ k|title }}</b></span>
+                                    </td>
+                                    <td style="vertical-align:middle"><span>{{ i.subject|title }}</span></td>
+                                    {#                    href = {% url 'upvote/ i.note_id / user.id ' %}#}
+                                    {% if  j %}
+                                        <td style="vertical-align:middle">
+                                            <div class="like_grow" id="{{ i.note_id }}" onclick="updateVote( this.id )">
+                                                <i id="{{ i.note_id }}1" class="fa fa-thumbs-up fa-2x like active"
+                                                   aria-hidden="true"></i>
+                                            </div>
+                                            <span class="likes_counter" style="font-family:'Amaranth'"
+                                                  id="{{ i.note_id }}2">
+                                            {{ i.total_upvotes }}
+                                        </span>
+                                        </td>
+                                    {% else %}
+                                        <td style="vertical-align:middle">
+                                            <div class="like_grow" id="{{ i.note_id }}" onclick="updateVote( this.id )">
+                                                <i id="{{ i.note_id }}1" class="fa fa-thumbs-up fa-2x like"
+                                                   aria-hidden="true"></i>
+                                            </div>
+                                            <span class="likes_counter" style="font-family:'Amaranth'"
+                                                  id="{{ i.note_id }}2">
+                                        {{ i.total_upvotes }}
+                                    </span>
+                                        </td>
+                                    {% endif %}
+                                    {% if user.is_authenticated and user.is_superuser %}
+                                        <td scope="col">
+                                            {% if  i.is_approved %}
+                                                <a class="btn">Approved</a>
+                                            {% else %}
+                                                <a href="../approvenote/{{ i.note_id }}"
+                                                   class="btn btn-danger">Approve</a>
+                                            {% endif %}
+                                            <a href="../deletenote/{{ i.note_id }}" class="btn btn-danger">Remove</a>
+                                        </td>
+                                    {% endif %}
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
-
     </body>
     <script>
         $(document).ready(function () {

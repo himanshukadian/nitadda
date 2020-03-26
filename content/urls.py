@@ -1,12 +1,14 @@
 from django.conf.urls import url
 from django.conf.urls.static import static
 from django.urls import include, path
+from django.views.generic import TemplateView
+
 from nitadda import settings
 from . import views
 
 urlpatterns = [
                   url(r'^$', views.index, name='index'),
-                  url(r'^meetOurTeam/$', views.Meet_Our_Team),
+                  url(r'^meetOurTeam/$', TemplateView.as_view(template_name='meet_our_team.html')),
                   url(r'^upvote/$', views.Upvote),
                   url('upload_note/', views.UploadNote, name='Upload_Note'),
                   url('approvenote/(?P<noteid>\w+)', views.Approve_Note, name='Approve_Note'),

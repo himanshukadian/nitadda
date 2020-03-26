@@ -88,34 +88,34 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul id="mynav" class="nav navbar-nav">
-                    <li class="active">
+                    <li class="active" {% if request.path == '/' %}style="background: #E7E7E7"{% endif %}>
                         <a class="faa-parent animated-hover" href="/">
                             <i class="fa fa-fw fa-lg fa-home faa-tada faa-fast"></i>Home
                         </a>
                     </li>
                     {% if user.is_authenticated and user.is_superuser %}
-                        <li>
+                        <li {% if request.path == '/content/add_course' %}style="background: #E7E7E7"{% endif %}>
                             <a class="faa-parent animated-hover" href="/content/add_course">
                                 <i class="fa fa-fw fa-lg fa-graduation-cap faa-tada faa-fast"></i>Add Course
                             </a>
                         </li>
-                        <li>
+                        <li {% if request.path == '/content/add_subject' %}style="background: #E7E7E7"{% endif %}>
                             <a class="faa-parent animated-hover" href="/content/add_subject">
                                 <i class="fa fa-fw fa-lg fa-book faa-tada faa-fast"></i>Add Subject
                             </a>
                         </li>
                     {% endif %}
-                    <li>
+                    <li {% if request.path == '/content/all_course' %}style="background: #E7E7E7"{% endif %}>
                         <a href="/content/all_course" class="faa-parent animated-hover">
                             <i class="fa fa-fw fa-lg fa fa-graduation-cap faa-tada faa-fast"></i>Browse Courses
                         </a>
                     </li>
-                    <li>
+                    <li {% if request.path == '/content/all_subject' %}style="background: #E7E7E7"{% endif %}>
                         <a href="/content/all_subject" class="faa-parent animated-hover">
                             <i class="fa fa-fw fa-lg fa fa-book faa-tada faa-fast"></i>Browse Subjects
                         </a>
                     </li>
-                    <li>
+                    <li {% if request.path == '/content/upload_note/' %}style="background: #E7E7E7"{% endif %}>
                         <a class="faa-parent animated-hover" href="/content/upload_note">
                             <i class="fa fa-fw fa-lg fa fa-upload faa-tada faa-fast"></i>Upload Notes
                         </a>
@@ -143,7 +143,7 @@
                             </a>
                         </li>
                     {% else %}
-                        <li>
+                        <li {% if request.path == '/content/login/' %}style="background: #E7E7E7"{% endif %}>
                             <a class="faa-parent animated-hover" href="/content/login">
                                 <i class="fa fa-fw fa-lg fa-sign-in faa-tada faa-fast"></i>Login
                             </a>

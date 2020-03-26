@@ -403,6 +403,3 @@ def Show_Uploaded_Notes(request):
     else:
         response['user_has_uploaded'] = False;
     return render(request, 'content/uploaded_notes.html', response)
-
-def Meet_Our_Team(request):
-    return render(request, 'meet_our_team.html')
