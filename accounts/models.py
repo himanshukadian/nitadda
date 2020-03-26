@@ -49,7 +49,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
                                               'Unselect this instead of deleting accounts.')
     is_admin = models.BooleanField(default=False, verbose_name='Staff status',
                                    help_text='Designates whether the user can log into this admin site.')
-    image = models.ImageField(default='download.jpg', upload_to='')
+    image = models.ImageField(default='download.jpg', upload_to='profile/')
     notifications = models.IntegerField(default=0)
     noti_messages = models.CharField(max_length=500, blank=True)
     USERNAME_FIELD = 'username'

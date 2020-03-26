@@ -26,7 +26,7 @@ def index(request):
 
 class UserFormView(generic.View):
     form_class = UserCreationForm
-    template_name = 'registration_form.html'
+    template_name = 'account/registration_form.html'
 
     def get(self, request):
         form = self.form_class(None)
@@ -77,4 +77,4 @@ def user_login(request):
                 messages.warning(request, 'User is invalid')
                 response['message'] = 'User is invalid'
 
-        return render(request, 'signin.html', response)
+        return render(request, 'account/signin.html', response)

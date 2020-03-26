@@ -42,7 +42,7 @@ def Add_Course(request):
         course.save()
         return redirect('/content/add_course')
 
-    return render(request, 'add_course.html', response)
+    return render(request, 'content/add_course.html', response)
 
 
 @csrf_exempt
@@ -59,7 +59,7 @@ def Add_Subject(request):
         subject.save()
         return redirect('/content/add_subject')
 
-    return render(request, 'add_subject.html', response)
+    return render(request, 'content/add_subject.html', response)
 
 
 @csrf_exempt
@@ -134,7 +134,7 @@ def admin_login(request):
                 messages.warning(request, 'User is invalid')
                 response['message'] = 'User is invalid'
 
-        return render(request, 'signin.html', response)
+        return render(request, 'account/signin.html', response)
 
 
 def Display_Note(request, noteid):
@@ -196,7 +196,7 @@ def UploadNote(request):
         messages.success(request, "Successfully Uploaded")
         return redirect('/content/upload_note')
 
-    return render(request, 'Upload_Notes.html', response)
+    return render(request, 'content/Upload_Notes.html', response)
 
 
 # @csrf_exempt
@@ -223,7 +223,7 @@ def Get_Course(request):
     response = {}
     courses = Course.objects.all()
     response["courses"] = courses
-    return render(request, 'all_Courses.html', response)
+    return render(request, 'content/all_Courses.html', response)
 
 
 @csrf_exempt
@@ -233,7 +233,7 @@ def Get_Subject(request):
     response = {}
     subjects = Subject.objects.all()
     response["subjects"] = subjects
-    return render(request, 'all_Subjects.html', response)
+    return render(request, 'content/all_Subjects.html', response)
 
 
 @csrf_exempt
@@ -257,7 +257,7 @@ def Show_Note(request, courseid):
             lstatus.append(False)
     response['data'] = zip(note, lstatus, providers)
     response['cname'] = cname
-    return render(request, 'all_Notes.html', response)
+    return render(request, 'content/all_Notes.html', response)
 
 
 @csrf_exempt
@@ -274,7 +274,7 @@ def Get_Subject_Note(request):
         note = Note.objects.filter(subject=subject)
         allnotes.append(note)
     response["allnotes"] = allnotes
-    return render(request, 'all_Subject_Notes.html', response)
+    return render(request, 'content/all_Subject_Notes.html', response)
 
 
 @csrf_exempt
@@ -298,7 +298,7 @@ def Show_Subject_Note(request, subjectid):
             lstatus.append(False)
     response['data'] = zip(note, lstatus, providers)
     response['sname'] = sname
-    return render(request, 'all_Subject_Notes.html', response)
+    return render(request, 'content/all_Subject_Notes.html', response)
 
 @csrf_exempt
 def getSubjects(request):
@@ -328,7 +328,7 @@ def Display_Pdf(request,noteid) :
     response = {}
     cd = Note.objects.get(note_id=noteid)
     response["data"] = cd
-    return render(request, 'show_note_pdf.html', response)
+    return render(request, 'content/show_note_pdf.html', response)
 
 
 @login_required(login_url="/content/login")
@@ -389,7 +389,7 @@ def Show_Liked_Notes(request):
         response['user_has_liked'] = True;
     else:
         response['user_has_liked'] = False;
-    return render(request, 'liked_notes.html', response)
+    return render(request, 'content/liked_Notes.html', response)
 
 
 @login_required(login_url="/content/login")
@@ -402,4 +402,4 @@ def Show_Uploaded_Notes(request):
         response['user_has_uploaded'] = True;
     else:
         response['user_has_uploaded'] = False;
-    return render(request, 'uploaded_notes.html', response)
+    return render(request, 'content/uploaded_notes.html', response)
