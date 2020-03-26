@@ -1,115 +1,250 @@
 {% extends 'base.html' %}
 {% block title %}Home NIT ADDA{% endblock title %}
 {% load static %}
-{% block content3 %}"../media/{{ user.image }}"{%  endblock content3 %}
 {% block content %}
     <head>
-        <script src="https://kit.fontawesome.com/57456f662e.js" crossorigin="anonymous"></script>
+        <style>
+            @media only screen  and (min-width: 1224px) {
+                #team1 {
+                    width: 60%;
+                }
+            }
+
+            .our-team-section {
+                position: relative;
+                padding-top: 40px;
+                padding-bottom: 40px;
+            }
+
+            .our-team-section:before {
+                position: absolute;
+                top: -0;
+                left: 0;
+                content: " ";
+                background-size: 100% 100px;
+                width: 80%;
+                height: 100px;
+                float: left;
+                z-index: 99;
+            }
+
+            .our-team {
+                margin: 15px;
+                padding: 30px 0 40px;
+                background: #f9f9f9;
+                text-align: center;
+                overflow: hidden;
+                position: relative;
+                border-bottom: 5px solid #00325a;
+            }
+
+            .our-team:hover {
+                border-bottom: 5px solid #2f2f2f;
+            }
+
+            .our-team .pic {
+                display: inline-block;
+                width: 130px;
+                height: 130px;
+                margin-bottom: 50px;
+                z-index: 1;
+                position: relative;
+            }
+
+            .our-team .pic:before {
+                content: "";
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                background: #00325a;
+                position: absolute;
+                bottom: 135%;
+                right: 0;
+                left: 0;
+                opacity: 1;
+                transform: scale(3);
+                transition: all 0.3s linear 0s;
+            }
+
+            .our-team:hover .pic:before {
+                height: 100%;
+                background: #2f2f2f;
+            }
+
+            .our-team .pic:after {
+                content: "";
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                background: #ffffff00;
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 1;
+                transition: all 0.3s linear 0s;
+            }
+
+            .our-team:hover .pic:after {
+                background: #7ab92d;
+            }
+
+            .our-team .pic img {
+                width: 100%;
+                height: auto;
+                border-radius: 50%;
+                transform: scale(1);
+                transition: all 0.9s ease 0s;
+                box-shadow: 0 0 0 14px #f7f5ec;
+                transform: scale(0.7);
+                position: relative;
+                z-index: 2;
+            }
+
+            .our-team:hover .pic img {
+                box-shadow: 0 0 0 14px #f7f5ec;
+                transform: scale(0.7);
+            }
+
+            .our-team .team-content {
+                margin-bottom: 30px;
+            }
+
+            .our-team .title {
+                font-size: 22px;
+                font-weight: 700;
+                color: #4e5052;
+                letter-spacing: 1px;
+                text-transform: capitalize;
+                margin-bottom: 5px;
+            }
+
+            .our-team .post {
+                display: block;
+                font-size: 15px;
+                color: #4e5052;
+                text-transform: capitalize;
+            }
+
+            .our-team .social {
+                width: 100%;
+                padding: 0;
+                margin: 0;
+                background: #2f2f2f;
+                position: absolute;
+                bottom: -100px;
+                left: 0;
+                transition: all 0.5s ease 0s;
+            }
+
+            .our-team:hover .social {
+                bottom: 0;
+            }
+
+            .our-team .social li {
+                display: inline-block;
+            }
+
+            .our-team .social li a {
+                display: block;
+                padding: 10px;
+                font-size: 17px;
+                color: #fff;
+                transition: all 0.3s ease 0s;
+            }
+
+            .our-team .social li a:hover {
+                color: #2f2f2f;
+                background: #f7f5ec;
+            }
+
+            @media only screen and (max-width: 990px) {
+                .our-team {
+                    margin-bottom: 30px;
+                }
+            }
+        </style>
+    </head>
+    <body onload="Check()">
+    <div class="row main_header">
+        <!-- <center><h2><b>Registration</b></h2></center>
+         <br>-->
+    </div>
     <script>
         $(document).ready(function () {
             // messages timeout for 10 sec
             setTimeout(function () {
                 $('.message_container').fadeOut('slow');
-            }, 10000);
+            }, 3000);
         });
-    {#    starts  #}
-    {#    ends  #}
     </script>
-    </head>
-    <body>
         {% if messages %}
             {% for mes in messages %}
-                <div class="alert alert-success message_container">
+                <div class="alert alert-warning message_container">
                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                     <strong>{{ mes }}</strong>
                 </div>
             {% endfor %}
         {% endif %}
-        <div class="site-section">
-            <!-- about -->
-{#            <div  class="about">#}
-{#               <a class="bg_links social portfolio" href="https://www.rafaelalucas.com/dailyui" target="_blank">#}
-{#                  <span class="icon"></span>#}
-{#               </a>#}
-{#               <a class="bg_links social dribbble" href="https://dribbble.com/rafaelalucas" target="_blank">#}
-{#                  <span class="icon"></span>#}
-{#               </a>#}
-{#               <a class="bg_links social linkedin" href="https://www.linkedin.com/in/rafaelalucas/" target="_blank">#}
-{#                  <span class="icon"></span>#}
-{#               </a>#}
-{#               <a class="bg_links logo"></a>#}
-{#            </div>#}
-            <!-- end about -->
-
-            <div class="wrapper">
-
-               <section class="module-team">
-
-                  <div  class="team">
-                     <h2 class="title">Meet our Team</h2>
-                     <div style="" class="team-cards">
-
-                        <!-- Slider main container -->
-                        <div class="swiper-container">
-                           <!-- Additional required wrapper -->
-                           <div class="swiper-wrapper">
-                               <div class="swiper-slide">
-                                    <div class="card">
-                                        <span class="bg"></span>
-                                        <span class="more"></span>
-                                        <figure class="photo"><img src="{%  static 'images/him.jpg' %}"></figure>
-                                            <article class="text2">
-                                                <p class="name">Himanshu Chaudhary</p>
-                                                <p class="role">Developer/UI Designer</p>
-                                                <p class="desc">lamba chauda description</p>
-                                            </article>
-
-                                            <div class="social">
-{#                                            <span class="pointer"></span>#}
-                                            <div class="icons">
-                                                <a class="icon" href="" target="_blank" data-index="1">
-                                                    <img src="https://rafaelalucas.com/dailyui/6/assets/email.svg"></a>
-                                                <a class="icon" href="" target="_blank" data-index="2">
-                                                    <img src="https://rafaelalucas.com/dailyui/6/assets/linkedin.svg"></a>
-                                                <a class="icon" href="" target="_blank" data-index="3">
-                                                    <img src="https://rafaelalucas.com/dailyui/6/assets/dribble.svg"></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                               <div class="swiper-slide">
-                                    <div class="card">
-                                        <span class="bg"></span>
-                                        <span class="more"></span>
-                                        <figure class="photo"><img src="{%  static 'images/tqr.jpg' %}"></figure>
-                                            <article class="text2">
-                                                <p class="name">Touqeer Pathan</p>
-                                                <p class="role">Developer/UI Designer</p>
-                                                <p class="desc">aur lamba chauda description</p>
-                                            </article>
-
-                                            <div class="social">
-{#                                            <span class="pointer"></span>#}
-                                            <div class="icons">
-                                                <a class="icon" href="" target="_blank" data-index="1">
-                                                    <img src="https://rafaelalucas.com/dailyui/6/assets/email.svg"></a>
-                                                <a class="icon" href="" target="_blank" data-index="2">
-                                                    <img src="https://rafaelalucas.com/dailyui/6/assets/linkedin.svg"></a>
-                                                <a class="icon" href="" target="_blank" data-index="3">
-                                                    <img src="https://rafaelalucas.com/dailyui/6/assets/dribble.svg"></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                           </div>
-
+    <section class="our-team-section">
+        <div class="container">
+            <h2 class="title text-center">Meet our Team</h2>
+            <div class="row" id="team1" style="margin: 0 auto">
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="our-team">
+                        <div class="pic">
+                            <img src="{% static 'images/him.jpg' %}" width="300px" height="300px">
                         </div>
-                     </div>
+                        <div class="team-content">
+                            <h3 class="title">Himanshu Chaudhary</h3>
+                            <span class="post">Developer/UI Designer</span>
+                        </div>
+                        <ul class="social">
+                            <li>
+                                <a href="#" target="_blank" class="fa fa-facebook"></a>
+                            </li>
+                            <li>
+                                <a href="#" class="fa fa-twitter"></a>
+                            </li>
+                            <li>
+                                <a href="#" class="fa fa-google-plus"></a>
+                            </li>
+                            <li>
+                                <a href="#" class="fa fa-linkedin"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="our-team">
+                        <div class="pic">
+                            <img src="{% static 'images/tqr.jpg' %}">
+                        </div>
+                        <div class="team-content">
+                            <h3 class="title">Touqeer Pathan</h3>
+                            <span class="post">Developer/UI Designer</span>
+                        </div>
+                        <ul class="social">
+                            <li>
+                                <a href="#" class="fa fa-facebook"></a>
+                            </li>
+                            <li>
+                                <a href="#" class="fa fa-twitter"></a>
+                            </li>
+                            <li>
+                                <a href="#" class="fa fa-google-plus"></a>
+                            </li>
+                            <li>
+                                <a href="#" class="fa fa-linkedin"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
 
-                  </div>
-
-            </section>
             </div>
         </div>
+    </section>
+
     </body>
+
+    {# Main Section #}
 {% endblock content %}
