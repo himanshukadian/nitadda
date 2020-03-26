@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}Home NIT ADDA{% endblock title %}
 {% load static %}
-{% block content3 %}"../media/{{ user.image }}"{% endblock content3 %}
+{% block content3 %}"../../media/{{ user.image }}"{% endblock content3 %}
 {% block content %}
     <head>
         <link rel="stylesheet" type="text/css"
@@ -48,7 +48,7 @@
                 <tr>
                     <th scope="col">Title</th>
                     <th scope="col">Subject</th>
-                    <th scope="col">Likes</th>
+                    <th scope="col">Rating</th>
                     {% if user.is_authenticated and user.is_superuser %}
                         <th scope="col">Actions</th>
                     {% endif %}
@@ -59,7 +59,8 @@
                     {% if  user.is_authenticated and user.is_superuser or i.is_approved %}
                         <tr>
 
-                            <td style="vertical-align:middle"><a style="font-weight: bold" href="../shownotes/{{ i.note_id }}">{{ i.title|title }}</a>
+                            <td style="vertical-align:middle"><a style="font-weight: bold"
+                                                                 href="../../view/{{ i.note_id }}">{{ i.title|title }}</a>
                                 <br>
                                 <span class="ref"> - contributed by <b>{{ k|title }}</b></span>
                             </td>

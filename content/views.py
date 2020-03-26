@@ -239,12 +239,12 @@ def Get_Subject(request):
 @csrf_exempt
 @login_required_message(message="You should be logged in, in order to perform this")
 @login_required
-def Show_Note(request, courseid):
+def Show_Note(request, slug):
     response = {}
     print(request.user)
     notes = Note.objects.all()
-    note = Note.objects.filter(course=courseid).annotate(num_votes=Count('upvotes')).order_by('-num_votes')
-    cname = Course.objects.get(id=courseid)
+    cname = Course.objects.get(slug=slug)
+    note = Note.objects.filter(course=cname.id).annotate(num_votes=Count('upvotes')).order_by('-num_votes')
     print(cname)
     lstatus=[]
     providers = []
@@ -280,12 +280,12 @@ def Get_Subject_Note(request):
 @csrf_exempt
 @login_required_message(message="You should be logged in, in order to perform this")
 @login_required
-def Show_Subject_Note(request, subjectid):
+def Show_Subject_Note(request, slug):
     response = {}
     print(request.user)
     notes = Note.objects.all()
-    note = Note.objects.filter(subject=subjectid).annotate(num_votes=Count('upvotes')).order_by('-num_votes')
-    sname = Subject.objects.get(id=subjectid)
+    sname = Subject.objects.get(slug=slug)
+    note = Note.objects.filter(subject=sname.id).annotate(num_votes=Count('upvotes')).order_by('-num_votes')
     print(sname)
     lstatus = []
     providers = []
@@ -325,15 +325,13 @@ def getSubjects(request):
 @login_required_message(message="You should be logged in, in order to perform this")
 @login_required
 def Display_Pdf(request,noteid) :
-    print("yaa Display_Pdf called")
     response = {}
     cd = Note.objects.get(note_id=noteid)
     response["data"] = cd
     return render(request, 'content/show_note_pdf.html', response)
 
-@csrf_exempt
-@login_required_message(message="You should be logged in, in order to perform this")
-@login_required
+
+@login_required(login_url="/content/login")
 def Upvote(request):
     print("yaa Upvote called")
     if request.method == 'POST':
@@ -351,7 +349,6 @@ def Upvote(request):
     data=[]
     data.append(alreadyVoted)
     data.append(noteid)
-    print("data[1] ki value in Upvote view ",data[1])
     return HttpResponse(json.dumps(data), content_type='application/json')
 
 
@@ -367,7 +364,7 @@ def Approve_Note(request, noteid):
     else:
         cd.is_approved = True
         messages.success(request, 'Successfully approved')
-    url = "/content/shownote/" + str(course.id)
+    url = "/content/course_notes/" + str(course.id)
     print("url " + url)
     cd.save()
     return redirect(request.META.get('HTTP_REFERER', '/'))
@@ -398,9 +395,6 @@ def Show_Liked_Notes(request):
 @login_required(login_url="/content/login")
 def Show_Uploaded_Notes(request):
     uploaded_notes = Note.objects.filter(user_id=request.user.id)
-    print("Total uploaded notes: ", len(uploaded_notes))
-    if(len(uploaded_notes)>0):
-        print("name :", uploaded_notes[0].title)
     response = {}
 
     response['data'] = uploaded_notes

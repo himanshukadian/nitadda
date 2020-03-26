@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import FileExtensionValidator
+from django.template.defaultfilters import slugify
 from django.utils.text import slugify
 
 from accounts.models import CustomUser
@@ -7,6 +8,23 @@ from accounts.models import CustomUser
 
 class Course(models.Model):
     title = models.CharField(max_length=255, default='')
+    slug = models.SlugField(max_length=30, unique=True, editable=False)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            slug = slugify(self.title)
+            while True:
+                try:
+                    course = Course.objects.get(slug=slug)
+                    if course == self:
+                        self.slug = slug
+                        break
+                    else:
+                        slug = slug + '_'
+                except:
+                    self.slug = slug
+                    break
+        super(Course, self).save()
 
     def __str__(self):
         return self.title
@@ -15,7 +33,23 @@ class Course(models.Model):
 class Subject(models.Model):
     title = models.CharField(max_length=255, default='')
     course = models.ForeignKey(Course, verbose_name="Course", on_delete=models.CASCADE, blank=True, null=True)
+    slug = models.SlugField(max_length=30, unique=True, editable=False)
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            slug = slugify(self.title, self.course)
+            while True:
+                try:
+                    subject = Subject.objects.get(slug=slug)
+                    if subject == self:
+                        self.slug = slug
+                        break
+                    else:
+                        slug = slug + '_'
+                except:
+                    self.slug = slug
+                    break
+        super(Subject, self).save()
     def __str__(self):
         return self.title
 
