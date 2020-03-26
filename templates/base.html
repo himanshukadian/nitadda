@@ -42,9 +42,10 @@
         window.onclick = function (e) {
             if (!e.target.matches('.dropbtn')) {
                 var myDropdown = document.getElementById("myDropdown");
-                if (myDropdown.classList.contains('show')) {
-                    myDropdown.classList.remove('show');
-                }
+                {# TO DO #}
+                {#if (myDropdown.classList.contains('show')) {#}
+                {#    myDropdown.classList.remove('show');#}
+                {# }#}
             }
         }
         {#   dsaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa #}
@@ -59,6 +60,14 @@
                 $(this).addClass('active');
             });
         });
+        {# dropdown slide down #}
+        $(document).ready(function () {
+            $('.navbar .menu_dropdown').hover(function () {
+                    $(this).find('.dropdown-content').first().stop(true, true).slideDown(200);
+                }, function () {
+                    $(this).find('.dropdown-content').first().stop(true, true).slideUp(150)
+                });
+            });
     </script>
 </head>
 <body style="background-color: #e8e8e8;">
@@ -117,10 +126,19 @@
                 <ul id="rightnav" class="nav navbar-nav navbar-right">
                     {% if user.is_authenticated %}
                         <li class="menu_dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                            aria-expanded="false">Dropdown <span class="caret"></span></a>
+                            <ul class="dropdown-content">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                            </ul>
+                        </li>
+                        <li class="menu_dropdown">
                             <button class="dropbtn" onclick="myFunction()">
                                 Hi, {{ user.username|title }} <i class="fa fa-caret-down"></i>
                             </button>
-                            <img style="float: right; margin-top: 6px" src={% block content3 %}"media/{{ user.image }}"{%  endblock content3 %} height="40px"
+                            <img style="border-radius: 50%; float: right; margin-top: 6px" src={% block content3 %}"media/{{ user.image }}"{%  endblock content3 %} height="40px"
                                  width="40px">
                             <div class="dropdown-content" id="myDropdown">
                                 <a href="/content/show_liked_notes">My Likes</a>
@@ -145,17 +163,17 @@
         </div>
     </nav>
 </header>
-<div class="container" style="min-height:100vh;min-width:min-content;background: #FFFFFF;margin-bottom: 3%">
+{#<div class="container ext_container" style="min-height:100vh;min-width:min-content;background: #FFFFFF;margin-top: -2%;margin-bottom: 1%">#}
 
     <section class="content box-primary">
     {% block content %}
         MAIN CONTENT FOR PROJECT
     {% endblock content %}
-</section>
+    </section>
 </div>
 {% block content1 %}
 
-    {% endblock content1 %}
+{% endblock content1 %}
 
 <footer class="site-footer">
     <div class="container">

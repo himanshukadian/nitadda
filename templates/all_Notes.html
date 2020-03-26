@@ -23,28 +23,6 @@
                 src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
         <style>
 
-            {#.button1 {#}
-            {#    background-color: white; /* Green */#}
-            {#    border: none;#}
-            {#    color: white;#}
-            {#    text-align: center;#}
-            {#    text-decoration: none;#}
-            {#    display: inline-block;#}
-            {#    font-size: 16px;#}
-            {#    cursor: pointer;#}
-            {#    background-color: transparent;#}
-            {#    color: black;#}
-            {##}
-
-            {#svg {#}
-            {#    display: inline-block;#}
-            {##}
-            {#    position: relative;#}
-            {#    left: 50%;#}
-            {#    -webkit-transform: translate(-50%);#}
-            {#    -ms-transform: translate(-50%);#}
-            {#    transform: translate(-50%);#}
-            #}#}
         </style>
         {#    <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>#}
     </head>
@@ -84,8 +62,7 @@
                     {% if  user.is_authenticated and user.is_superuser or i.is_approved %}
                         <tr>
 
-                            <td style="vertical-align:middle"><a style="font-weight: bold"
-                                                                 href="../shownotes/{{ i.note_id }}">{{ i.title|title }}</a>
+                            <td style="vertical-align:middle"><a style="font-weight: bold" href="../shownotes/{{ i.note_id }}">{{ i.title|title }}</a>
                                 <br>
                                 <span class="ref"> - contributed by <b>{{ k|title }}</b></span>
                             </td>

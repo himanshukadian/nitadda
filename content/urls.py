@@ -6,6 +6,7 @@ from . import views
 
 urlpatterns = [
                   url(r'^$', views.index, name='index'),
+                  url(r'^meetOurTeam/$', views.Meet_Our_Team),
                   url(r'^upvote/$', views.Upvote),
                   url('upload_note/', views.UploadNote, name='Upload_Note'),
                   url('approvenote/(?P<noteid>\w+)', views.Approve_Note, name='Approve_Note'),

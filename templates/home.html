@@ -2,6 +2,9 @@
 {% block title %}Home NIT ADDA{% endblock title %}
 {% load static %}
 {% block content %}
+    <head>
+        <script src="https://kit.fontawesome.com/57456f662e.js" crossorigin="anonymous"></script>
+    </head>
     <body>
     <script>
         $(document).ready(function () {
@@ -21,6 +24,13 @@
     {% endif %}
     <div class="site-section">
         <div class="container">
+            <div class="searchinput">
+              <form method="get" action="#">
+              <!--in form change the # the link you want to direct your search-->
+                <input type="text" name="q" placeholder=" Search NitAdda . . ." class="text" required>
+                <button type="submit" class="submit"><i class="fas fa-search"></i></button>
+              </form>
+            </div>
             <div class="row">
                 <div class="col-lg-4 col-md-6 col-xs-12">
                     <div id="redBlock" class="block-2 red">
@@ -63,7 +73,9 @@
                 <tr>
                     <th scope="col">Title</th>
                     <th scope="col">Subject</th>
+                {% if  user.is_authenticated %}
                     <th scope="col">Likes</th>
+                {% endif %}
                     {% if user.is_authenticated and user.is_superuser %}
                         <th scope="col">Actions</th>
                     {% endif %}
@@ -76,33 +88,33 @@
                 {% for i, j, k in data %}
                     {% if  user.is_authenticated and user.is_superuser or i.is_approved %}
                         <tr>
-                            <td style="vertical-align:middle"><a style="font-weight: bold"
-                                                                 href="content/shownotes/{{ i.note_id }}">{{ i.title }}</a>
+                            <td style="vertical-align:middle"><a style="font-weight: bold" href="content/shownotes/{{ i.note_id }}">{{ i.title }}</a>
                                 <br>
                                 <span class="ref"> - contributed by <b>{{ k|title }}</b></span>
                             </td>
                             <td style="vertical-align:middle"><span>{{ i.subject|title }}</span></td>
-                            {#                    href = {% url 'upvote/ i.note_id / user.id ' %}#}
-                            {% if  j %}
-                                <td style="vertical-align:middle">
-                                    <div class="like_grow" id="{{ i.note_id }}" onclick="updateVote( this.id )">
-                                        <i id="{{ i.note_id }}1" class="fa fa-thumbs-up fa-2x like active"
-                                           aria-hidden="true"></i>
-                                    </div>
-                                    <span class="likes_counter" style="font-family:'Amaranth'" id="{{ i.note_id }}2">
+                            {% if  user.is_authenticated %}
+                                {% if  j %}
+                                    <td style="vertical-align:middle">
+                                        <div class="like_grow" id="{{ i.note_id }}" onclick="updateVote( this.id )">
+                                            <i id="{{ i.note_id }}1" class="fa fa-thumbs-up fa-2x like active"
+                                               aria-hidden="true"></i>
+                                        </div>
+                                        <span class="likes_counter" style="font-family:'Amaranth'" id="{{ i.note_id }}2">
+                                                {{ i.total_upvotes }}
+                                            </span>
+                                    </td>
+                                    {% else %}
+                                    <td style="vertical-align:middle">
+                                        <div class="like_grow" id="{{ i.note_id }}" onclick="updateVote( this.id)">
+                                            <i id="{{ i.note_id }}1" class="fa fa-thumbs-up fa-2x like"
+                                               aria-hidden="true"></i>
+                                        </div>
+                                        <span class="likes_counter" style="font-family:'Amaranth'" id="{{ i.note_id }}2">
                                             {{ i.total_upvotes }}
                                         </span>
-                                </td>
-                            {% else %}
-                                <td style="vertical-align:middle">
-                                    <div class="like_grow" id="{{ i.note_id }}" onclick="updateVote( this.id )">
-                                        <i id="{{ i.note_id }}1" class="fa fa-thumbs-up fa-2x like"
-                                           aria-hidden="true"></i>
-                                    </div>
-                                    <span class="likes_counter" style="font-family:'Amaranth'" id="{{ i.note_id }}2">
-                                        {{ i.total_upvotes }}
-                                    </span>
-                                </td>
+                                    </td>
+                                   {% endif %}
                             {% endif %}
                             {% if user.is_authenticated and user.is_superuser %}
                                 <td scope="col">
@@ -122,10 +134,9 @@
         </div>
     </div>
 
-
     {# Main Section #}
-{% endblock content %}
-{% block content1 %}
+{#{% endblock content %}#}
+{#{% block content1 %}#}
     <div class="sect sect--violet ">
         <img src="https://image.ibb.co/fWyVtb/path3762.png" class="career-img">
         <div class="container">
@@ -134,11 +145,51 @@
                     <h1 class="career_title">Oh! Your have digged our website in search for Study Materials?</h1>
                     <h1 class="career_sub">We will pleased to have you onboard! Check the Notes, Previous Examination
                         Papers and much more.</h1>
-                    <a href="#nitadda" class="btn btn--white btn--width">Check</a>
+                    <a href="/content/meetOurTeam" class="btn btn--white btn--width">Check</a>
                 </div>
             </div>
         </div>
-
     </div>
     </body>
-{% endblock content1 %}
+    <script>
+        $(document).ready(function () {
+            $('table.table').DataTable({
+                "bPaginate": true,
+                "bLengthChange": false,
+                "bFilter": true,
+                "bInfo": false,
+                "aaSorting": [],
+                "bAutoWidth": false,
+            });
+         });
+
+        function updateVote(note_id, user_is_logged) {
+            console.log("note id value: " + note_id);
+            $.ajax({
+                url: "/content/upvote/",
+                type: "POST",
+                {#async: true,#}
+                data: {'noteid': note_id, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                {#dataType: "json",#}
+                success: function (data) {
+                    console.log("data[0] value: " + data[0]);
+                    if (data[0]) {
+                        console.log("if");
+                        console.log("id : " + data[1]);
+                        if(document.getElementById(data[1] + "2"))
+                            document.getElementById(data[1] + "2").innerHTML = parseInt(document.getElementById(data[1] + "2").innerHTML) - 1;
+                        if(document.getElementById(data[1] + "1"))
+                            document.getElementById(data[1] + "1").classList.remove("active");
+                        {#document.getElementById(data[1] + "3").classList.remove("active");#}
+                    } else {
+                        console.log("else");
+                        document.getElementById(data[1] + "1").classList.add("active");
+                        {#document.getElementById(data[1] + "3").classList.rekmove("active");#}
+                        document.getElementById(data[1] + "2").innerHTML = parseInt(document.getElementById(data[1] + "2").innerHTML) + 1;
+                    }
+                }
+            });
+        }
+    </script>
+
+{% endblock content %}

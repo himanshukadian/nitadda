@@ -308,15 +308,18 @@ def getSubjects(request):
         )
 
 
-
+@login_required_message(message="You should be logged in, in order to perform this")
+@login_required
 def Display_Pdf(request,noteid) :
+    print("yaa Display_Pdf called")
     response = {}
     cd = Note.objects.get(note_id=noteid)
     response["data"] = cd
     return render(request, 'show_note_pdf.html', response)
 
-
-@login_required(login_url="/content/login")
+@csrf_exempt
+@login_required_message(message="You should be logged in, in order to perform this")
+@login_required
 def Upvote(request):
     print("yaa Upvote called")
     if request.method == 'POST':
@@ -334,6 +337,7 @@ def Upvote(request):
     data=[]
     data.append(alreadyVoted)
     data.append(noteid)
+    print("data[1] ki value in Upvote view ",data[1])
     return HttpResponse(json.dumps(data), content_type='application/json')
 
 
@@ -387,3 +391,6 @@ def Show_Uploaded_Notes(request):
     else:
         response['user_has_uploaded'] = False;
     return render(request, 'uploaded_notes.html', response)
+
+def Meet_Our_Team(request):
+    return render(request, 'meet_our_team.html')
