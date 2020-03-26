@@ -63,7 +63,7 @@
                 <tr>
                     <th scope="col">Title</th>
                     <th scope="col">Subject</th>
-                    <th scope="col">Likes</th>
+                    <th scope="col">Rating</th>
                     {% if user.is_authenticated and user.is_superuser %}
                         <th scope="col">Actions</th>
                     {% endif %}
@@ -85,20 +85,12 @@
                             {#                    href = {% url 'upvote/ i.note_id / user.id ' %}#}
                             {% if  j %}
                                 <td style="vertical-align:middle">
-                                    <div class="like_grow" id="{{ i.note_id }}" onclick="updateVote( this.id )">
-                                        <i id="{{ i.note_id }}1" class="fa fa-thumbs-up fa-2x like active"
-                                           aria-hidden="true"></i>
-                                    </div>
                                     <span class="likes_counter" style="font-family:'Amaranth'" id="{{ i.note_id }}2">
                                             {{ i.total_upvotes }}
-                                        </span>
+                                    </span>
                                 </td>
                             {% else %}
                                 <td style="vertical-align:middle">
-                                    <div class="like_grow" id="{{ i.note_id }}" onclick="updateVote( this.id )">
-                                        <i id="{{ i.note_id }}1" class="fa fa-thumbs-up fa-2x like"
-                                           aria-hidden="true"></i>
-                                    </div>
                                     <span class="likes_counter" style="font-family:'Amaranth'" id="{{ i.note_id }}2">
                                         {{ i.total_upvotes }}
                                     </span>
@@ -109,9 +101,9 @@
                                     {% if  i.is_approved %}
                                         <a class="btn">Approved</a>
                                     {% else %}
-                                        <a href="../approvenote/{{ i.note_id }}" class="btn btn-danger">Approve</a>
+                                        <a href="content/approvenote/{{ i.note_id }}" class="btn btn-danger">Approve</a>
                                     {% endif %}
-                                    <a href="../deletenote/{{ i.note_id }}" class="btn btn-danger">Remove</a>
+                                    <a href="content/deletenote/{{ i.note_id }}" class="btn btn-danger">Remove</a>
                                 </td>
                             {% endif %}
                         </tr>

@@ -56,6 +56,13 @@ def user_login(request):
         response = {}
         if request.method == 'POST':
             username = request.POST['username']
+            try:
+                username = CustomUser.objects.get(email=username).username
+            except CustomUser.DoesNotExist:
+                try:
+                    username = CustomUser.objects.get(registration_number=username).username
+                except CustomUser.DoesNotExist:
+                    username = request.POST['username']
             password = request.POST['password']
             user = authenticate(username=username, password=password)
             if user is not None:

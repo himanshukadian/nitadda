@@ -22,48 +22,111 @@ https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
                 src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
         <script type="text/javascript"
                 src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                // messages timeout for 10 sec
+                setTimeout(function () {
+                    $('.message_container').fadeOut('slow');
+                }, 3000);
+            });
+        </script>
 
     </head>
     <body>
-    <div class="row main_header">
-        <!-- <center><h2><b>Registration</b></h2></center>
-         <br>-->
+    <div id="like" class="alert alert-warning message_container" style="display: none">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>you have liked this</strong>
     </div>
+    <div id="dislike" class="alert alert-warning message_container" style="display: none">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>you have disliked this</strong>
+    </div>
+    {% if messages %}
+        {% for mes in messages %}
+            <div class="alert alert-warning message_container">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>{{ mes }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <ul class="sideMenu">
+        <li class="sideTab">
+            <a style=" background-color: #fd4d40;">
+                <span class="icon-home"><i class="fa fa-fw fa-lg fa-edit faa-tada faa-fast"></i></span>
+                Notes</a>
+        </li>
+        <li class="sideTab">
+            <a style="background-color: #fdb62f;">
+                <span class="icon-person"><i class="fa fa-fw fa-lg fa-file-powerpoint-o faa-tada faa-fast"></i></span>
+                Previous Year Papers</a></li>
+        <li class="sideTab">
 
-    <div class="container">
-        {% for note in allnotes %}
-            <caption><h3 class="table_title">{{ note.0.subject }} Notes</h3></caption>
-            <div class="row">
-                <table class="table table-striped table-responsive-md" id="example">
-                    <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">S. No</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Course</th>
-                        {% if user.is_authenticated and user.is_superuser %}
-                            <th scope="col">Action</th>
-                        {% endif %}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for i in note %}
+            <a style="background-color: dodgerblue;">
+                <span class="icon-cog"><i class="fa fa-fw fa-lg fa-book faa-tada faa-fast"></i></span>
+                Books</a></li>
+    </ul>
+    <div class="container" style="clear: both">
+        <caption><h3 class="table_title">{{ sname }} Notes</h3></caption>
+        <div class="row">
+            <table class="table table-striped table-responsive-md" id="example">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Course</th>
+                    <th scope="col">Rating</th>
+                    {% if user.is_authenticated and user.is_superuser %}
+                        <th scope="col">Actions</th>
+                    {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for i, j, k in data %}
+                    {% if  user.is_authenticated and user.is_superuser or i.is_approved %}
                         <tr>
-                            <td style="vertical-align:middle">{{ forloop.counter }}</td>
-                            <td style="vertical-align:middle"><a
-                                    href="../shownotes/{{ i.note_id }}">{{ i.title|title }}</a>
+                            <td style="vertical-align:middle"><a style="font-weight: bold"
+                                                                 href="../shownotes/{{ i.note_id }}">{{ i.title|title }}</a>
+                                <br>
+                                <span class="ref"> - contributed by <b>{{ k|title }}</b></span>
                             </td>
-                            <td style="vertical-align:middle">{{ i.course|title }}</td>
+                            <td style="vertical-align:middle"><span>{{ i.course|title }}</span></td>
+                            {#                    href = {% url 'upvote/ i.note_id / user.id ' %}#}
+                            {% if  j %}
+                                <td style="vertical-align:middle">
+                                    <div class="like_grow" id="{{ i.note_id }}" onclick="updateVote( this.id )">
+                                        <i id="{{ i.note_id }}1" class="fa fa-thumbs-up fa-2x like active"
+                                           aria-hidden="true"></i>
+                                    </div>
+                                    <span class="likes_counter" style="font-family:'Amaranth'" id="{{ i.note_id }}2">
+                                            {{ i.total_upvotes }}
+                                        </span>
+                                </td>
+                            {% else %}
+                                <td style="vertical-align:middle">
+                                    <div class="like_grow" id="{{ i.note_id }}" onclick="updateVote( this.id )">
+                                        <i id="{{ i.note_id }}1" class="fa fa-thumbs-up fa-2x like"
+                                           aria-hidden="true"></i>
+                                    </div>
+                                    <span class="likes_counter" style="font-family:'Amaranth'" id="{{ i.note_id }}2">
+                                        {{ i.total_upvotes }}
+                                    </span>
+                                </td>
+                            {% endif %}
                             {% if user.is_authenticated and user.is_superuser %}
-                                <td style="vertical-align:middle" scope="col"><a href="deletenote/{{ i.note_id }}"
-                                                                                 class="btn btn-danger">Remove</a>
+                                <td scope="col">
+                                    {% if  i.is_approved %}
+                                        <a class="btn">Approved</a>
+                                    {% else %}
+                                        <a href="../approvenote/{{ i.note_id }}" class="btn btn-danger">Approve</a>
+                                    {% endif %}
+                                    <a href="../deletenote/{{ i.note_id }}" class="btn btn-danger">Remove</a>
                                 </td>
                             {% endif %}
                         </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
     </div>
 
@@ -75,11 +138,38 @@ https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
                 "bLengthChange": false,
                 "bFilter": true,
                 "bInfo": false,
-                "bAutoWidth": false
+                "aaSorting": [],
+                "bAutoWidth": false,
             });
         });
 
+        function updateVote(note_id) {
+            console.log("note id value: " + note_id);
 
+            $.ajax({
+                url: "/content/upvote/",
+                type: "POST",
+                {#async: true,#}
+                data: {'noteid': note_id, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                {#dataType: "json",#}
+                success: function (data) {
+                    if (data[0]) {
+                        document.getElementById(data[1] + "2").innerHTML = parseInt(document.getElementById(data[1] + "2").innerHTML) - 1;
+                        document.getElementById(data[1] + "1").classList.remove("active");
+                        $('#dislike').show();
+                        {#document.getElementById(data[1] + "3").classList.remove("active");#}
+                    } else {
+                        document.getElementById(data[1] + "1").classList.add("active");
+                        $('#like').show();
+                        {#document.getElementById(data[1] + "3").classList.rekmove("active");#}
+                        document.getElementById(data[1] + "2").innerHTML = parseInt(document.getElementById(data[1] + "2").innerHTML) + 1;
+                    }
+                    setTimeout(function () {
+                        $('.message_container').fadeOut('slow');
+                    }, 3000);
+                }
+            });
+        }
     </script>
     {# Main Section #}
 {% endblock content %}
