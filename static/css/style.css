@@ -46,13 +46,6 @@ a:hover .fa {
     border: 1.5px solid #adadad;
 }
 
-#uploadForm {
-    margin:auto;
-    background-color: #e9eee1;
-    /*border-radius:20px;*/
-    height: auto;
-}
-
 #preOutput {
     width: 100%;
     height: auto;
@@ -768,9 +761,7 @@ color: #fff;
     -moz-box-shadow: 0px 10px 15px 0px rgb(26, 26, 26);
     box-shadow: 0px 10px 15px 0px rgb(26, 26, 26);
 }
-.block-2 .yellow:hover{
 
-}
 .like,
 .dislike {
     cursor: pointer;
@@ -849,7 +840,7 @@ color: #fff;
     background-color: white;
     margin: auto;
     max-width: 720px;
-    border-radius: 0%;
+    height: auto;
      -webkit-box-shadow: 0px 10px 15px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0px 10px 15px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0px 10px 15px 0px rgba(0, 0, 0, 0.5);
@@ -861,7 +852,7 @@ color: #fff;
     font-weight: bold;
 }
 
-.
+
 
 .message_container{
     border-style: solid;
@@ -1089,3 +1080,46 @@ center h1 {
     box-shadow: 5px 5px 4px 2px rgba(0, 0, 0, 0.5);
 }
 /* INBOX related css  ends */
+.tabs {
+    overflow: hidden;
+}
+
+.tabs h3 {
+    float: left;
+    width: 50%;
+}
+
+.tabs h3 a {
+    padding: 0.5em 0;
+    text-align: center;
+    font-weight: 400;
+    text-decoration: none;
+    background-color: #e6e7e8;
+    display: block;
+    color: #666;
+}
+
+.tabs h3 a.active {
+    background-color: #fff;
+}
+
+#profile__img {
+    position: relative;
+    width: 165px;
+    height: 160px;
+    display: block;
+    margin: 0 auto;
+}
+
+.tabs-content div[id$="tab-content"] {
+    display: none;
+}
+
+.tabs-content .active {
+    display: block !important;
+}
+
+.dataTables_filter label {
+    color: black;
+}
+

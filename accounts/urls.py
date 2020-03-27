@@ -1,4 +1,6 @@
 from django.conf.urls import url
+from django.urls import path
+
 from . import views
 
 urlpatterns = [
@@ -6,6 +8,7 @@ urlpatterns = [
     url(r'register/$', views.UserFormView.as_view(), name='register'),
     url(r'login/$', views.user_login, name='login'),
     url(r'profile/$', views.profile, name='profile'),
+    path('<int:pk>/update/', views.UserUpdateFormView.as_view(), name='update-profile'),
     url(r'contact_us/$', views.Contact_Us, name='contact_us'),
     url(r'inbox/$', views.Inbox, name='inbox'),
     url(r'inbox/show_message/$', views.Show_Message, name='show_message'),

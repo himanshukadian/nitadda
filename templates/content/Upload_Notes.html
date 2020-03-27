@@ -48,48 +48,104 @@
     <div class="container" style="min-width:min-content;margin-bottom: 8%">
 
         <div class=" md-3" style="margin-top:3%;">
-            <caption><h3 class="table_title" style="color: f9f9f9;">Upload Notes</h3></caption>
+            <caption><h3 class="table_title">Upload Notes</h3></caption>
             <div class=" sm-3 ">
                 <div id="uploadForm" class="well well-lg">
-                    <form method="POST" action="/content/upload_note/" enctype="multipart/form-data"
-                          onsubmit="return validateForm();">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <label class="formText" for="firstName">Note Title</label>
-                            <input for="firstName" class="form-control" name="title" id="fn" required>
+                    <div class="tabs">
+                        <h3 class="signup-tab"><a class="active" href="#signup-tab-content">Upload Notes</a></h3>
+                        <h3 class="login-tab"><a href="#login-tab-content">Upload Papers</a></h3>
+                    </div>
+                    <div class="tabs-content">
+                        <div id="signup-tab-content" class="active">
+                            <form method="POST" action="/content/upload/" enctype="multipart/form-data"
+                                  onsubmit="return validateForm();">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label class="formText" for="firstName">Note Title</label>
+                                    <input for="firstName" class="form-control" name="title" id="fn" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="formText" for="course">Select Course</label>
+                                    <select class="form-control" id="selectCourse" name="courses" required>
+                                        <option selected disabled>Choose course</option>
+                                        {% for course in courses %}
+                                            <option value="{{ course.id }}">
+                                                {{ course.title }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="formText" for="course">Select Subject</label>
+                                    <select class="form-control" id="selectSubject" name="subjects" required>
+                                        <option selected disabled>Choose subject</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="formText" for="lastName">Select File</label>
+                                    <input for="lastName" class="form-control" type="File" name="files" id="upload"
+                                           required>
+                                </div>
+                                <center>
+                                    <button type="submit" id="btn" class="btn btn-info btn-md">Save</button>
+                                </center>
+                            </form>
                         </div>
-                        <div class="form-group">
-                            <label class="formText" for="course">Select Course</label>
-                            <select class="form-control" id="selectCourse" name="courses" required>
-                                <option selected disabled>Choose course</option>
-                                {% for course in courses %}
-                                    <option value="{{ course.id }}">
-                                        {{ course.title }}
-                                    </option>
-                                {% endfor %}
-                            </select>
+                        <div id="login-tab-content">
+                            {#                            <form method="POST" action="/content/upload/" enctype="multipart/form-data"#}
+                            {#                                  onsubmit="return validateForm();">#}
+                            {#                                {% csrf_token %}#}
+                            {#                                <div class="form-group">#}
+                            {#                                    <label class="formText" for="firstName">Note Title</label>#}
+                            {#                                    <input for="firstName" class="form-control" name="title" id="fn" required>#}
+                            {#                                </div>#}
+                            {#                                <div class="form-group">#}
+                            {#                                    <label class="formText" for="course">Select Course</label>#}
+                            {#                                    <select class="form-control" id="selectCourse" name="courses" required>#}
+                            {#                                        <option selected disabled>Choose course</option>#}
+                            {#                                        {% for course in courses %}#}
+                            {#                                            <option value="{{ course.id }}">#}
+                            {#                                                {{ course.title }}#}
+                            {#                                            </option>#}
+                            {#                                        {% endfor %}#}
+                            {#                                    </select>#}
+                            {#                                </div>#}
+                            {#                                <div class="form-group">#}
+                            {#                                    <label class="formText" for="course">Select Subject</label>#}
+                            {#                                    <select class="form-control" id="selectSubject" name="subjects" required>#}
+                            {#                                        <option selected disabled>Choose subject</option>#}
+                            {#                                    </select>#}
+                            {#                                </div>#}
+                            {#                                <div class="form-group">#}
+                            {#                                    <label class="formText" for="lastName">Select File</label>#}
+                            {#                                    <input for="lastName" class="form-control" type="File" name="files" id="upload"#}
+                            {#                                           required>#}
+                            {#                                </div>#}
+                            {#                                <center>#}
+                            {#                                    <button type="submit" id="btn" class="formButton">Upload</button>#}
+                            {#                                </center>#}
+                            {#                            </form>#}
                         </div>
-                        <div class="form-group">
-                            <label class="formText" for="course">Select Subject</label>
-                            <select class="form-control" id="selectSubject" name="subjects" required>
-                                <option selected disabled>Choose subject</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="formText" for="lastName">Select File</label>
-                            <input for="lastName" class="form-control" type="File" name="files" id="upload" required>
-                        </div>
-                        <center>
-                            <button type="submit" id="btn" class="formButton">Upload</button>
-                        </center>
-                    </form>
-                    <br>
-
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        jQuery(document).ready(function ($) {
+            tab = $('.tabs h3 a');
 
+            tab.on('click', function (event) {
+                event.preventDefault();
+                tab.removeClass('active');
+                $(this).addClass('active');
+
+                tab_content = $(this).attr('href');
+                $('div[id$="tab-content"]').removeClass('active');
+                $(tab_content).addClass('active');
+            });
+        });
+    </script>
     </body>
 
     {# Main Section #}

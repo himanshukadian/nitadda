@@ -10,7 +10,7 @@ urlpatterns = [
                   url(r'^$', views.index, name='index'),
                   url(r'^meetOurTeam/$', TemplateView.as_view(template_name='meet_our_team.html')),
                   url(r'^upvote/$', views.Upvote),
-                  url('upload_note/', views.UploadNote, name='Upload_Note'),
+                  url('upload/', views.UploadNote, name='Upload_Note'),
                   url('approvenote/(?P<noteid>\w+)', views.Approve_Note, name='Approve_Note'),
                   url(r'^deletenote/(?P<noteid>\w+)', views.Delete_Note, name='Delete_Note'),
                   url(r'^view/(?P<noteid>\w+)', views.Display_Pdf, name='Display_Pdf'),
