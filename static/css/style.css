@@ -970,3 +970,7 @@ center h1 {
 
 /* search bar ends*/
 
+.dataTables_filter label {
+    color: f9f9f9;
+}
+

@@ -63,11 +63,11 @@
         {# dropdown slide down #}
         $(document).ready(function () {
             $('.navbar .menu_dropdown').hover(function () {
-                    $(this).find('.dropdown-content').first().stop(true, true).slideDown(200);
-                }, function () {
-                    $(this).find('.dropdown-content').first().stop(true, true).slideUp(150)
-                });
+                $(this).find('.dropdown-content').first().stop(true, true).slideDown(200);
+            }, function () {
+                $(this).find('.dropdown-content').first().stop(true, true).slideUp(150)
             });
+        });
     </script>
 </head>
 <body style="background: #333333">
@@ -75,12 +75,14 @@
     <nav style="margin-bottom: 50px; background-color:#fff;font-size: 14px;z-index: 1000;"
          class="navbar navbar-static-top navbar-light bg-faded ">
         <div class="container-fluid">
-        <a id="nitadda" href="#" class="navbar-brand faa-pulse faa-slow animated" data-toggle="popover"
-                           data-trigger="focus" data-html="true" data-placement="bottom">
-                        <i  class="fa fa-lg"><strong><span style="font-family: 'Product Sans',sans-serif;font-size:40px;"><span class="g-blue">N</span><span
-        class="o-red">i</span><span class="d-yellow">t</span><span class="g-blue">A</span><span
-        class="l-green">d</span><span class="o-red e-red">d</span><span class="o-yellow">a </span></span></strong></i>
-                    </a>
+            <a id="nitadda" href="#" class="navbar-brand faa-pulse faa-slow animated" data-toggle="popover"
+               data-trigger="focus" data-html="true" data-placement="bottom">
+                <i class="fa fa-lg"><strong><span style="font-family: 'Product Sans',sans-serif;font-size:40px;"><span
+                        class="g-blue">N</span><span
+                        class="o-red">i</span><span class="d-yellow">t</span><span class="g-blue">A</span><span
+                        class="l-green">d</span><span class="o-red e-red">d</span><span
+                        class="o-yellow">a </span></span></strong></i>
+            </a>
             <div class="navbar-header">
                 <a class="navbar-toggle collapsed" data-target="#navbar" data-toggle="collapse">
                     <i class="fa fa-chevron-down faa-vertical animated"></i>
@@ -91,6 +93,16 @@
                     <li class="active" {% if request.path == '/' %}style="background: #E7E7E7"{% endif %}>
                         <a class="faa-parent animated-hover" href="/">
                             <i class="fa fa-fw fa-lg fa-home faa-tada faa-fast"></i>Home
+                        </a>
+                    </li>
+                    <li {% if request.path == '/content/meetOurTeam/' %}style="background: #E7E7E7"{% endif %}>
+                        <a class="faa-parent animated-hover" href="/content/meetOurTeam/">
+                            <i class="fa fa-fw fa-lg fa-user faa-tada faa-fast"></i>Our Team
+                        </a>
+                    </li>
+                    <li>
+                        <a class="faa-parent animated-hover" href="#about">
+                            <i class="fa fa-fw fa-lg fa-info faa-tada faa-fast"></i>About
                         </a>
                     </li>
                     {% if user.is_authenticated and user.is_superuser %}
@@ -129,7 +141,8 @@
                             <button class="dropbtn" onclick="myFunction()">
                                 Hi, {{ user.username|title }} <i class="fa fa-caret-down"></i>
                             </button>
-                            <img style="border-radius: 50%; float: right; margin-top: 6px" src={% block content3 %}"media/{{ user.image }}"{%  endblock content3 %} height="40px"
+                            <img style="border-radius: 50%; float: right; margin-top: 6px"
+                                 src={% block content3 %}"media/{{ user.image }}"{% endblock content3 %} height="40px"
                                  width="40px">
                             <div class="dropdown-content" id="myDropdown">
                                 <a href="/content/show_liked_notes">My Likes</a>
@@ -155,9 +168,9 @@
     </nav>
 </header>
 
-    {% block content %}
-        MAIN CONTENT FOR PROJECT
-    {% endblock content %}
+{% block content %}
+    MAIN CONTENT FOR PROJECT
+{% endblock content %}
 
 {% block content1 %}
 
@@ -167,7 +180,7 @@
     <div class="container">
         <div class=" text-center row">
             <div class="col-sm-12 col-md-6">
-                <h6>About</h6>
+                <h6 id="about">About</h6>
                 <p class="text-justify">Nitadda.com is an initiative to help the students to get note, previous year
                     examination papers and schedule for various events and many other notifications .NITADDA focuses on
                     providing students all the help they need to score well in their academics as well for their
