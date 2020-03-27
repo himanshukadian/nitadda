@@ -4,6 +4,97 @@
 {% block content3 %}"../../media/{{ user.image }}"{% endblock content3 %}
 {% block content %}
     <head>
+        <style>
+            #nav1 {
+                width: 90%;
+                margin: 0 auto;
+                clear: both;
+                background: #eee;
+                box-shadow: 2px 2px 2px;
+                font-family: 'Shadows Into Light', cursive;
+                font-size: 24px;
+            }
+
+            #nav1 ul {
+                list-style: none;
+                padding: 0px;
+            }
+
+            #nav1 li {
+                float: none;
+                width: 100%;
+            }
+
+            #nav1 li a {
+                display: block;
+                width: 100%;
+                padding: 20px;
+                border-left: 5px solid;
+                position: relative;
+                z-index: 2;
+                text-decoration: none;
+                color: #444;
+                box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+            }
+
+            #nav1 li a:hover {
+                border-bottom: 0px;
+                color: #fff;
+            }
+
+            #nav1 li:first-child a {
+                border-left: 10px solid #3498db;
+            }
+
+            #nav1 li:nth-child(2) a {
+                border-left: 10px solid #ffd071;
+            }
+
+            #nav1 li:nth-child(3) a {
+                border-left: 10px solid #f0776c;
+            }
+
+            #nav1 li:last-child a {
+                border-left: 10px solid #1abc9c;
+            }
+
+            #nav1 li a:after {
+                content: "";
+                height: 100%;
+                left: 0;
+                top: 0;
+                width: 0px;
+                position: absolute;
+                transition: all 0.3s ease 0s;
+                -webkit-transition: all 0.3s ease 0s;
+                z-index: -1;
+            }
+
+            #nav1 li a:hover:after {
+                width: 100%;
+            }
+
+            #nav1 li:first-child a:after {
+                background: #1C699C;
+            }
+
+            #nav1 li:nth-child(2) a:after {
+                background: #B87A00;
+            }
+
+            #nav1 li:nth-child(3) a:after {
+                background: #FF311F;
+            }
+
+            #nav1 li:last-child a:after {
+                background: #149077;
+            }
+
+            }
+
+        </style>
         <link rel="stylesheet" type="text/css"
               href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css"
@@ -43,31 +134,16 @@
     <div class="container-fluid" style="clear:both;min-width:min-content;margin-bottom: 8%">
         <div class="row">
             <div class="col-sm-10 col-md-10">
-                <div class="col-sm-12 col-md-4 content">
-                    <div class='col-md-12 wrapper'>
-                        <ul class="sideMenu">
-                            <li class="sideTab">
-                                <a style="background-color: #fd4d40;">
-                                    <span class="icon-home"><i
-                                            class="fa fa-fw fa-lg fa-edit faa-tada faa-fast"></i></span>
-                                    Notes</a>
-                            </li>
-                            <li class="sideTab">
-                                <a style="background-color: #fdb62f;">
-                                    <span class="icon-person"><i
-                                            class="fa fa-fw fa-lg fa-file-powerpoint-o faa-tada faa-fast"></i></span>
-                                    Previous Year Papers</a></li>
-                            <li class="sideTab">
-
-                                <a style="background-color: dodgerblue;">
-                                    <span class="icon-cog"><i
-                                            class="fa fa-fw fa-lg fa-book faa-tada faa-fast"></i></span>
-                                    Books</a></li>
+                <div class="col-xs-12 col-md-4 content">
+                    <nav id="nav1">
+                        <ul>
+                            <li><a href="#">Notes</a></li>
+                            <li><a href="#">Previous Year Papers</a></li>
+                            <li><a href="#">Books</a></li>
                         </ul>
-                        <div style="clear: both"></div>
-                    </div>
+                    </nav>
                 </div>
-                <div class="col-sm-12 col-md-8">
+                <div class="col-xs-12 col-md-8">
                     <caption><h3 class="table_title">{{ cname|title }} Notes</h3></caption>
                     <table class="table table-striped table-responsive-md" id="example">
                         <thead class="thead-dark">
