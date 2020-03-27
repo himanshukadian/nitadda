@@ -869,28 +869,7 @@ color: #fff;
     font-weight: bold;
 }
 
-.sideMenu{
-    list-style: none;
-}
-.sideTab{
-    margin:30px;
-    float: left;
-    transition: all 500ms;
-}
-.sideTab:hover{
-    cursor: pointer;
-    -webkit-box-shadow: 0px 10px 15px 0px rgba(0, 0, 0, 0.5);
 
-}
-.sideTab > a{
-    color: white;
-    transition: all 500ms;
-    padding: 15px 25px 15px 20px;
-}
-.sideTab > a:hover{
-    color: white;
-    text-decoration: none;
-}
 
 .message_container{
     border-style: solid;
