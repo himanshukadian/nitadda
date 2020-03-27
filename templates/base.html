@@ -97,13 +97,13 @@
                     </li>
                     <li {% if request.path == '/content/meetOurTeam/' %}style="background: #E7E7E7"{% endif %}>
                         <a class="faa-parent animated-hover" href="/content/meetOurTeam/">
-                            <i class="fa fa-fw fa-lg fa-user faa-tada faa-fast"></i>Our Team
+                            <i class="fa fa-fw fa-lg fa-info-circle faa-tada faa-fast"></i>About Us
                         </a>
                     </li>
                     <li>
-                        <a class="faa-parent animated-hover" href="#about">
-                            <i class="fa fa-fw fa-lg fa-info-circle faa-tada faa-fast"></i>About
-                        </a>
+{#                        <a class="faa-parent animated-hover" href="#about">#}
+{#                            <i class="fa fa-fw fa-lg fa-info-circle faa-tada faa-fast"></i>About#}
+{#                        </a>#}
                     </li>
                     {% if user.is_authenticated and user.is_superuser %}
                         <li {% if request.path == '/content/add_course' %}style="background: #E7E7E7"{% endif %}>
