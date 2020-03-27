@@ -1072,3 +1072,46 @@ center h1 {
     }
 }
 
+.tabs {
+    overflow: hidden;
+}
+
+.tabs h3 {
+    float: left;
+    width: 50%;
+}
+
+.tabs h3 a {
+    padding: 0.5em 0;
+    text-align: center;
+    font-weight: 400;
+    text-decoration: none;
+    background-color: #e6e7e8;
+    display: block;
+    color: #666;
+}
+
+.tabs h3 a.active {
+    background-color: #fff;
+}
+
+#profile__img {
+    position: relative;
+    width: 165px;
+    height: 160px;
+    display: block;
+    margin: 0 auto;
+}
+
+.tabs-content div[id$="tab-content"] {
+    display: none;
+}
+
+.tabs-content .active {
+    display: block !important;
+}
+
+.dataTables_filter label {
+    color: black;
+}
+
