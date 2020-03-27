@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}Home NIT ADDA{% endblock title %}
 {% load static %}
+{% block content3 %}"../media/{{ user.image }}"{% endblock content3 %}
 {% block content %}
     <head>
         <style>
@@ -193,7 +194,7 @@
         {% endif %}
     <section class="our-team-section">
         <div class="container">
-            <h2 class="title text-center">Meet our Team</h2>
+            <h2 class="title text-center" style="color: #F9F9F9">Meet our Team</h2>
             <div class="row" id="team1" style="margin: 0 auto">
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="our-team">
