@@ -1,7 +1,10 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.views import generic
+from django.views.generic import UpdateView
+
 from .admin import UserCreationForm
 from django.contrib import messages
 from content.models import *
@@ -47,6 +50,24 @@ class UserFormView(generic.View):
             return redirect('accounts:index')
 
         return render(request, self.template_name, {'form': form})
+
+
+class UserUpdateFormView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = CustomUser
+    fields = ['email', 'name', 'mobile', 'gender', 'registration_number', 'image']
+    template_name = 'account/registration_form.html'
+
+    def form_valid(self, form):
+        form.instance.by = str(self.request.user)
+        messages.success(self.request, f'Your account has been updated!')
+        return super().form_valid(form)
+
+    def test_func(self):
+        customUser = str(self.get_object())
+        user = str(self.request.user)
+        if user == customUser:
+            return True
+        return False
 
 
 def user_login(request):
