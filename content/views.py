@@ -370,36 +370,3 @@ def Approve_Note(request, noteid):
     return redirect(request.META.get('HTTP_REFERER', '/'))
 
 
-@login_required(login_url="/content/login")
-def Show_Liked_Notes(request):
-    all_notes = Note.objects.all()
-    liked_notes = []
-    lstatus = []
-    providers = []
-    response = {}
-    for note in all_notes:
-        if note.upvotes.filter(id=request.user.id).exists():
-            liked_notes.append(note)
-            prv = CustomUser.objects.get(id=note.user_id)
-            providers.append(prv.username)
-            lstatus.append(True)
-
-    response['data'] = zip(liked_notes, lstatus, providers)
-    if len(liked_notes) > 0:
-        response['user_has_liked'] = True;
-    else:
-        response['user_has_liked'] = False;
-    return render(request, 'content/liked_Notes.html', response)
-
-
-@login_required(login_url="/content/login")
-def Show_Uploaded_Notes(request):
-    uploaded_notes = Note.objects.filter(user_id=request.user.id)
-    response = {}
-
-    response['data'] = uploaded_notes
-    if len(uploaded_notes) > 0:
-        response['user_has_uploaded'] = True;
-    else:
-        response['user_has_uploaded'] = False;
-    return render(request, 'content/uploaded_notes.html', response)

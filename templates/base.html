@@ -102,7 +102,7 @@
                     </li>
                     <li>
                         <a class="faa-parent animated-hover" href="#about">
-                            <i class="fa fa-fw fa-lg fa-info faa-tada faa-fast"></i>About
+                            <i class="fa fa-fw fa-lg fa-info-circle faa-tada faa-fast"></i>About
                         </a>
                     </li>
                     {% if user.is_authenticated and user.is_superuser %}
@@ -137,18 +137,13 @@
                 </ul>
                 <ul id="rightnav" class="nav navbar-nav navbar-right">
                     {% if user.is_authenticated %}
-                        <li class="menu_dropdown">
-                            <button class="dropbtn" onclick="myFunction()">
-                                Hi, {{ user.username|title }} <i class="fa fa-caret-down"></i>
-                            </button>
-                            <img style="border-radius: 50%; float: right; margin-top: 6px"
+                        <li><img style="border-radius: 50%; float: right; margin-top: 6px"
                                  src={% block content3 %}"media/{{ user.image }}"{% endblock content3 %} height="40px"
-                                 width="40px">
-                            <div class="dropdown-content" id="myDropdown">
-                                <a href="/content/show_liked_notes">My Likes</a>
-                                <a href="/content/show_uploaded_notes">My Uploads</a>
-                                <a href="#">Edit Profile</a>
-                            </div>
+                                 width="40px"></li>
+                        <li {% if request.path == '/profile/' %}style="background: #E7E7E7"{% endif %}>
+                            <a class="faa-parent animated-hover" href="/profile">
+                                Hi, {{ user.username|title }}
+                            </a>
                         </li>
                         <li>
                             <a class="faa-parent animated-hover" href="/content/logout">
