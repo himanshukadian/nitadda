@@ -70,7 +70,7 @@
         });
     </script>
 </head>
-<body style="background: #333333">
+<body style="background: #232323;">
 <header>
     <nav style="margin-bottom: 50px; background-color:#fff;font-size: 14px;z-index: 1000;"
          class="navbar navbar-static-top navbar-light bg-faded ">
@@ -133,6 +133,11 @@
                         </a>
                     </li>
                     {% if user.is_authenticated and user.is_superuser %}
+                        <li {% if request.path == '/inbox' %}style="background: #E7E7E7"{% endif %}>
+                        <a href="/inbox" class="faa-parent animated-hover">
+                            <i class="fa fa-fw fa-lg fa fa-envelope faa-tada faa-fast"></i>Inbox
+                        </a>
+                    </li>
                     {% endif %}
                 </ul>
                 <ul id="rightnav" class="nav navbar-nav navbar-right">

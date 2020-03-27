@@ -11,7 +11,7 @@
             // messages timeout for 10 sec
             setTimeout(function () {
                 $('.message_container').fadeOut('slow');
-            }, 10000);
+            }, 4000);
         });
     </script>
     {% if messages %}
@@ -158,29 +158,39 @@
             </div>
 
             <div class="contact-child child2" style="background: floralwhite">
-                <div class="inside-contact">
-                    <h2>Contact Us</h2>
-                    <h3>
-                        <span id="confirm"></span>
-                    </h3>
 
-                    <p>Name *</p>
-                    <input id="txt_name" type="text" Required="required">
+                <div style="width: 100%" id="uploadForm" class="well well-lg">
+                    <caption><h3 class="table_title" style="color: #232323;">Contact Us</h3></caption>
+                    <form method="POST" action="/contact_us/" enctype="multipart/form-data" >
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label class="formText" for="fn">Name</label>
+                            <input class="form-control" name="fullName" id="fn" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="formText" for="email">Email</label>
+                            <input type="email" class="form-control" name="email" id="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="formText" for="phone">Phone</label>
+                            <input class="form-control" name="phone" id="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="formText" for="subject">Subject</label>
+                            <input class="form-control" name="subject" id="subject" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="formText" for="message">Message</label>
+                            <textarea rows="6" cols="30" lass="form-control" name="message" id="message" required></textarea>
+                        </div>
+                        <center>
+                            <button type="submit" id="btn" class="formButton">Send</button>
+                        </center>
+                    </form>
+                    <br>
 
-                    <p>Email *</p>
-                    <input id="txt_email" type="text" Required="required">
-
-                    <p>Phone *</p>
-                    <input id="txt_phone" type="text" Required="required">
-
-                    <p>Subject *</p>
-                    <input id="txt_subject" type="text" Required="required">
-
-                    <p>Message *</p>
-                    <textarea id="txt_message" rows="4" cols="20" Required="required"></textarea>
-
-                    <button  class="formButton" type="submit" id="btn_send">SEND</button>
                 </div>
+
             </div>
         </div>
     </div>
