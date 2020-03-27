@@ -25,6 +25,4 @@ urlpatterns = [
                   url(r'^all_subject_note$', views.Get_Subject_Note, name='Get_Subject_Note'),
                   url(r'^all_course$', views.Get_Course, name='Get_Course'),
                   url(r'^all_subject$', views.Get_Subject, name='Get_Subject'),
-                  url(r'^show_liked_notes$', views.Show_Liked_Notes, name='Show_Liked_Notes'),
-                  url(r'^show_uploaded_notes$', views.Show_Uploaded_Notes, name='Show_Uploaded_Notes'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
