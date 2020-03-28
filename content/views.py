@@ -167,6 +167,7 @@ def UploadNote(request):
     courses = Course.objects.all()
     response["courses"] = courses
     subjects = Subject.objects.all()
+
     response["subjects"] = subjects
     if request.method == 'POST':
         cnt = Note_Count.objects.get()
@@ -188,6 +189,13 @@ def UploadNote(request):
         note.course = Course.objects.get(id=request.POST['courses'])
         note.note_pdf = request.FILES["files"]
         note.user_id = request.user.id;
+        superuser = CustomUser.objects.filter(is_superuser=True).first()
+        superuser.notifications = superuser.notifications + 1
+        superuser.noti_messages = superuser.noti_messages + '<li> ' + request.user.username + ' uploaded a new note titled ' + str(
+            request.POST['title']) + ' in course ' + str(
+            Course.objects.get(id=request.POST['courses']).title) + ' in subject ' + str(
+            Subject.objects.get(id=request.POST['subjects']).title)
+        superuser.save()
         note.save()
         messages.success(request, "Successfully Uploaded")
         return redirect('/content/upload/')
@@ -343,7 +351,7 @@ def Approve_Note(request, noteid):
     else:
         cd.is_approved = True
         cd.user.notifications = cd.user.notifications + 1
-        cd.user.noti_messages = cd.user.noti_messages + '<li> Admin has approved your note titled' + str(cd.title)
+        cd.user.noti_messages = cd.user.noti_messages + '<li> Admin has approved your note titled ' + str(cd.title)
         messages.success(request, 'Successfully approved')
     cd.save()
     cd.user.save()
