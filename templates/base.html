@@ -3,6 +3,27 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <style>
+        .notification {
+            min-width: 20px;
+            height: 20px;
+            background-color: #ed657d;
+            font-family: monospace;
+            font-weight: bolt;
+            font-size: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            position: absolute;
+            top: 3px;
+            right: 1px;
+            transition: .3s;
+            opacity: 1;
+            transform: scale(1);
+            will-change: opacity, transform;
+        }
+    </style>
     <title>{% block title %}HOME{% endblock title %} | NIT ADDA</title>
     {% block head_favicon %}
         <link rel="icon" type="image/png"
@@ -101,9 +122,9 @@
                         </a>
                     </li>
                     <li>
-{#                        <a class="faa-parent animated-hover" href="#about">#}
-{#                            <i class="fa fa-fw fa-lg fa-info-circle faa-tada faa-fast"></i>About#}
-{#                        </a>#}
+                        {#                        <a class="faa-parent animated-hover" href="#about">#}
+                        {#                            <i class="fa fa-fw fa-lg fa-info-circle faa-tada faa-fast"></i>About#}
+                        {#                        </a>#}
                     </li>
                     {% if user.is_authenticated and user.is_superuser %}
                         <li {% if request.path == '/content/add_course' %}style="background: #E7E7E7"{% endif %}>
@@ -134,14 +155,22 @@
                     </li>
                     {% if user.is_authenticated and user.is_superuser %}
                         <li {% if request.path == '/inbox' %}style="background: #E7E7E7"{% endif %}>
-                        <a href="/inbox" class="faa-parent animated-hover">
-                            <i class="fa fa-fw fa-lg fa fa-envelope faa-tada faa-fast"></i>Inbox
-                        </a>
-                    </li>
+                            <a href="/inbox" class="faa-parent animated-hover">
+                                <i class="fa fa-fw fa-lg fa fa-envelope faa-tada faa-fast"></i>Inbox
+                            </a>
+                        </li>
                     {% endif %}
                 </ul>
                 <ul id="rightnav" class="nav navbar-nav navbar-right">
                     {% if user.is_authenticated %}
+                        <li>
+                            <a data-toggle="modal" href="#myModal" class="faa-parent animated-hover">
+                                <i class="fa fa-fw fa-lg fa-bell  faa-tada faa-fast"></i>&nbsp;
+                                {% if user.notifications > 0 %}
+                                    <span class="notification">{{ user.notifications }}</span>
+                                {% endif %}
+                            </a>
+                        </li>
                         <li><img style="border-radius: 50%; float: right; margin-top: 6px"
                                  src={% block content3 %}"media/{{ user.image }}"{% endblock content3 %} height="40px"
                                  width="40px"></li>
@@ -171,6 +200,32 @@
 {% block content %}
     MAIN CONTENT FOR PROJECT
 {% endblock content %}
+{% if user.is_authenticated %}
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Notifications</h4>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        {{ request.user.noti_messages|safe }}
+
+                    </ul>
+                </div>
+                <div class="modal-footer">
+
+                    <a class="btn btn-primary" href="{% url 'accounts:clear-noti' request.user.id %}">Clear All
+                        Notifications</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endif %}
 <footer class="site-footer">
     <div class="container-fluid">
         <div class=" text-center row">

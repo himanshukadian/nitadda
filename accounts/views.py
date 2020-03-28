@@ -208,3 +208,12 @@ def Delete_Message(request):
     messages.success(request, 'Message has been successfully deleted.')
     return redirect('accounts:inbox')
 
+
+@login_required
+def clear(request, pk):
+    user = request.user
+    user.noti_messages = ''
+    user.notifications = 0
+    user.save()
+    messages.success(request, f'All notifications cleared')
+    return redirect('/')

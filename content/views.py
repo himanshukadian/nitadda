@@ -6,6 +6,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, HttpRequest, Http404, JsonResponse, FileResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.urls import reverse
+
 from .models import *
 import datetime
 from django.views.decorators.csrf import csrf_exempt
@@ -330,22 +332,21 @@ def Upvote(request):
     data.append(noteid)
     return HttpResponse(json.dumps(data), content_type='application/json')
 
-
 @csrf_exempt
 @login_required(login_url="/content/login")
+@user_passes_test(checkuserifscrutinyuser, login_url="/content/login/")
 def Approve_Note(request, noteid):
-    print("approved id : ", noteid)
-    cd = Note.objects.get(note_id=noteid)
-    course = Course.objects.get(title=cd.course)
-    print("course id :", course.id)
+    cd = get_object_or_404(Note, note_id=noteid)
+    course = get_object_or_404(Course, title=cd.course)
     if cd.is_approved:
         messages.success(request, "already approved")
     else:
         cd.is_approved = True
+        cd.user.notifications = cd.user.notifications + 1
+        cd.user.noti_messages = cd.user.noti_messages + '<li> Admin has approved your note titled' + str(cd.title)
         messages.success(request, 'Successfully approved')
-    url = "/content/course_notes/" + str(course.id)
-    print("url " + url)
     cd.save()
+    cd.user.save()
     return redirect(request.META.get('HTTP_REFERER', '/'))
 
 
