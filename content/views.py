@@ -69,7 +69,7 @@ def Add_Subject(request):
 @user_passes_test(checkuserifscrutinyuser, login_url="/content/login/")
 def index(request):
     response = {}
-    print(request.user," home tab clicked : RENDER HOME ")
+    print(request.user, " home tab clicked : RENDER HOME ")
     note = Note.objects.all()[:3]
     lstatus = []
     providers = []
@@ -85,22 +85,26 @@ def index(request):
     info = messages.get_messages(request)
     response = {'message': info}
     return render(request, 'home.html', response)
+
+
 111
-    # response = {}
-    # print("index was called!!")
-    # print(request.user)
-    # notes = Note.objects.all()
-    # lstatus = []
-    # providers = []
-    # for n in notes:
-    #     prv = CustomUser.objects.get(id=n.user_id)
-    #     providers.append(prv.username)
-    #     if n.upvotes.filter(id=request.user.id).exists():
-    #         lstatus.append(True)
-    #     else:
-    #         lstatus.append(False)
-    # response['data'] = zip(notes, lstatus, providers)
-    # return render(request, 'home.html', response)
+
+
+# response = {}
+# print("index was called!!")
+# print(request.user)
+# notes = Note.objects.all()
+# lstatus = []
+# providers = []
+# for n in notes:
+#     prv = CustomUser.objects.get(id=n.user_id)
+#     providers.append(prv.username)
+#     if n.upvotes.filter(id=request.user.id).exists():
+#         lstatus.append(True)
+#     else:
+#         lstatus.append(False)
+# response['data'] = zip(notes, lstatus, providers)
+# return render(request, 'home.html', response)
 
 
 @csrf_exempt
@@ -202,6 +206,7 @@ def UploadNote(request):
 
     return render(request, 'content/Upload_Notes.html', response)
 
+
 @csrf_exempt
 @login_required_message(message="You should be logged in, in order to perform this")
 @login_required
@@ -231,7 +236,7 @@ def Show_Note(request, slug):
     cname = Course.objects.get(slug=slug)
     note = Note.objects.filter(course=cname.id).annotate(num_votes=Count('upvotes')).order_by('-num_votes')
     print(cname)
-    lstatus=[]
+    lstatus = []
     providers = []
     for n in note:
         prv = CustomUser.objects.get(id=n.user_id)
@@ -289,6 +294,7 @@ def Show_Subject_Note(request, slug):
     response['book'] = book
     return render(request, 'content/all_Subject_Notes.html', response)
 
+
 @csrf_exempt
 def getSubjects(request):
     if request.method == 'POST':
@@ -313,7 +319,7 @@ def getSubjects(request):
 
 @login_required_message(message="You should be logged in, in order to perform this")
 @login_required
-def Display_Pdf(request,noteid) :
+def Display_Pdf(request, noteid):
     response = {}
     cd = Note.objects.get(note_id=noteid)
     response["data"] = cd
@@ -335,10 +341,11 @@ def Upvote(request):
         else:
             note.upvotes.add(user)
             alreadyVoted = False
-    data=[]
+    data = []
     data.append(alreadyVoted)
     data.append(noteid)
     return HttpResponse(json.dumps(data), content_type='application/json')
+
 
 @csrf_exempt
 @login_required(login_url="/content/login")
@@ -356,5 +363,3 @@ def Approve_Note(request, noteid):
     cd.save()
     cd.user.save()
     return redirect(request.META.get('HTTP_REFERER', '/'))
-
-

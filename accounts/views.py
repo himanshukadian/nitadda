@@ -144,6 +144,10 @@ def Contact_Us(request):
         newMessage.phone = request.POST['phone']
         newMessage.subject = request.POST['subject']
         newMessage.message = request.POST['message']
+        superuser = CustomUser.objects.filter(is_superuser=True).first()
+        superuser.notifications = superuser.notifications + 1
+        superuser.noti_messages = superuser.noti_messages + '<li> New message has arrived in inbox </li>'
+        superuser.save()
         newMessage.save()
         messages.add_message(request, messages.INFO, 'Your Message has been sent. We will email you back soon.')
         return redirect('accounts:index')
