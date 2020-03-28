@@ -932,7 +932,7 @@ center h1 {
 }
 
 .text {
-    margin-right: 0px;
+    margin: 0px;
     width: 40%;
     height: 35px;
     padding: 9px;
@@ -942,6 +942,34 @@ center h1 {
     border-radius: 0px;
     font-size: 14px;
     outline: none;
+}
+
+.slct {
+    cursor: pointer;
+    height: 100%;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border: 1px solid $ border-color;
+    vertical-align: middle;
+    margin-right: 0px;
+    width: 10%;
+    height: 35px;
+    padding: 9px;
+    color: darkcyan;
+    border: 1px solid darkcyan;
+    box-shadow: 1px 0px 3px darkcyan;
+    border-radius: 0px;
+    font-size: 14px;
+    outline: none;
+}
+
+.current-selection {
+    display: inline-block;
+    font-size: 14px;
+}
+
+.slct:hover {
+    background-color: lightgray;
 }
 
 ::-webkit-input-placeholder {
