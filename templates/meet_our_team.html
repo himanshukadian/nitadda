@@ -19,7 +19,7 @@
 
             .our-team-section:before {
                 position: absolute;
-                top: -0;
+                top: 0;
                 left: 0;
                 content: " ";
                 background-size: 100% 100px;
@@ -30,17 +30,24 @@
             }
 
             .our-team {
-                margin: 15px;
+                min-width:280px;
+                margin: 15px auto 15px auto;
                 padding: 30px 0 40px;
-                background: #f9f9f9;
+                background: white;
                 text-align: center;
                 overflow: hidden;
                 position: relative;
-                border-bottom: 5px solid #00325a;
+                border-bottom: 5px solid  #008b8b;
+                -webkit-box-shadow: 0px 5px 20px -5px darkcyan;
+                -moz-box-shadow: 0px 5px 20px -5px darkcyan;
+                box-shadow: 0px 5px 20px -5px darkcyan;
             }
 
             .our-team:hover {
-                border-bottom: 5px solid #2f2f2f;
+                border-bottom: 5px solid darkcyan;
+                -webkit-box-shadow: 0px 10px 40px -5px darkcyan;
+                -moz-box-shadow: 0px 10px 40px -5px darkcyan;
+                box-shadow: 0px 10px 40px -5px darkcyan;
             }
 
             .our-team .pic {
@@ -57,19 +64,20 @@
                 width: 100%;
                 height: 100%;
                 border-radius: 50%;
-                background: #00325a;
+                background:  #008b8b;
                 position: absolute;
                 bottom: 135%;
                 right: 0;
                 left: 0;
                 opacity: 1;
                 transform: scale(3);
-                transition: all 0.3s linear 0s;
+                transition: all 0.5s linear 0s;
             }
 
             .our-team:hover .pic:before {
                 height: 100%;
-                background: #2f2f2f;
+                background: #008b8b;
+            {#box-shadow: 0 5px 5px 2px rgba(0, 139, 139, 0.51);#}
             }
 
             .our-team .pic:after {
@@ -82,28 +90,26 @@
                 top: 0;
                 left: 0;
                 z-index: 1;
-                transition: all 0.3s linear 0s;
+                transition: all 0.5s linear 0s;
             }
 
             .our-team:hover .pic:after {
-                background: #7ab92d;
             }
 
             .our-team .pic img {
                 width: 100%;
                 height: auto;
                 border-radius: 50%;
-                transform: scale(1);
-                transition: all 0.9s ease 0s;
-                box-shadow: 0 0 0 14px #f7f5ec;
-                transform: scale(0.7);
+                transition: all 0.5s ease 0s;
+                box-shadow: 0 0 0 7px white;
+                transform: scale(0.9);
                 position: relative;
                 z-index: 2;
             }
 
             .our-team:hover .pic img {
-                box-shadow: 0 0 0 14px #f7f5ec;
-                transform: scale(0.7);
+                box-shadow: 0 0 0 7px white;
+                transform: scale(1);
             }
 
             .our-team .team-content {
@@ -130,7 +136,7 @@
                 width: 100%;
                 padding: 0;
                 margin: 0;
-                background: #2f2f2f;
+                background: darkcyan;
                 position: absolute;
                 bottom: -100px;
                 left: 0;
@@ -150,7 +156,7 @@
                 padding: 10px;
                 font-size: 17px;
                 color: #fff;
-                transition: all 0.3s ease 0s;
+                transition: all 0.5s ease 0s;
             }
 
             .our-team .social li a:hover {
@@ -165,7 +171,7 @@
             }
         </style>
     </head>
-    <body onload="Check()">
+    <body>
     <div class="row main_header">
         <!-- <center><h2><b>Registration</b></h2></center>
          <br>-->

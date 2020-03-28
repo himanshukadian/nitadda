@@ -8,6 +8,9 @@ from django.views.generic import UpdateView
 from .admin import UserCreationForm
 from django.contrib import messages
 from content.models import *
+from .models import *
+from django.views.decorators.csrf import csrf_exempt
+
 
 def index(request):
     response = {}
@@ -129,3 +132,67 @@ def profile(request):
         response['user_has_uploaded'] = False;
     response['user'] = request.user
     return render(request, 'account/profile.html', response)
+
+@csrf_exempt
+def Contact_Us(request):
+    if request.method == 'POST':
+        print('Contact us message recieved.')
+        newMessage = ContactUsMessage()
+        newMessage.sender_name = request.POST['fullName']
+        newMessage.email = request.POST['email']
+        newMessage.phone = request.POST['phone']
+        newMessage.subject = request.POST['subject']
+        newMessage.message = request.POST['message']
+        newMessage.save()
+        messages.add_message(request, messages.INFO, 'Your Message has been sent. We will email you back soon.')
+        return redirect('accounts:index')
+    else:
+        print('Contact us message ERROR.')
+        return render(request, 'home.html')
+
+@login_required(login_url='/content/login')
+def Inbox(request):
+    print('Inbox tab has opened.')
+    all_messages = ContactUsMessage.objects.all()
+    response = {}
+    if(len(all_messages)>0):
+        response['admin_has_messages'] = True
+    else:
+        response['admin_has_messages'] = False
+    response['all_messages'] = all_messages;
+
+    return render(request, 'account/inbox.html', response)
+
+@login_required(login_url='/content/login')
+def Show_Message(request):
+    response = {}
+    mid = request.GET['message_id']
+    print('Message having ID ',mid,' has been opened.')
+    mes = get_object_or_404(ContactUsMessage, pk=mid)
+    if mes:
+        mes.has_been_read = True
+        mes.save()
+        response['message'] = mes
+        return render(request, 'account/show_inbox_message.html', response)
+    else:
+        return render(request, 'account/inbox.html', response)
+
+@login_required(login_url='/content/login')
+def Mark_As_Read(request):
+    mid = request.GET['message_id']
+    print('Message having ID ', mid, ' has been marked as read.')
+    mes = get_object_or_404(ContactUsMessage, pk=mid)
+    mes.has_been_read = True
+    mes.save()
+    return redirect('accounts:inbox')
+
+
+@login_required(login_url='/content/login')
+def Delete_Message(request):
+    mid = request.GET['message_id']
+    print('Message having ID ', mid, ' has been deleted.')
+    mes = get_object_or_404(ContactUsMessage, pk=mid)
+    mes.delete()
+    messages.success(request, 'Message has been successfully deleted.')
+    return redirect('accounts:inbox')
+

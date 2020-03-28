@@ -158,19 +158,13 @@ def Delete_Note(request, noteid):
 
 
 @csrf_exempt
-@login_required_message(message="You should be logged in, in order to perform this")
+@login_required_message(message="You should be logged in, in order to perform this.")
 @login_required
 def UploadNote(request):
     response = {}
     courses = Course.objects.all()
     response["courses"] = courses
     subjects = Subject.objects.all()
-    # subjects = []
-    # coursesubjects = Subject.objects.values('course', 'course_id')
-    # courses = {item['course'] for item in coursesubjects}
-    # for course in courses:
-    #     subject = Subject.objects.filter(course=course)
-    #     subjects.append(subject)
     response["subjects"] = subjects
     if request.method == 'POST':
         cnt = Note_Count.objects.get()
@@ -197,24 +191,6 @@ def UploadNote(request):
         return redirect('/content/upload_note')
 
     return render(request, 'content/Upload_Notes.html', response)
-
-
-# @csrf_exempt
-# @login_required(login_url="/content/login")
-# def Get_Note(request):
-#     response = {}
-#     notes = Note.objects.all()
-#     n = len(notes)
-#     allnotes = []
-#     coursenotes = Note.objects.values('course', 'course_id')
-#     courses = {item['course'] for item in coursenotes}
-#     for course in courses:
-#         note = Note.objects.filter(course=course)
-#         allnotes.append(note)
-#     response["allnotes"] = allnotes
-#     return render(request, 'all_Notes.html', response)
-
-
 
 @csrf_exempt
 @login_required_message(message="You should be logged in, in order to perform this")

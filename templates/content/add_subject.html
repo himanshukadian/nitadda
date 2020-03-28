@@ -21,11 +21,11 @@
                           onsubmit="return validateForm();">
                         {% csrf_token %}
                         <div class="form-group">
-                            <label for="firstName">Subject Title</label>
-                            <input for="firstName" class="form-control" name="title" id="fn" required>
+                            <label class="formText">Subject Title</label>
+                            <input class="form-control" name="title" id="fn" required>
                         </div>
                         <div class="form-group">
-                            <label for="course">Select Course</label>
+                            <label class="formText">Select Course</label>
                             <select class="form-control" id="sel1" name="courses">
                                 {% for course in courses %}
                                     <option value="{{ course.id }}">
@@ -35,7 +35,7 @@
                             </select>
                         </div>
                         <center>
-                            <button type="submit" id="btn" class="btn btn-info btn-md">Save</button>
+                            <button type="submit" id="btn"  class="formButton">Add</button>
                         </center>
                     </form>
                     <br>
