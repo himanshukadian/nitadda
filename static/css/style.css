@@ -837,6 +837,7 @@ color: #fff;
 }
 
 #uploadForm {
+    border-radius: 0px;
     background-color: white;
     margin: auto;
     max-width: 720px;
@@ -1122,8 +1123,8 @@ center h1 {
 .dataTables_filter label {
     color: whitesmoke;
 }
-
-@media only screen  and (min-width: 1224px) {
+/* OUR TEAM starts*/
+ @media only screen  and (min-width: 1224px) {
     #team1 {
         width: 60%;
     }
@@ -1148,14 +1149,14 @@ center h1 {
 }
 
 .our-team {
-    min-width: 280px;
+    min-width:280px;
     margin: 15px auto 15px auto;
     padding: 30px 0 40px;
     background: white;
     text-align: center;
     overflow: hidden;
     position: relative;
-    border-bottom: 5px solid #008b8b;
+    border-bottom: 5px solid  #008b8b;
     -webkit-box-shadow: 0px 5px 20px -5px darkcyan;
     -moz-box-shadow: 0px 5px 20px -5px darkcyan;
     box-shadow: 0px 5px 20px -5px darkcyan;
@@ -1182,7 +1183,7 @@ center h1 {
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    background: #008b8b;
+    background:  #008b8b;
     position: absolute;
     bottom: 135%;
     right: 0;
@@ -1195,12 +1196,7 @@ center h1 {
 .our-team:hover .pic:before {
     height: 100%;
     background: #008b8b;
-
-{
-    #box-shadow: 0 5px 5px 2px rgba(0, 139, 139, 0.51)
-;
-    #
-}
+    /*box-shadow: 0 5px 5px 2px rgba(0, 139, 139, 0.51);*/
 }
 
 .our-team .pic:after {
@@ -1292,4 +1288,4 @@ center h1 {
         margin-bottom: 30px;
     }
 }
-
+/* OUR TEAM ends*/

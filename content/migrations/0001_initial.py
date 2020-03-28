@@ -44,7 +44,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('note_id', models.CharField(max_length=20, primary_key=True, serialize=False)),
                 ('title', models.CharField(default='', max_length=300)),
-                ('note_pdf', models.FileField(blank=True, default=None, null=True, upload_to=content.models.get_path,
+                ('note_pdf', models.FileField(blank=True, default=None, null=True, upload_to=content.models.get_note_path,
                                               validators=[django.core.validators.FileExtensionValidator(['pdf'])])),
                 ('is_approved', models.BooleanField(default=False)),
                 ('course', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,

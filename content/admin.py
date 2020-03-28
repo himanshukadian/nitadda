@@ -6,3 +6,6 @@ from content.models import *
 admin.site.register(Note)
 admin.site.register(Note_Count)
 admin.site.register(Course)
+admin.site.register(Exam_Paper)
+admin.site.register(Exam_Paper_Count)
+

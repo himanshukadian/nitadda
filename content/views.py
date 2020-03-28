@@ -39,6 +39,8 @@ def Add_Course(request):
     if request.method == 'POST':
         course = Course()
         course.title = request.POST['title']
+        course.duration = request.POST['duration']
+        course.no_of_semesters = request.POST['no_of_sem']
         course.save()
         return redirect('/content/add_course')
 
@@ -160,35 +162,64 @@ def Delete_Note(request, noteid):
 @csrf_exempt
 @login_required_message(message="You should be logged in, in order to perform this.")
 @login_required
-def UploadNote(request):
+def UploadContent(request):
     response = {}
     courses = Course.objects.all()
     response["courses"] = courses
     subjects = Subject.objects.all()
     response["subjects"] = subjects
     if request.method == 'POST':
-        cnt = Note_Count.objects.get()
-        year = datetime.datetime.now().year
-        yy = str(year)
-        p1 = yy[2:]
-        p2 = str(cnt.note_cnt).zfill(4)
-        cnt.note_cnt = cnt.note_cnt + 1
-        cnt.save()
-        Name = "NOTE"
-        noteID = Name + p1 + p2
-        print(noteID)
-        note = Note()
-        # course=Course()
-        note.note_id = noteID
-        note.title = request.POST['title']
-        # course.title=request.POST['courses']
-        note.subject = Subject.objects.get(id=request.POST['subjects'])
-        note.course = Course.objects.get(id=request.POST['courses'])
-        note.note_pdf = request.FILES["files"]
-        note.user_id = request.user.id;
-        note.save()
-        messages.success(request, "Successfully Uploaded")
-        return redirect('/content/upload/')
+        if request.POST['content_type']=="note":
+            cnt = Note_Count.objects.get()
+            year = datetime.datetime.now().year
+            yy = str(year)
+            p1 = yy[2:]
+            p2 = str(cnt.note_cnt).zfill(4)
+            cnt.note_cnt = cnt.note_cnt + 1
+            cnt.save()
+            Name = "NOTE"
+            noteID = Name + p1 + p2
+            print(noteID)
+            note = Note()
+            # course=Course()
+            note.note_id = noteID
+            note.title = request.POST['title']
+            # course.title=request.POST['courses']
+            note.subject = Subject.objects.get(id=request.POST['subjects'])
+            note.course = Course.objects.get(id=request.POST['courses'])
+            note.note_pdf = request.FILES["files"]
+            note.user_id = request.user.id;
+            note.save()
+            messages.success(request, "Successfully Uploaded Notes")
+            return redirect('/content/upload/')
+
+        elif request.POST['content_type'] == "paper":
+            cnt = Exam_Paper_Count.objects.get()
+            year = datetime.datetime.now().year
+            yy = str(year)
+            p1 = yy[2:]
+            p2 = str(cnt.paper_cnt).zfill(4)
+            cnt.paper_cnt = cnt.paper_cnt + 1
+            cnt.save()
+            paper = Exam_Paper()
+            name = "PAPER"
+            paperID = name + p1 + p2
+            print("ID OF PAPER : ", paperID)
+            paper.paper_id = paperID
+            print("YE HAI WO SUBJECT ID: ", request.POST.get('subjects2'))
+            paper.subject = Subject.objects.get(id=request.POST.get('subjects2'))
+            paper.course = Course.objects.get(id=request.POST['courses'])
+
+            paper.batch_year = str(request.POST['batch'])[0:3]
+            paper.semester = request.POST['semesters']
+            paper.exam = request.POST['exams']
+            paper.exam_type = request.POST['types']
+            paper.title = str(paper.subject.title) + " : " + str(paper.exam)
+            paper.paper_pdf = request.FILES["files"]
+            paper.user_id = request.user.id;
+            paper.save()
+            messages.success(request, "Successfully Uploaded Exam Paper.")
+            return redirect('/content/upload/')
 
     return render(request, 'content/Upload_Notes.html', response)
 
@@ -345,4 +376,61 @@ def Approve_Note(request, noteid):
     cd.save()
     return redirect(request.META.get('HTTP_REFERER', '/'))
 
+# @csrf_exempt
+# @login_required_message(message="You should be logged in, in order to perform this.")
+# @login_required
+# def UploadPaper(request):
+#     response = {}
+#     courses = Course.objects.all()
+#     response["courses"] = courses
+#     subjects = Subject.objects.all()
+#     response["subjects"] = subjects
+#     if request.method == 'POST':
+#         cnt = Exam_Paper_Count.objects.get()
+#         year = datetime.datetime.now().year
+#         yy = str(year)
+#         p1 = yy[2:]
+#         p2 = str(cnt.paper_cnt).zfill(4)
+#         cnt.paper_cnt = cnt.paper_cnt + 1
+#         cnt.save()
+#         paper = Exam_Paper()
+#         name = "PAPER"
+#         paperID = name + p1 + p2
+#         print("ID OF PAPER : ",paperID)
+#         paper.paper_id = paperID
+#         print("YE HAI WO SUBJECT ID: ",request.POST.get('subjects2'))
+#         paper.subject = Subject.objects.get(id=request.POST.get('subjects2'))
+#         paper.course = Course.objects.get(id=request.POST['courses'])
+#
+#         paper.batch_year = str(request.POST['batch'])[0:3]
+#         paper.semester = request.POST['semesters']
+#         paper.exam = request.POST['exams']
+#         paper.exam_type = request.POST['types']
+#         paper.title = str(paper.subject.title) +" : " + str(paper.exam)
+#         paper.paper_pdf = request.FILES["files"]
+#         paper.user_id = request.user.id;
+#         paper.save()
+#         messages.success(request, "Successfully Uploaded Exam Paper.")
+#         return redirect('/content/upload_paper/')
+#
+#     return render(request, 'content/Upload_Notes.html', response)
 
+@csrf_exempt
+def getCourseDuration(request):
+    if request.method == 'POST':
+        course_name = request.POST.get('cn')
+        answer = str(course_name).strip()
+        try:
+            selected_course = Course.objects.get(title=answer)
+        except Course.DoesNotExist:
+            selected_course = Course.objects.all()[0]
+        duration = selected_course.duration
+        result_set=duration
+        # result_set.append({'duration':duration})
+        return HttpResponse(json.dumps(result_set), content_type='application/json')
+
+    else:
+        return HttpResponse(
+            json.dumps({"nothing to see": "this isn't happening"}),
+            content_type="application/json"
+        )

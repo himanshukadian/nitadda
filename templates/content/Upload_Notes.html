@@ -16,15 +16,15 @@
                         url: "/content/getSubjects/",
                         type: "POST",
                         data: {'cn': course_name},
-                        success: function (subjects) {
-                            console.log("ha bhai");
+                        success: function (sub) {
+                            console.log("ha bhai11");
                             $("#selectSubject1 option").remove();
                             $("#selectSubject1").append("<option selected disabled>Choose subject</option>");
-                            for (var i = subjects.length - 1; i >= 0; i--) {
+                            for (var i = sub.length - 1; i >= 0; i--) {
                                 {
-                                    console.log(subjects[i].id + "   ");
+                                    console.log(sub[i].id + "   ");
                                 }
-                                $("#selectSubject1").append("<option value=" + subjects[i].id + ">" + subjects[i].title + "</option>");
+                                $("#selectSubject1").append("<option value=" + sub[i].id + ">" + sub[i].title + "</option>");
                             }
                         }
                     });
@@ -42,15 +42,40 @@
                         type: "POST",
                         data: {'cn': course_name},
                         success: function (subjects) {
-                            console.log("ha bhai");
+                            console.log("ha bhai2");
                             $("#selectSubject2 option").remove();
                             $("#selectSubject2").append("<option selected disabled>Choose subject</option>");
                             for (var i = subjects.length - 1; i >= 0; i--) {
-                                {
-                                    console.log(subjects[i].id + "   ");
-                                }
+                                console.log(subjects[i].title + "   ");
                                 $("#selectSubject2").append("<option value=" + subjects[i].id + ">" + subjects[i].title + "</option>");
                             }
+                        }
+                    });
+                    $.ajax({
+                        url: "/content/getCourseDuration/",
+                        type: "POST",
+                        data: {'cn': course_name},
+                        success: function (duration) {
+                            console.log("ha bhai3");
+                            $("#selectBatch option").remove();
+                            $("#selectBatch").append("<option selected disabled>Choose Batch</option>");
+                            let starting_year = 2006;
+                            let current_year = 2020;
+                            for (let i = starting_year; i <= current_year; i++) {
+                                console.log(i+ "  ");
+                                let j = i+duration;
+                                $("#selectBatch").append("<option value="+i+">" + i +" - "+ j + "</option>");
+
+                            }
+
+                            let no_of_sem = duration*2;
+                            $("#selectSemester option").remove();
+                            $("#selectSemester").append("<option selected disabled>Choose semester</option>");
+                            for (let i = 1; i <= no_of_sem; i++) {
+                                console.log(i+ "  ");
+                                $("#selectSemester").append("<option value="+i+">" + i + "</option>");
+                            }
+
                         }
                     });
                 });
@@ -81,6 +106,7 @@
                                   onsubmit="return validateForm();">
                                 {% csrf_token %}
                                 <div class="form-group">
+                                    <input type="hidden" name="content_type" id="checker" value="note">
                                     <label class="formText" for="nt">Note Title</label>
                                     <input for="firstName" class="form-control" name="title" id="nt" required>
                                 </div>
@@ -112,10 +138,10 @@
                             </form>
                         </div>
                         <div id="login-tab-content">
-                            <form method="POST" action="/content/upload/" enctype="multipart/form-data"
-                                  onsubmit="return validateForm();">
+                            <form method="POST" action="/content/upload/" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 <div class="form-group">
+                                    <input type="hidden" name="content_type" id="checker" value="paper">
                                     <label class="formText" for="">Select Course</label>
                                     <select class="form-control" id="selectCourse2" name="courses" required>
                                         <option selected disabled>Choose course</option>
@@ -127,57 +153,51 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label class="formText" for="">Select Subject</label>
-                                    <select class="form-control" id="selectSubject2" name="subjects" required>
+                                    <label class="formText" for="selectSubject2">Select Subject</label>
+                                    <select class="form-control" id="selectSubject2" name="subjects2" required>
                                         <option selected disabled>Choose subject</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label class="formText" for="selectBatch">Select batch year</label>
+                                    <label class="formText" for="selectBatch">Select Batch year</label>
                                     <select class="form-control" id="selectBatch" name="batch" required>
                                         <option selected disabled>Choose Batch year</option>
-                                        <option>2013 - 2016</option>
-                                        <option>2016 - 2019</option>
-                                        <option>2019 - 2022</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label class="formText" for="">Select Semester</label>
                                     <select class="form-control" id="selectSemester" name="semesters" required>
                                         <option selected disabled>Choose Semester</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                        <option value="6">6</option>
-                                        <option value="7">7</option>
-                                        <option value="8">8</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label class="formText" for="">Select Exam</label>
-                                    <select class="form-control" id="selectExams" name="exams" required>
-                                        <option selected disabled>Choose Type</option>
-                                        <option value="min1">Minor-1</option>
-                                        <option value="min2">Minor-2</option>
-                                        <option value="mid">Mid-sem</option>
-                                        <option value="end">End-sem</option>
+                                    <select class="form-control" id="selectExam" name="exams" required>
+                                        <option selected disabled>Choose Exam</option>
+                                        <option value="Minor-1">Minor-1</option>
+                                        <option value="Minor-2">Minor-2</option>
+                                        <option value="Mid-semester">Mid-sem</option>
+                                        <option value="End-semester">End-sem</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label class="formText">Exam type :</label>
-                                    <label class="formText" for="theory">Theory
-                                        <input type="radio" name="type" id="theory" value="Theory" >
-                                    </label>
-
-                                    <label class="formText" for="practical">Practical
-                                        <input type="radio" name="type" id="practical" value="Practical" >
-                                    </label>
+                                    <label class="formText">Select Exam type</label>
+                                    <select class="form-control" id="selectExamType" name="types" required>
+                                        <option selected disabled>Choose Type</option>
+                                        <option value='T'>Theory</option>
+                                        <option value='P'>Practical</option>
+                                    </select>
+{#                                    <label class="formText" for="theory">Theory#}
+{#                                        <input type="radio" name="type" id="theory" value="Theory" checked>#}
+{#                                    </label>#}
+{##}
+{#                                    <label class="formText" for="practical">Practical#}
+{#                                        <input type="radio" name="type" id="practical" value="Practical" >#}
+{#                                    </label>#}
                                 </div>
                                 <div class="form-group">
                                     <label class="formText" for="">Select File</label>
-                                    <input for="lastName" class="form-control" type="File" name="files" id="upload"
+                                    <input class="form-control" type="File" name="files" id="upload"
                                            required>
                                 </div>
                                 <center>

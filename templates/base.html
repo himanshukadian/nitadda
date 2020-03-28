@@ -69,6 +69,15 @@
             });
         });
     </script>
+    <script>
+        $(document).ready(function () {
+            // messages timeout for 10 sec
+            setTimeout(function () {
+                $('.message_container').fadeOut('slow');
+            }, 4000);
+        });
+    </script>
+
 </head>
 <body style="background: #232323;">
 <header>
@@ -122,7 +131,7 @@
                             <i class="fa fa-fw fa-lg fa fa-book faa-tada faa-fast"></i>Browse Subjects
                         </a>
                     </li>
-                    <li {% if request.path == '/content/upload/' %}style="background: #E7E7E7"{% endif %}>
+                    <li {% if request.path == '/content/upload_note/' %}style="background: #E7E7E7"{% endif %}>
                         <a class="faa-parent animated-hover" href="/content/upload/">
                             <i class="fa fa-fw fa-lg fa fa-upload faa-tada faa-fast"></i>Upload
                         </a>

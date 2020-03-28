@@ -4,6 +4,14 @@
 {% block content3 %}"../media/{{ user.image }}"{% endblock content3 %}
 {% block content %}
     <body>
+    {% if messages %}
+        {% for mes in messages %}
+            <div class="alert alert-success message_container">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>{{ mes }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
     {% if admin_has_messages > 0 %}
         <div class="container" style="min-width:min-content;margin-bottom: 8%">
             <caption><h3 class="table_title">Inbox Messages</h3></caption>
