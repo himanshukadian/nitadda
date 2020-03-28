@@ -218,7 +218,6 @@ def Get_Subject(request):
 def Show_Note(request, slug):
     response = {}
     print(request.user)
-    notes = Note.objects.all()
     cname = Course.objects.get(slug=slug)
     note = Note.objects.filter(course=cname.id).annotate(num_votes=Count('upvotes')).order_by('-num_votes')
     print(cname)
@@ -233,6 +232,8 @@ def Show_Note(request, slug):
             lstatus.append(False)
     response['data'] = zip(note, lstatus, providers)
     response['cname'] = cname
+    book = Book.objects.filter(course=cname.id)
+    response['book'] = book
     return render(request, 'content/all_Notes.html', response)
 
 
@@ -274,6 +275,8 @@ def Show_Subject_Note(request, slug):
             lstatus.append(False)
     response['data'] = zip(note, lstatus, providers)
     response['sname'] = sname
+    book = Book.objects.filter(subject=sname.id)
+    response['book'] = book
     return render(request, 'content/all_Subject_Notes.html', response)
 
 @csrf_exempt

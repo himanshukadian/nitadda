@@ -88,3 +88,33 @@ class Note_Count(models.Model):
 
     def __unicode__(self):
         return str(self.note_cnt)
+
+
+class Book(models.Model):
+    title = models.CharField(max_length=300)
+    author = models.CharField(max_length=300)
+    course = models.ForeignKey(Course, verbose_name="Course", on_delete=models.CASCADE, blank=True, null=True)
+    subject = models.ForeignKey(Subject, verbose_name="Subject", on_delete=models.CASCADE, blank=True, null=True)
+    image = models.ImageField(default='download.jpg', upload_to='books/')
+    flink = models.CharField(max_length=300, blank=True)
+    alink = models.CharField(max_length=300, default="", blank=True)
+    slug = models.SlugField(max_length=30, unique=True, editable=False)
+
+    def __unicode__(self):
+        return str(self.title)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            slug = slugify(self.title, self.course)
+            while True:
+                try:
+                    book = Book.objects.get(slug=slug)
+                    if book == self:
+                        self.slug = slug
+                        break
+                    else:
+                        slug = slug + '_'
+                except:
+                    self.slug = slug
+                    break
+        super(Book, self).save()
