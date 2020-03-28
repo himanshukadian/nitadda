@@ -305,7 +305,7 @@ footer img {
 /* Footer styles code starts here */
 
 .site-footer {
-    background-color: #232323;
+    background-color: black;
     padding: 45px 0 20px;
     font-size: 15px;
     line-height: 24px;
@@ -1292,4 +1292,102 @@ center h1 {
         margin-bottom: 30px;
     }
 }
+
+
+#nav1 {
+    display: inline-block;
+    margin: 110px auto 0px 0px;
+    background: #232323;
+    font-size: 16px;
+    font-weight: bold;
+    width: 70%;
+}
+
+#nav1 ul {
+    list-style: none;
+    padding: 0px;
+}
+
+#nav1 li {
+    float: none;
+    width: 100%;
+}
+
+#nav1 li a {
+    display: block;
+    width: 100%;
+    padding: 20px;
+    border-left: 5px solid;
+    position: relative;
+    z-index: 2;
+    text-decoration: none;
+    color: darkcyan;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+#nav1 li a:hover, a.active {
+    border-bottom: 0px;
+    color: #fff;
+}
+
+#nav1 li a.active {
+    border-bottom: 0px;
+    color: #fff;
+}
+
+#nav1 li:first-child a {
+    border-left: 10px solid #DB4437;
+}
+
+#nav1 li:nth-child(2) a {
+    border-left: 10px solid #F4B400;
+}
+
+#nav1 li:last-child a {
+    border-left: 10px solid #4285F4;
+}
+
+#nav1 li a:not(.active):after {
+    content: "";
+    height: 100%;
+    left: 0;
+    top: 0;
+    width: 0px;
+    position: absolute;
+    transition: all 0.3s ease 0s;
+    -webkit-transition: all 0.3s ease 0s;
+    z-index: -1;
+}
+
+#nav1 li a:hover:after, a.active {
+    width: 100%;
+}
+
+#nav1 li:first-child a:after {
+    background: #DB4437;
+}
+
+#nav1 li:first-child a.active {
+    background: #DB4437;
+}
+
+
+#nav1 li:nth-child(2) a:after {
+    background: #F4B400;
+}
+
+#nav1 li:nth-child(2) a.active {
+    background: #F4B400;
+}
+
+#nav1 li:last-child a:after {
+    background: #4285F4;
+}
+
+#nav1 li:last-child a.active {
+    background: #4285F4;
+}
+
 
