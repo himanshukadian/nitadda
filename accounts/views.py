@@ -1,10 +1,11 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.views import generic
 from django.views.generic import UpdateView
 
+from content.views import logout, checkuserifscrutinyuser
 from .admin import UserCreationForm
 from django.contrib import messages
 from content.models import *
@@ -150,7 +151,10 @@ def Contact_Us(request):
         print('Contact us message ERROR.')
         return render(request, 'home.html')
 
-@login_required(login_url='/content/login')
+
+@csrf_exempt
+@login_required(login_url="accounts:login")
+@user_passes_test(checkuserifscrutinyuser, login_url="accounts:login")
 def Inbox(request):
     print('Inbox tab has opened.')
     all_messages = ContactUsMessage.objects.all()
@@ -163,7 +167,10 @@ def Inbox(request):
 
     return render(request, 'account/inbox.html', response)
 
-@login_required(login_url='/content/login')
+
+@csrf_exempt
+@login_required(login_url="accounts:login")
+@user_passes_test(checkuserifscrutinyuser, login_url="accounts:login")
 def Show_Message(request):
     response = {}
     mid = request.GET['message_id']
@@ -177,7 +184,10 @@ def Show_Message(request):
     else:
         return render(request, 'account/inbox.html', response)
 
-@login_required(login_url='/content/login')
+
+@csrf_exempt
+@login_required(login_url="accounts:login")
+@user_passes_test(checkuserifscrutinyuser, login_url="accounts:login")
 def Mark_As_Read(request):
     mid = request.GET['message_id']
     print('Message having ID ', mid, ' has been marked as read.')
@@ -187,7 +197,9 @@ def Mark_As_Read(request):
     return redirect('accounts:inbox')
 
 
-@login_required(login_url='/content/login')
+@csrf_exempt
+@login_required(login_url="accounts:login")
+@user_passes_test(checkuserifscrutinyuser, login_url="accounts:login")
 def Delete_Message(request):
     mid = request.GET['message_id']
     print('Message having ID ', mid, ' has been deleted.')
