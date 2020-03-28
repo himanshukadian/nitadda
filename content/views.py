@@ -188,7 +188,7 @@ def UploadNote(request):
         note.user_id = request.user.id;
         note.save()
         messages.success(request, "Successfully Uploaded")
-        return redirect('/content/upload_note')
+        return redirect('/content/upload/')
 
     return render(request, 'content/Upload_Notes.html', response)
 

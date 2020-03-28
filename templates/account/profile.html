@@ -70,118 +70,123 @@
                             </div>
                             <div class="tabs-content">
                                 <div id="signup-tab-content" class="active">
-                            <table class="table table-striped table-responsive-md" id="example">
-                                <thead class="thead-dark">
-                                <tr>
-                                    <th scope="col">Title</th>
-                                    <th scope="col">Subject</th>
-                                    <th scope="col">Rating</th>
-                                    <th scope="col">Status</th>
+                                    <table class="table table-striped table-responsive-md" id="example">
+                                        <thead class="thead-dark">
+                                        <tr>
+                                            <th scope="col">Title</th>
+                                            <th scope="col">Subject</th>
+                                            <th scope="col">Rating</th>
+                                            <th scope="col">Status</th>
 
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for i in data %}
-                                    <tr>
-                                        <td style="vertical-align:middle"><a style="font-weight: bold"
-                                                                             href="/content/view/{{ i.note_id }}">{{ i.title }}</a>
-                                            <br>
-                                            <span class="ref"> - contributed by <b>you</b></span>
-                                        </td>
-                                        <td style="vertical-align:middle"><span>{{ i.subject }}</span></td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for i in data %}
+                                            <tr>
+                                                <td style="vertical-align:middle"><a style="font-weight: bold"
+                                                                                     href="/content/view/{{ i.note_id }}">{{ i.title }}</a>
+                                                    <br>
+                                                    <span class="ref"> - contributed by <b>you</b></span>
+                                                </td>
+                                                <td style="vertical-align:middle"><span>{{ i.subject }}</span></td>
 
-                                        {% if  i.is_approved %}
-                                            <td style="vertical-align:middle">
-                                                <div class="like_grow" id="{{ i.note_id }}">
-                                                    <i id="{{ i.note_id }}1" class="fa fa-thumbs-up fa-2x like active"
-                                                       aria-hidden="true"></i>
-                                                </div>
-                                                <span class="likes_counter" style="font-family:'Amaranth', sans-serif;"
-                                                      id="{{ i.note_id }}2">
+                                                {% if  i.is_approved %}
+                                                    <td style="vertical-align:middle">
+                                                        <div class="like_grow" id="{{ i.note_id }}">
+                                                            <i id="{{ i.note_id }}1"
+                                                               class="fa fa-thumbs-up fa-2x like active"
+                                                               aria-hidden="true"></i>
+                                                        </div>
+                                                        <span class="likes_counter"
+                                                              style="font-family:'Amaranth', sans-serif;"
+                                                              id="{{ i.note_id }}2">
                                         {{ i.total_upvotes }}
                                     </span>
-                                            </td>
-                                            <td style="color:green ; vertical-align:middle">
-                                                <div class="info info-success">Approved</div>
-                                            </td>
-                                        {% else %}
-                                            <td style="color:red ; vertical-align:middle">
-                                                <div class="info info-failure">N/A</div>
-                                            </td>
-                                            <td style="color:blue; vertical-align:middle">
-                                                <div class="info info-waiting">Approval Pending</div>
-                                            </td>
-                                        {% endif %}
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
+                                                    </td>
+                                                    <td style="color:green ; vertical-align:middle">
+                                                        <div class="info info-success">Approved</div>
+                                                    </td>
+                                                {% else %}
+                                                    <td style="color:red ; vertical-align:middle">
+                                                        <div class="info info-failure">N/A</div>
+                                                    </td>
+                                                    <td style="color:blue; vertical-align:middle">
+                                                        <div class="info info-waiting">Approval Pending</div>
+                                                    </td>
+                                                {% endif %}
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
                                 </div>
                                 <div id="login-tab-content">
-                            <table class="table table-striped table-responsive-md" id="example">
-                                <thead class="thead-dark">
-                                <tr>
-                                    <th scope="col">Title</th>
-                                    <th scope="col">Subject</th>
-                                    <th scope="col">Rating</th>
-                                    {% if user.is_authenticated and user.is_superuser %}
-                                        <th scope="col">Actions</th>
-                                    {% endif %}
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for i, j, k in data1 %}
-                                    {% if  user.is_authenticated and user.is_superuser or i.is_approved %}
+                                    <table class="table table-striped table-responsive-md" id="example">
+                                        <thead class="thead-dark">
                                         <tr>
-
-                                            <td style="vertical-align:middle"><a style="font-weight: bold"
-                                                                                 href="/content/view/{{ i.note_id }}">{{ i.title }}</a>
-                                                <br>
-                                                <span class="ref"> - contributed by <b>{{ k }}</b></span>
-                                            </td>
-                                            <td style="vertical-align:middle"><span>{{ i.subject }}</span></td>
-                                            {#                    href = {% url 'upvote/ i.note_id / user.id ' %}#}
-                                            {% if  j %}
-                                                <td style="vertical-align:middle">
-                                                    <div class="like_grow" id="{{ i.note_id }}"
-                                                         onclick="updateVote( this.id )">
-                                                        <i id="{{ i.note_id }}1"
-                                                           class="fa fa-thumbs-up fa-2x like active"
-                                                           aria-hidden="true"></i>
-                                                    </div>
-                                                    <span class="likes_counter" style="font-family:'Amaranth'"
-                                                          id="{{ i.note_id }}2">
-                                                {{ i.total_upvotes }}
-                                            </span>
-                                                </td>
-                                            {% else %}
-                                                <td style="vertical-align:middle">
-                                                    <div class="like_grow" id="{{ i.note_id }}"
-                                                         onclick="updateVote( this.id )">
-                                                        <i id="{{ i.note_id }}1" class="fa fa-thumbs-up fa-2x like"
-                                                           aria-hidden="true"></i>
-                                                    </div>
-                                                    <span class="likes_counter" style="font-family:'Amaranth'"
-                                                          id="{{ i.note_id }}2">
-                                            {{ i.total_upvotes }}
-                                        </span>
-                                                </td>
-                                            {% endif %}
+                                            <th scope="col">Title</th>
+                                            <th scope="col">Subject</th>
+                                            <th scope="col">Rating</th>
                                             {% if user.is_authenticated and user.is_superuser %}
-                                                <td scope="col">
-                                                    {% if  i.is_approved %}
-                                                        <a class="btn">Approved</a>
-                                                    {% else %}
-                                                        <a href="../approvenote/{{ i.note_id }}" class="btn btn-danger">Approve</a>
-                                                    {% endif %}
-                                                    <a href="../deletenote/{{ i.note_id }}" class="btn btn-danger">Remove</a>
-                                                </td>
+                                                <th scope="col">Actions</th>
                                             {% endif %}
                                         </tr>
-                                    {% endif %}
-                                {% endfor %}
-                                </tbody>
-                            </table>
+                                        </thead>
+                                        <tbody>
+                                        {% for i, j, k in data1 %}
+                                            {% if  user.is_authenticated and user.is_superuser or i.is_approved %}
+                                                <tr>
+
+                                                    <td style="vertical-align:middle"><a style="font-weight: bold"
+                                                                                         href="/content/view/{{ i.note_id }}">{{ i.title }}</a>
+                                                        <br>
+                                                        <span class="ref"> - contributed by <b>{{ k }}</b></span>
+                                                    </td>
+                                                    <td style="vertical-align:middle"><span>{{ i.subject }}</span></td>
+                                                    {#                    href = {% url 'upvote/ i.note_id / user.id ' %}#}
+                                                    {% if  j %}
+                                                        <td style="vertical-align:middle">
+                                                            <div class="like_grow" id="{{ i.note_id }}"
+                                                                 onclick="updateVote( this.id )">
+                                                                <i id="{{ i.note_id }}1"
+                                                                   class="fa fa-thumbs-up fa-2x like active"
+                                                                   aria-hidden="true"></i>
+                                                            </div>
+                                                            <span class="likes_counter" style="font-family:'Amaranth'"
+                                                                  id="{{ i.note_id }}2">
+                                                {{ i.total_upvotes }}
+                                            </span>
+                                                        </td>
+                                                    {% else %}
+                                                        <td style="vertical-align:middle">
+                                                            <div class="like_grow" id="{{ i.note_id }}"
+                                                                 onclick="updateVote( this.id )">
+                                                                <i id="{{ i.note_id }}1"
+                                                                   class="fa fa-thumbs-up fa-2x like"
+                                                                   aria-hidden="true"></i>
+                                                            </div>
+                                                            <span class="likes_counter" style="font-family:'Amaranth'"
+                                                                  id="{{ i.note_id }}2">
+                                            {{ i.total_upvotes }}
+                                        </span>
+                                                        </td>
+                                                    {% endif %}
+                                                    {% if user.is_authenticated and user.is_superuser %}
+                                                        <td scope="col">
+                                                            {% if  i.is_approved %}
+                                                                <a class="btn">Approved</a>
+                                                            {% else %}
+                                                                <a href="../approvenote/{{ i.note_id }}"
+                                                                   class="btn btn-danger">Approve</a>
+                                                            {% endif %}
+                                                            <a href="../deletenote/{{ i.note_id }}"
+                                                               class="btn btn-danger">Remove</a>
+                                                        </td>
+                                                    {% endif %}
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
                                 </div><!--.login-tab-content-->
                             </div><!--.tabs-content-->
                         </div>
