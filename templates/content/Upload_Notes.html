@@ -7,7 +7,7 @@
         <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
         <script>
             $(document).ready(function () {
-                $('select#selectCourse').change(function () {
+                $('select#selectCourse1').change(function () {
                     let optionSelected = $(this).find("option:selected");
                     {#let valueSelected  = optionSelected.val();#}
                     let course_name = optionSelected.text();
@@ -18,13 +18,38 @@
                         data: {'cn': course_name},
                         success: function (subjects) {
                             console.log("ha bhai");
-                            $("#selectSubject option").remove();
-                            $("#selectSubject").append("<option selected disabled>Choose subject</option>");
+                            $("#selectSubject1 option").remove();
+                            $("#selectSubject1").append("<option selected disabled>Choose subject</option>");
                             for (var i = subjects.length - 1; i >= 0; i--) {
                                 {
                                     console.log(subjects[i].id + "   ");
                                 }
-                                $("#selectSubject").append("<option value=" + subjects[i].id + ">" + subjects[i].title + "</option>");
+                                $("#selectSubject1").append("<option value=" + subjects[i].id + ">" + subjects[i].title + "</option>");
+                            }
+                        }
+                    });
+                });
+            });
+
+            $(document).ready(function () {
+                $('select#selectCourse2').change(function () {
+                    let optionSelected = $(this).find("option:selected");
+                    {#let valueSelected  = optionSelected.val();#}
+                    let course_name = optionSelected.text();
+                    console.log("Course selected is :", course_name);
+                    $.ajax({
+                        url: "/content/getSubjects/",
+                        type: "POST",
+                        data: {'cn': course_name},
+                        success: function (subjects) {
+                            console.log("ha bhai");
+                            $("#selectSubject2 option").remove();
+                            $("#selectSubject2").append("<option selected disabled>Choose subject</option>");
+                            for (var i = subjects.length - 1; i >= 0; i--) {
+                                {
+                                    console.log(subjects[i].id + "   ");
+                                }
+                                $("#selectSubject2").append("<option value=" + subjects[i].id + ">" + subjects[i].title + "</option>");
                             }
                         }
                     });
@@ -61,12 +86,12 @@
                                   onsubmit="return validateForm();">
                                 {% csrf_token %}
                                 <div class="form-group">
-                                    <label class="formText" for="firstName">Note Title</label>
-                                    <input for="firstName" class="form-control" name="title" id="fn" required>
+                                    <label class="formText" for="nt">Note Title</label>
+                                    <input for="firstName" class="form-control" name="title" id="nt" required>
                                 </div>
                                 <div class="form-group">
-                                    <label class="formText" for="course">Select Course</label>
-                                    <select class="form-control" id="selectCourse" name="courses" required>
+                                    <label class="formText" for="selectCourse1">Select Course</label>
+                                    <select class="form-control" id="selectCourse1" name="courses" required>
                                         <option selected disabled>Choose course</option>
                                         {% for course in courses %}
                                             <option value="{{ course.id }}">
@@ -76,8 +101,8 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label class="formText" for="course">Select Subject</label>
-                                    <select class="form-control" id="selectSubject" name="subjects" required>
+                                    <label class="formText" for="selectSubject1">Select Subject</label>
+                                    <select class="form-control" id="selectSubject1" name="subjects" required>
                                         <option selected disabled>Choose subject</option>
                                     </select>
                                 </div>
@@ -87,44 +112,83 @@
                                            required>
                                 </div>
                                 <center>
-                                    <button type="submit" id="btn" class="btn btn-info btn-md">Save</button>
+                                    <button type="submit" id="btn" class="formButton">Upload</button>
                                 </center>
                             </form>
                         </div>
                         <div id="login-tab-content">
-                            {#                            <form method="POST" action="/content/upload/" enctype="multipart/form-data"#}
-                            {#                                  onsubmit="return validateForm();">#}
-                            {#                                {% csrf_token %}#}
-                            {#                                <div class="form-group">#}
-                            {#                                    <label class="formText" for="firstName">Note Title</label>#}
-                            {#                                    <input for="firstName" class="form-control" name="title" id="fn" required>#}
-                            {#                                </div>#}
-                            {#                                <div class="form-group">#}
-                            {#                                    <label class="formText" for="course">Select Course</label>#}
-                            {#                                    <select class="form-control" id="selectCourse" name="courses" required>#}
-                            {#                                        <option selected disabled>Choose course</option>#}
-                            {#                                        {% for course in courses %}#}
-                            {#                                            <option value="{{ course.id }}">#}
-                            {#                                                {{ course.title }}#}
-                            {#                                            </option>#}
-                            {#                                        {% endfor %}#}
-                            {#                                    </select>#}
-                            {#                                </div>#}
-                            {#                                <div class="form-group">#}
-                            {#                                    <label class="formText" for="course">Select Subject</label>#}
-                            {#                                    <select class="form-control" id="selectSubject" name="subjects" required>#}
-                            {#                                        <option selected disabled>Choose subject</option>#}
-                            {#                                    </select>#}
-                            {#                                </div>#}
-                            {#                                <div class="form-group">#}
-                            {#                                    <label class="formText" for="lastName">Select File</label>#}
-                            {#                                    <input for="lastName" class="form-control" type="File" name="files" id="upload"#}
-                            {#                                           required>#}
-                            {#                                </div>#}
-                            {#                                <center>#}
-                            {#                                    <button type="submit" id="btn" class="formButton">Upload</button>#}
-                            {#                                </center>#}
-                            {#                            </form>#}
+                            <form method="POST" action="/content/upload/" enctype="multipart/form-data"
+                                  onsubmit="return validateForm();">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label class="formText" for="">Select Course</label>
+                                    <select class="form-control" id="selectCourse2" name="courses" required>
+                                        <option selected disabled>Choose course</option>
+                                        {% for course in courses %}
+                                            <option value="{{ course.id }}">
+                                                {{ course.title }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="formText" for="">Select Subject</label>
+                                    <select class="form-control" id="selectSubject2" name="subjects" required>
+                                        <option selected disabled>Choose subject</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="formText" for="selectBatch">Select batch year</label>
+                                    <select class="form-control" id="selectBatch" name="batch" required>
+                                        <option selected disabled>Choose Batch year</option>
+                                        <option>2013 - 2016</option>
+                                        <option>2016 - 2019</option>
+                                        <option>2019 - 2022</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="formText" for="">Select Semester</label>
+                                    <select class="form-control" id="selectSemester" name="semesters" required>
+                                        <option selected disabled>Choose Semester</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="formText" for="">Select Exam</label>
+                                    <select class="form-control" id="selectExams" name="exams" required>
+                                        <option selected disabled>Choose Type</option>
+                                        <option value="min1">Minor-1</option>
+                                        <option value="min2">Minor-2</option>
+                                        <option value="mid">Mid-sem</option>
+                                        <option value="end">End-sem</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="formText">Exam type :</label>
+                                    <label class="formText" for="theory">Theory
+                                        <input type="radio" name="type" id="theory" value="Theory" >
+                                    </label>
+
+                                    <label class="formText" for="practical">Practical
+                                        <input type="radio" name="type" id="practical" value="Practical" >
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="formText" for="">Select File</label>
+                                    <input for="lastName" class="form-control" type="File" name="files" id="upload"
+                                           required>
+                                </div>
+                                <center>
+                                    <button type="submit" id="btn" class="formButton">Upload</button>
+                                </center>
+                            </form>
                         </div>
                     </div>
                 </div>
