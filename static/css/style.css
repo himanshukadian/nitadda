@@ -941,7 +941,8 @@ center h1 {
     height: 100%;
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
-    border: 1px solid $ border-color;
+    border: 1px solid;
+    /*border-color;*/
     vertical-align: middle;
     margin-right: 0px;
     width: 10%;
@@ -968,9 +969,9 @@ center h1 {
     color: darkcyan;
 }
 
-::-moz-input-placeholder {
-    color: darkcyan;
-}
+/*::-moz-input-placeholder {*/
+/*    color: darkcyan;*/
+/*}*/
 
 ::-ms-input-placeholder {
     color: darkcyan;
