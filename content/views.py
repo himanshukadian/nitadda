@@ -214,7 +214,7 @@ def UploadContent(request):
             paper.semester = request.POST['semesters']
             paper.exam = request.POST['exams']
             paper.exam_type = request.POST['types']
-            paper.title = str(paper.subject.title) + " : " + str(paper.exam)
+            paper.title = str(paper.subject.title) + " Paper"
             paper.paper_pdf = request.FILES["files"]
             paper.user_id = request.user.id;
             paper.save()
@@ -298,21 +298,28 @@ def Get_Subject_Note(request):
 def Show_Subject_Note(request, slug):
     response = {}
     print(request.user)
-    notes = Note.objects.all()
     sname = Subject.objects.get(slug=slug)
-    note = Note.objects.filter(subject=sname.id).annotate(num_votes=Count('upvotes')).order_by('-num_votes')
+    notes = Note.objects.filter(subject=sname.id).annotate(num_votes=Count('upvotes')).order_by('-num_votes')
+    papers = Exam_Paper.objects.filter(subject=sname.id).order_by('-batch_year')
     print(sname)
     lstatus = []
     providers = []
-    for n in note:
+    for n in notes:
         prv = CustomUser.objects.get(id=n.user_id)
         providers.append(prv.username)
         if n.upvotes.filter(id=request.user.id).exists():
             lstatus.append(True)
         else:
             lstatus.append(False)
-    response['data'] = zip(note, lstatus, providers)
+    response['data'] = zip(notes, lstatus, providers)
     response['sname'] = sname
+    year = []
+    for p in papers:
+        if p.semester % 2 != 0:
+            p.semester += 1
+        x = int(p.batch_year - p.semester / 2)
+        year.append(x)
+    response['papers'] = zip(papers, year)
     return render(request, 'content/all_Subject_Notes.html', response)
 
 @csrf_exempt
@@ -450,3 +457,5 @@ def Display_Paper_Pdf(request,paperid) :
     cd = Note.objects.get(note_id=paperid)
     response["data"] = cd
     return render(request, 'content/show_note_pdf.html', response)
+
+

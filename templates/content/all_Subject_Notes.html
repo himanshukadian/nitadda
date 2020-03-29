@@ -130,7 +130,19 @@ https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
                             </table>
                         </div>
                         <div id="login-tab-content">
-                            <caption><h3 class="table_title">Papers</h3></caption>
+                            <caption><h3 class="table_title">Previous Year Papers</h3></caption>
+                                <div class="grid-container">
+                                {%  for p, year in papers %}
+                                     <div class="element-card">
+                                         <div class="card-top">
+                                             <a class="card-title" href="../../view_paper/{{ p.paper_id }}">{{p.title}}</a>
+                                             <span class="card-batch-year">{{ year}}</span>
+                                             <span class="card-exam">{{p.exam}}</span>
+                                         </div>
+                                         <div class="card-bottom">Semester : {{p.semester}}</div>
+                                     </div>
+                                {% endfor %}
+                                </div>
                         </div>
                         <div id="login1-tab-content">
                             <caption><h3 class="table_title">Books</h3></caption>
