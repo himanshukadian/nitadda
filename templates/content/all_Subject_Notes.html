@@ -145,7 +145,52 @@ https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
                                 </div>
                         </div>
                         <div id="login1-tab-content">
-                            <caption><h3 class="table_title">Books</h3></caption>
+                            <caption><h3 class="table_title">{{ sname }} Books</h3></caption>
+                            <div class="row">
+                                {% for i in book %}
+                                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+                                        <div class="productCardContainer">
+                                            <div class="productCardContent">
+                                                <div class="productCardImage">
+                                                    <img src="{{ i.image.url }}"
+                                                         alt=""/>
+                                                    <a class="imageCardEffect">Book</a>
+                                                </div>
+                                                <div class="productCardDetails">
+                                                    <div class="productCardModel">
+                                                        <span class="modelCardEffect"></span>
+                                                        <a href="">
+                                                            {{ i.title }}
+                                                        </a>
+                                                    </div>
+                                                    <div class="productCardDetailsList">
+                                                        <div class="list-group">
+                                                        <span class="list-group-item">
+                                                            <span class="detailInfo">
+                    by {{ i.author }}
+                  </span>
+                                                        </span>
+                                                            <span class="list-group-item">
+                                                            <span class="detailInfo">
+                   {{ i.course }}
+                  </span>
+                                                        </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="productCardPrice">
+                                                        <a href="{{ i.flink }}" class="btn">
+                                                            <i class="fa fa-shopping-cart"></i> Flipkart
+                                                        </a>
+                                                        <a href="{{ i.alink }}" class="btn">
+                                                            <i class="fa fa-shopping-cart"></i> Amazon
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 </div>

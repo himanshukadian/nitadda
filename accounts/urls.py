@@ -14,5 +14,5 @@ urlpatterns = [
     url(r'inbox/show_message/$', views.Show_Message, name='show_message'),
     url(r'^inbox/mark_as_read/$', views.Mark_As_Read, name='mark_as_read'),
     url(r'^inbox/delete_message/$', views.Delete_Message, name='delete_message'),
-
+    path('<int:pk>/clear/', views.clear, name='clear-noti'),
 ]

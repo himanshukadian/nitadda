@@ -430,37 +430,43 @@
 {#                                        </div>#}
 {#                                    </div>#}
                         <div id="login1-tab-content">
-                            <caption><h3 class="table_title">Books</h3></caption>
+                            <caption><h3 class="table_title">{{ cname }} Books</h3></caption>
                             <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+                                {% for i in book %}
+                                    <div class="col-xs-10 col-sm-10 col-md-6 col-lg-4">
                                     <div class="productCardContainer">
                                         <div class="productCardContent">
                                             <div class="productCardImage">
-                                                <img src="{% static 'images/cover.jpg' %}"
+                                                <img src="{{ i.image.url }}"
                                                      alt=""/>
-                                                <a href="" class="imageCardEffect">Book</a>
+                                                <a class="imageCardEffect">Book</a>
                                             </div>
                                             <div class="productCardDetails">
                                                 <div class="productCardModel">
                                                     <span class="modelCardEffect"></span>
                                                     <a href="">
-                                                        Data Structure and Algo design
+                                                        {{ i.title }}
                                                     </a>
                                                 </div>
                                                 <div class="productCardDetailsList">
                                                     <div class="list-group">
-                                                        <a href="" class="list-group-item">
+                                                        <span class="list-group-item">
                                                             <span class="detailInfo">
-                    by Himanshu
+                    by {{ i.author }}
                   </span>
-                                                        </a>
+                                                        </span>
+                                                        <span class="list-group-item">
+                                                            <span class="detailInfo">
+                   {{ i.subject }}
+                  </span>
+                                                        </span>
                                                     </div>
                                                 </div>
                                                 <div class="productCardPrice">
-                                                    <a href="" class="btn">
+                                                    <a href="{{ i.flink }}" class="btn">
                                                         <i class="fa fa-shopping-cart"></i> Flipkart
                                                     </a>
-                                                    <a href="" class="btn">
+                                                    <a href="{{ i.alink }}" class="btn">
                                                         <i class="fa fa-shopping-cart"></i> Amazon
                                                     </a>
                                                 </div>
@@ -468,115 +474,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
-                                    <div class="productCardContainer">
-                                        <div class="productCardContent">
-                                            <div class="productCardImage">
-                                                <img src="{% static 'images/cover.jpg' %}"
-                                                     alt=""/>
-                                                <a href="" class="imageCardEffect">Book</a>
-                                            </div>
-                                            <div class="productCardDetails">
-                                                <div class="productCardModel">
-                                                    <span class="modelCardEffect"></span>
-                                                    <a href="">
-                                                        Data Structure and Algo design
-                                                    </a>
-                                                </div>
-                                                <div class="productCardDetailsList">
-                                                    <div class="list-group">
-                                                        <a href="" class="list-group-item">
-                                                            <span class="detailInfo">
-                    by Himanshu
-                  </span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="productCardPrice">
-                                                    <a href="" class="btn">
-                                                        <i class="fa fa-shopping-cart"></i> Flipkart
-                                                    </a>
-                                                    <a href="" class="btn">
-                                                        <i class="fa fa-shopping-cart"></i> Amazon
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
-                                    <div class="productCardContainer">
-                                        <div class="productCardContent">
-                                            <div class="productCardImage">
-                                                <img src="{% static 'images/cover.jpg' %}"
-                                                     alt=""/>
-                                                <a href="" class="imageCardEffect">Book</a>
-                                            </div>
-                                            <div class="productCardDetails">
-                                                <div class="productCardModel">
-                                                    <span class="modelCardEffect"></span>
-                                                    <a href="">
-                                                        Data Structure and Algo design
-                                                    </a>
-                                                </div>
-                                                <div class="productCardDetailsList">
-                                                    <div class="list-group">
-                                                        <a href="" class="list-group-item">
-                                                            <span class="detailInfo">
-                    by Himanshu
-                  </span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="productCardPrice">
-                                                    <a href="" class="btn">
-                                                        <i class="fa fa-shopping-cart"></i> Flipkart
-                                                    </a>
-                                                    <a href="" class="btn">
-                                                        <i class="fa fa-shopping-cart"></i> Amazon
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
-                                    <div class="productCardContainer">
-                                        <div class="productCardContent">
-                                            <div class="productCardImage">
-                                                <img src="{% static 'images/cover.jpg' %}"
-                                                     alt=""/>
-                                                <a href="" class="imageCardEffect">Book</a>
-                                            </div>
-                                            <div class="productCardDetails">
-                                                <div class="productCardModel">
-                                                    <span class="modelCardEffect"></span>
-                                                    <a href="">
-                                                        Data Structure and Algo design
-                                                    </a>
-                                                </div>
-                                                <div class="productCardDetailsList">
-                                                    <div class="list-group">
-                                                        <a href="" class="list-group-item">
-                                                            <span class="detailInfo">
-                    by Himanshu
-                  </span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="productCardPrice">
-                                                    <a href="" class="btn">
-                                                        <i class="fa fa-shopping-cart"></i> Flipkart
-                                                    </a>
-                                                    <a href="" class="btn">
-                                                        <i class="fa fa-shopping-cart"></i> Amazon
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
+                                {% endfor %}
                             </div>
                         </div>
                     </div>

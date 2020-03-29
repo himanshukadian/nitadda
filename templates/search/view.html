@@ -41,70 +41,145 @@
         {% endfor %}
     {% endif %}
     <div class="container" style="clear:both;min-width:min-content;margin-bottom: 8%">
-        <div class="row">
+        {% if  op == 'n' %}
+            <div class="row">
+                {% if  request.GET.q %}
+                    <div class="col-12 mb-3">
+                        <caption><h3 class="table_title" style="color:f9f9f9;">Search Results for {{ request.GET.q }} in
+                            Notes</h3>
+                        </caption>
+                    </div>
+                {% else %}
+                    <div class="col-12 col-md-8 mx-auto">
+                        <caption><h3 class="table_title" style="color:f9f9f9;">Please Search with some valid value</h3>
+                        </caption>
+                    </div>
+                {% endif %}
+                <div class="col-xs-12 ml-auto mr-auto col-md-12">
+                    <table class="table table-striped table-responsive-md" id="example">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col">Subject</th>
+                            <th scope="col">Course</th>
+                            <th scope="col">Rating</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for i, j, k in data %}
+                            {% if  user.is_authenticated and user.is_superuser or i.is_approved %}
+                                <tr>
+                                    <td style="vertical-align:middle"><a style="font-weight: bold"
+                                                                         href="content/view/{{ i.note_id }}">{{ i.title|title }}</a>
+                                        <br>
+                                        <span class="ref"> - contributed by <b>{{ k|title }}</b></span>
+                                    </td>
+                                    <td style="vertical-align:middle"><span>{{ i.subject|title }}</span></td>
+                                    <td style="vertical-align:middle"><span>{{ i.course|title }}</span></td>
+                                    {#                    href = {% url 'upvote/ i.note_id / user.id ' %}#}
+                                    {% if  j %}
+                                        <td style="vertical-align:middle">
+                                            <div class="like_grow" id="{{ i.note_id }}" onclick="updateVote( this.id )">
+                                                <i id="{{ i.note_id }}1" class="fa fa-thumbs-up fa-2x like active"
+                                                   aria-hidden="true"></i>
+                                            </div>
+                                            <span class="likes_counter" style="font-family:'Amaranth'"
+                                                  id="{{ i.note_id }}2">
+                                            {{ i.total_upvotes }}
+                                        </span>
+                                        </td>
+                                    {% else %}
+                                        <td style="vertical-align:middle">
+                                            <div class="like_grow" id="{{ i.note_id }}" onclick="updateVote( this.id )">
+                                                <i id="{{ i.note_id }}1" class="fa fa-thumbs-up fa-2x like"
+                                                   aria-hidden="true"></i>
+                                            </div>
+                                            <span class="likes_counter" style="font-family:'Amaranth'"
+                                                  id="{{ i.note_id }}2">
+                                        {{ i.total_upvotes }}
+                                    </span>
+                                        </td>
+                                    {% endif %}
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% elif op == 'b' %}
+            <div class="row">
+                {% if  request.GET.q %}
+                    <div class="col-12 mb-3">
+                        <caption><h3 class="table_title" style="color:f9f9f9;">Search Results for {{ request.GET.q }} in
+                            Books</h3>
+                        </caption>
+                    </div>
+                {% else %}
+                    <div class="col-12 col-md-8 mx-auto">
+                        <caption><h3 class="table_title" style="color:f9f9f9;">Please Search with some valid value</h3>
+                        </caption>
+                    </div>
+                {% endif %}
+                {% for i in data %}
+                    <div class="col-xs-8 col-sm-12 col-md-6 col-lg-3">
+                        <div class="productCardContainer">
+                            <div class="productCardContent">
+                                <div class="productCardImage">
+                                    <img src="{{ i.image.url }}"
+                                         alt=""/>
+                                    <a class="imageCardEffect">Book</a>
+                                </div>
+                                <div class="productCardDetails">
+                                    <div class="productCardModel">
+                                        <span class="modelCardEffect"></span>
+                                        <a href="">
+                                            {{ i.title }}
+                                        </a>
+                                    </div>
+                                    <div class="productCardDetailsList">
+                                        <div class="list-group">
+                                                        <span class="list-group-item">
+                                                            <span class="detailInfo">
+                    by {{ i.author }}
+                  </span>
+                                                        </span>
+                                            <span class="list-group-item">
+                                                            <span class="detailInfo">
+                   {{ i.subject }}
+                  </span>
+                                                        </span>
+                                        </div>
+                                    </div>
+                                    <div class="productCardPrice">
+                                        <a href="{{ i.flink }}" class="btn">
+                                            <i class="fa fa-shopping-cart"></i> Flipkart
+                                        </a>
+                                        <a href="{{ i.alink }}" class="btn">
+                                            <i class="fa fa-shopping-cart"></i> Amazon
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}</div>
+            <div class="row">
+        {% elif op == 'p' %}
             {% if  request.GET.q %}
                 <div class="col-12 mb-3">
-                    <caption><h3 class="table_title" style="color:f9f9f9;">Search Results for {{ request.GET.q }}</h3>
+                    <caption><h3 class="table_title" style="color:f9f9f9;">Search Results for {{ request.GET.q }} in
+                        Papers</h3>
                     </caption>
                 </div>
             {% else %}
                 <div class="col-12 col-md-8 mx-auto">
-                    <caption><h3 class="table_title" style="color:f9f9f9;">Please Search with some value</h3></caption>
+                    <caption><h3 class="table_title" style="color:f9f9f9;">Please Search with some valid value</h3>
+                    </caption>
                 </div>
             {% endif %}
-            <div class="col-xs-12 ml-auto mr-auto col-md-12">
-                <table class="table table-striped table-responsive-md" id="example">
-                    <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Title</th>
-                        <th scope="col">Subject</th>
-                        <th scope="col">Course</th>
-                        <th scope="col">Rating</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for i, j, k in data %}
-                        {% if  user.is_authenticated and user.is_superuser or i.is_approved %}
-                            <tr>
-
-                                <td style="vertical-align:middle"><a style="font-weight: bold"
-                                                                     href="content/view/{{ i.note_id }}">{{ i.title|title }}</a>
-                                    <br>
-                                    <span class="ref"> - contributed by <b>{{ k|title }}</b></span>
-                                </td>
-                                <td style="vertical-align:middle"><span>{{ i.subject|title }}</span></td>
-                                <td style="vertical-align:middle"><span>{{ i.course|title }}</span></td>
-                                {#                    href = {% url 'upvote/ i.note_id / user.id ' %}#}
-                                {% if  j %}
-                                    <td style="vertical-align:middle">
-                                        <div class="like_grow" id="{{ i.note_id }}" onclick="updateVote( this.id )">
-                                            <i id="{{ i.note_id }}1" class="fa fa-thumbs-up fa-2x like active"
-                                               aria-hidden="true"></i>
-                                        </div>
-                                        <span class="likes_counter" style="font-family:'Amaranth'"
-                                              id="{{ i.note_id }}2">
-                                            {{ i.total_upvotes }}
-                                        </span>
-                                    </td>
-                                {% else %}
-                                    <td style="vertical-align:middle">
-                                        <div class="like_grow" id="{{ i.note_id }}" onclick="updateVote( this.id )">
-                                            <i id="{{ i.note_id }}1" class="fa fa-thumbs-up fa-2x like"
-                                               aria-hidden="true"></i>
-                                        </div>
-                                        <span class="likes_counter" style="font-family:'Amaranth'"
-                                              id="{{ i.note_id }}2">
-                                        {{ i.total_upvotes }}
-                                    </span>
-                                    </td>
-                                {% endif %}
-                            </tr>
-                        {% endif %}
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+            <span style="color: white">papers</span>
+        {% endif %}</div>
     </div>
     </body>
     <script>

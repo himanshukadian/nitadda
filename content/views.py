@@ -6,6 +6,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, HttpRequest, Http404, JsonResponse, FileResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.urls import reverse
+
 from .models import *
 import datetime
 from django.views.decorators.csrf import csrf_exempt
@@ -85,23 +87,6 @@ def index(request):
     info = messages.get_messages(request)
     response = {'message': info}
     return render(request, 'home.html', response)
-111
-    # response = {}
-    # print("index was called!!")
-    # print(request.user)
-    # notes = Note.objects.all()
-    # lstatus = []
-    # providers = []
-    # for n in notes:
-    #     prv = CustomUser.objects.get(id=n.user_id)
-    #     providers.append(prv.username)
-    #     if n.upvotes.filter(id=request.user.id).exists():
-    #         lstatus.append(True)
-    #     else:
-    #         lstatus.append(False)
-    # response['data'] = zip(notes, lstatus, providers)
-    # return render(request, 'home.html', response)
-
 
 @csrf_exempt
 def admin_logout(request):
@@ -272,6 +257,8 @@ def Show_Note(request, slug):
     response['papers'] = zip(papers, year)
     # response['year'] = year
     response['cname'] = cname
+    book = Book.objects.filter(course=cname.id)
+    response['book'] = book
     return render(request, 'content/all_Notes.html', response)
 
 
@@ -320,6 +307,8 @@ def Show_Subject_Note(request, slug):
         x = int(p.batch_year - p.semester / 2)
         year.append(x)
     response['papers'] = zip(papers, year)
+    book = Book.objects.filter(subject=sname.id)
+    response['book'] = book
     return render(request, 'content/all_Subject_Notes.html', response)
 
 @csrf_exempt
@@ -346,7 +335,7 @@ def getSubjects(request):
 
 @login_required_message(message="You should be logged in, in order to perform this")
 @login_required
-def Display_Pdf(request,noteid) :
+def Display_Pdf(request, noteid):
     response = {}
     cd = Note.objects.get(note_id=noteid)
     response["data"] = cd
@@ -376,86 +365,17 @@ def Upvote(request):
 
 @csrf_exempt
 @login_required(login_url="/content/login")
+@user_passes_test(checkuserifscrutinyuser, login_url="/content/login/")
 def Approve_Note(request, noteid):
-    print("approved id : ", noteid)
-    cd = Note.objects.get(note_id=noteid)
-    course = Course.objects.get(title=cd.course)
-    print("course id :", course.id)
+    cd = get_object_or_404(Note, note_id=noteid)
+    course = get_object_or_404(Course, title=cd.course)
     if cd.is_approved:
         messages.success(request, "already approved")
     else:
         cd.is_approved = True
+        cd.user.notifications = cd.user.notifications + 1
+        cd.user.noti_messages = cd.user.noti_messages + '<li> Admin has approved your note titled ' + str(cd.title)
         messages.success(request, 'Successfully approved')
-    url = "/content/course_notes/" + str(course.id)
-    print("url " + url)
     cd.save()
+    cd.user.save()
     return redirect(request.META.get('HTTP_REFERER', '/'))
-
-# @csrf_exempt
-# @login_required_message(message="You should be logged in, in order to perform this.")
-# @login_required
-# def UploadPaper(request):
-#     response = {}
-#     courses = Course.objects.all()
-#     response["courses"] = courses
-#     subjects = Subject.objects.all()
-#     response["subjects"] = subjects
-#     if request.method == 'POST':
-#         cnt = Exam_Paper_Count.objects.get()
-#         year = datetime.datetime.now().year
-#         yy = str(year)
-#         p1 = yy[2:]
-#         p2 = str(cnt.paper_cnt).zfill(4)
-#         cnt.paper_cnt = cnt.paper_cnt + 1
-#         cnt.save()
-#         paper = Exam_Paper()
-#         name = "PAPER"
-#         paperID = name + p1 + p2
-#         print("ID OF PAPER : ",paperID)
-#         paper.paper_id = paperID
-#         print("YE HAI WO SUBJECT ID: ",request.POST.get('subjects2'))
-#         paper.subject = Subject.objects.get(id=request.POST.get('subjects2'))
-#         paper.course = Course.objects.get(id=request.POST['courses'])
-#
-#         paper.batch_year = str(request.POST['batch'])[0:3]
-#         paper.semester = request.POST['semesters']
-#         paper.exam = request.POST['exams']
-#         paper.exam_type = request.POST['types']
-#         paper.title = str(paper.subject.title) +" : " + str(paper.exam)
-#         paper.paper_pdf = request.FILES["files"]
-#         paper.user_id = request.user.id;
-#         paper.save()
-#         messages.success(request, "Successfully Uploaded Exam Paper.")
-#         return redirect('/content/upload_paper/')
-#
-#     return render(request, 'content/Upload_Notes.html', response)
-
-@csrf_exempt
-def getCourseDuration(request):
-    if request.method == 'POST':
-        course_name = request.POST.get('cn')
-        answer = str(course_name).strip()
-        try:
-            selected_course = Course.objects.get(title=answer)
-        except Course.DoesNotExist:
-            selected_course = Course.objects.all()[0]
-        duration = selected_course.duration
-        result_set=duration
-        # result_set.append({'duration':duration})
-        return HttpResponse(json.dumps(result_set), content_type='application/json')
-
-    else:
-        return HttpResponse(
-            json.dumps({"nothing to see": "this isn't happening"}),
-            content_type="application/json"
-        )
-
-@login_required_message(message="You should be logged in, in order to perform this")
-@login_required
-def Display_Paper_Pdf(request,paperid) :
-    response = {}
-    cd = Note.objects.get(note_id=paperid)
-    response["data"] = cd
-    return render(request, 'content/show_note_pdf.html', response)
-
-
