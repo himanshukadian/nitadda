@@ -143,6 +143,16 @@ def Delete_Note(request, noteid):
     messages.success(request, 'successfully deleted')
     return redirect(request.META.get('HTTP_REFERER', '/'))
 
+@csrf_exempt
+@login_required_message(message="You should be logged in, in order to perform this")
+@login_required
+def Delete_Paper(request, paperid):
+    response = {}
+    cd = Exam_Paper.objects.get(pk=paperid)
+    cd.delete()
+    messages.success(request, 'Successfully deleted Exam Paper')
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+
 
 @csrf_exempt
 @login_required_message(message="You should be logged in, in order to perform this.")
@@ -199,7 +209,7 @@ def UploadContent(request):
             paper.semester = request.POST['semesters']
             paper.exam = request.POST['exams']
             paper.exam_type = request.POST['types']
-            paper.title = str(paper.subject.title) + " Paper"
+            paper.title = str(paper.subject.title) + " {" + paper.exam_type + ")"
             paper.paper_pdf = request.FILES["files"]
             paper.user_id = request.user.id;
             paper.save()
@@ -341,6 +351,13 @@ def Display_Pdf(request, noteid):
     response["data"] = cd
     return render(request, 'content/show_note_pdf.html', response)
 
+@login_required_message(message="You should be logged in, in order to perform this")
+@login_required
+def Display_Paper_Pdf(request, paperid):
+    response = {}
+    cd = Exam_Paper.objects.get(pk=paperid)
+    response["data"] = cd
+    return render(request, 'content/show_note_pdf.html', response)
 
 @login_required(login_url="/content/login")
 def Upvote(request):
@@ -379,3 +396,40 @@ def Approve_Note(request, noteid):
     cd.save()
     cd.user.save()
     return redirect(request.META.get('HTTP_REFERER', '/'))
+
+@csrf_exempt
+@login_required(login_url="/content/login")
+@user_passes_test(checkuserifscrutinyuser, login_url="/content/login/")
+def Approve_Paper(request, paperid):
+    cd = get_object_or_404(Exam_Paper, pk=paperid)
+    # course = get_object_or_404(Course, title=cd.course)
+    if cd.is_approved:
+        messages.success(request, "already approved")
+    else:
+        cd.is_approved = True
+        cd.user.notifications = cd.user.notifications + 1
+        cd.user.noti_messages = cd.user.noti_messages + '<li> Admin has approved your paper : ' + str(cd.title) + '</li>'
+        messages.success(request, 'Successfully approved Exam Paper')
+    cd.save()
+    cd.user.save()
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+
+@csrf_exempt
+def getCourseDuration(request):
+    if request.method == 'POST':
+        course_name = request.POST.get('cn')
+        answer = str(course_name).strip()
+        try:
+            selected_course = Course.objects.get(title=answer)
+        except Course.DoesNotExist:
+            selected_course = Course.objects.all()[0]
+        duration = selected_course.duration
+        result_set=duration
+        # result_set.append({'duration':duration})
+        return HttpResponse(json.dumps(result_set), content_type='application/json')
+
+    else:
+        return HttpResponse(
+            json.dumps({"nothing to see": "this isn't happening"}),
+            content_type="application/json"
+        )
