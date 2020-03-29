@@ -1387,5 +1387,118 @@ center h1 {
     background: #4285F4;
 }
 
+/* PAPER styles starts */
+html, body {
+	 position: relative;
+	 /*height: 100%;*/
+	 margin: 0;
+	 padding: 0;
+}
+ body {
+	 background-color: #232323;
+}
 
+ .element-card {
+	 position: relative;
+	 min-width: 300px;
+     max-width: 350px;
+	 min-height: 120px;
+	 /*transform-style: preserve-3d;*/
+	 /*transform: rotatey(0deg) translatex(0px) translatey(0px);*/
+	 transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+	 box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.7);
+	 margin: 15px;
+	 cursor: pointer;
+	  display: -webkit-box;
+	  display: -webkit-flex;
+	  display: -ms-flexbox;
+	  display: flex;
+	  -webkit-box-align: center;
+	  -webkit-align-items: center;
+	  -ms-flex-align: center;
+      align-items: center;
+      z-index: 1;
+}
+ .element-card:hover {
+	 transform: rotatey(20deg) translatex(0px) translatey(-5px);
+	 box-shadow: 0px 8px 40px rgba(0, 0, 0, 0.9);
+	 z-index: 2;
+}
+.element-card .card-top {
+ 	 display: inline-block;
+	 transform: rotateY(0deg) translateZ(2px);
+	 position: absolute;
+	 /*display: flex;*/
+	 top: 0;
+	 background-color: white;
+	 border-radius: 0px;
+	 width: 100%;
+	 min-height: 85%;
+	 overflow: hidden;
+	 padding: 0px auto 0px auto;
+	 /*padding: 20px 5px 20px 5px;*/
+}
+.element-card .card-top:hover{
+	/*background-color: white;*/
+}
+.element-card .card-bottom{
+	display: inline-block;
+	width: 100%;
+	margin: 55% auto 0px auto;
+	transition: all 0.25s ease-in;
+	font-size: 16px;
+	height :30px	;
+	text-align: center;
+	font-family: sans-serif;
+	padding-top: 0px;
+	background-color: white;
+	color: darkcyan;
+}
+.element-card:hover .card-bottom{
+	background-color: #F4B400;;
+	color: white;
 
+}
+ .element-card .card-top .card-title {
+	 width: 100%;
+	 position: absolute;
+	 top: 25px;
+	 padding: 15px;
+	 font-size: 20px;
+	 font-family: sans-serif;
+	 margin: 0px auto 0px auto;
+	 text-align: center;
+	 color: darkcyan;
+}
+ .element-card .card-top .card-batch-year {
+	 position: absolute;
+	 padding: 5px;
+	 font-size: 14px;
+	 font-family: sans-serif;
+	 color: white;
+     background-color: #F4B400;
+}
+ .element-card .card-top .card-exam {
+	 position: absolute;
+	 bottom: 10px;
+	 right: 10px;
+	 font-size: 14px;
+	 font-weight: bold;
+	 font-family: sans-serif;
+	 color: darkcyan;
+}
+ .grid-container {
+	 position: relative;
+	 width: 100%;
+	 max-width: 100%;
+	 min-height: 100%;
+	 margin: 0px auto;
+	 padding: 20px;
+	 box-sizing: border-box;
+	 display: flex;
+	 flex-direction: row;
+	 flex-wrap: wrap;
+	 justify-content: center;
+	 align-items: center;
+}
+ /* PAPER styles end */

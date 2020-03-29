@@ -16,6 +16,7 @@ urlpatterns = [
                   url('approvenote/(?P<noteid>\w+)', views.Approve_Note, name='Approve_Note'),
                   url(r'^deletenote/(?P<noteid>\w+)', views.Delete_Note, name='Delete_Note'),
                   url(r'^view/(?P<noteid>\w+)', views.Display_Pdf, name='Display_Pdf'),
+                  url(r'^view_paper/(?P<paperid>\w+)', views.Display_Paper_Pdf, name='Display_Paper_Pdf'),
                   url(r'^course_notes/(?P<slug>[-\w]+)/$', views.Show_Note, name='Course_Note'),
                   url(r'^subject_notes/(?P<slug>[-\w]+)/$', views.Show_Subject_Note, name='Subject_Note'),
                   url(r'getSubjects/', views.getSubjects),

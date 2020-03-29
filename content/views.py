@@ -210,7 +210,7 @@ def UploadContent(request):
             paper.subject = Subject.objects.get(id=request.POST.get('subjects2'))
             paper.course = Course.objects.get(id=request.POST['courses'])
 
-            paper.batch_year = str(request.POST['batch'])[0:3]
+            paper.batch_year = str(request.POST['batch'])[0:4]
             paper.semester = request.POST['semesters']
             paper.exam = request.POST['exams']
             paper.exam_type = request.POST['types']
@@ -249,20 +249,28 @@ def Get_Subject(request):
 def Show_Note(request, slug):
     response = {}
     print(request.user)
-    notes = Note.objects.all()
     cname = Course.objects.get(slug=slug)
-    note = Note.objects.filter(course=cname.id).annotate(num_votes=Count('upvotes')).order_by('-num_votes')
+    notes = Note.objects.filter(course=cname.id).annotate(num_votes=Count('upvotes')).order_by('-num_votes')
+    papers = Exam_Paper.objects.filter(course=cname.id).order_by('-batch_year')
     print(cname)
     lstatus=[]
     providers = []
-    for n in note:
+    for n in notes:
         prv = CustomUser.objects.get(id=n.user_id)
         providers.append(prv.username)
         if n.upvotes.filter(id=request.user.id).exists():
             lstatus.append(True)
         else:
             lstatus.append(False)
-    response['data'] = zip(note, lstatus, providers)
+    response['data'] = zip(notes, lstatus, providers)
+    year = []
+    for p in papers:
+        if p.semester%2 != 0:
+            p.semester += 1
+        x = int(p.batch_year - p.semester/2)
+        year.append(x)
+    response['papers'] = zip(papers, year)
+    # response['year'] = year
     response['cname'] = cname
     return render(request, 'content/all_Notes.html', response)
 
@@ -434,3 +442,11 @@ def getCourseDuration(request):
             json.dumps({"nothing to see": "this isn't happening"}),
             content_type="application/json"
         )
+
+@login_required_message(message="You should be logged in, in order to perform this")
+@login_required
+def Display_Paper_Pdf(request,paperid) :
+    response = {}
+    cd = Note.objects.get(note_id=paperid)
+    response["data"] = cd
+    return render(request, 'content/show_note_pdf.html', response)
