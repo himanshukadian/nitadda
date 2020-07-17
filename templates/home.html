@@ -16,9 +16,8 @@
     {% endif %}
     <div class="site-section">
         <div class="container">
-
             <div class="searchinput">
-                <form method="get" action="search/">
+                <form class="search-form" method="get" action="search/">
                     <span class="current-selection">
   </span>
                     <select name="op" class="slct" id="dropdown">
@@ -28,7 +27,7 @@
                     </select>
                     <input type="text" id="txt" name="q" placeholder=" Please enter title, course, subject" class="text"
                            required>
-                    <button type="submit" class="formButton"><i class="fas fa-search"></i></button>
+                    <button type="submit" class="formButton"><i class="fa fa-search"></i></button>
                 </form>
             </div>
             <div class="row">
@@ -202,6 +201,29 @@
     </body>
     <script>
         $(document).ready(function () {
+            //Auto Search
+            var searchForm = $(".search-form")
+            var searchInput = searchForm.find("[name='q']")
+            var searchBtn = searchForm.find("[type='submit']")
+            var slctInput = searchForm.find("[name='op']")
+            var typingTimer;
+            var typingInterval = 500
+            searchInput.keyup(function (event) {
+                clearTimeout(typingTimer)
+                typingTimer = setTimeout(performSearch, typingInterval)
+            })
+            searchInput.keydown(function (event) {
+                clearTimeout(typingTimer)
+            })
+
+            function performSearch() {
+                searchBtn.addClass("disabled")
+                searchBtn.html("<i class='fa fa-spin fa-spinner'></i>")
+                setTimeout(function () {
+                    window.location.href = '/search/?op=' + slctInput.val() + '&q=' + searchInput.val()
+                },1000)
+            }
+
             $('table.table').DataTable({
                 "bPaginate": true,
                 "bLengthChange": false,
