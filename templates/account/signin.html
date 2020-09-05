@@ -33,6 +33,7 @@
                         <legend>Login</legend>
                         <form method="POST" action="/content/login/" onsubmit="return validateForm();">
                             {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ request.GET.next }}"/>
                             <div class="form-group">
                                 <label for="firstName">Username</label>
                                 <input for="firstName" class="form-control" name="username" id="fn"

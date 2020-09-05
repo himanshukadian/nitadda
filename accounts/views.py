@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.views import generic
 from django.views.generic import UpdateView
-
+from django.utils.http import is_safe_url
 from content.views import logout, checkuserifscrutinyuser
 from .admin import UserCreationForm
 from django.contrib import messages
@@ -15,7 +15,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
     response = {}
-    print(request.user," logged in : RENDER HOME ")
+    print(request.user, " logged in : RENDER HOME ")
     note = Note.objects.all()[:5]
     lstatus = []
     providers = []
@@ -31,6 +31,7 @@ def index(request):
     # info = messages.get_messages(request)
     # response = {'message': info}
     return render(request, 'home.html', response)
+
 
 class UserFormView(generic.View):
     form_class = UserCreationForm
@@ -80,30 +81,35 @@ def user_login(request):
         logout(request)
     else:
         response = {}
-        if request.method == 'POST':
-            username = request.POST['username']
+    if request.method == 'POST':
+        next_post = request.POST.get('next')
+        redirect_path = next_post
+        username = request.POST['username']
+        try:
+            username = CustomUser.objects.get(email=username).username
+        except CustomUser.DoesNotExist:
             try:
-                username = CustomUser.objects.get(email=username).username
+                username = CustomUser.objects.get(registration_number=username).username
             except CustomUser.DoesNotExist:
-                try:
-                    username = CustomUser.objects.get(registration_number=username).username
-                except CustomUser.DoesNotExist:
-                    username = request.POST['username']
-            password = request.POST['password']
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    messages.success(request, 'You are successfully logged in.')
-                    return redirect('accounts:index')
+                username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                messages.success(request, 'You are successfully logged in.')
+                if is_safe_url(redirect_path, request.get_host()):
+                    return redirect(redirect_path)
                 else:
-                    messages.warning(request, 'User is not active yet')
-                    response['message'] = 'User is not active yet'
+                    return redirect('accounts:index')
             else:
-                messages.warning(request, 'User is invalid')
-                response['message'] = 'User is invalid'
+                messages.warning(request, 'User is not active yet')
+                response['message'] = 'User is not active yet'
+        else:
+            messages.warning(request, 'User is invalid')
+            response['message'] = 'User is invalid'
 
-        return render(request, 'account/signin.html', response)
+    return render(request, 'account/signin.html', response)
 
 
 @login_required(login_url='/content/login')
@@ -134,6 +140,7 @@ def profile(request):
     response['user'] = request.user
     return render(request, 'account/profile.html', response)
 
+
 @csrf_exempt
 def Contact_Us(request):
     if request.method == 'POST':
@@ -144,6 +151,10 @@ def Contact_Us(request):
         newMessage.phone = request.POST['phone']
         newMessage.subject = request.POST['subject']
         newMessage.message = request.POST['message']
+        superuser = CustomUser.objects.filter(is_superuser=True).first()
+        superuser.notifications = superuser.notifications + 1
+        superuser.noti_messages = superuser.noti_messages + '<li> New message has arrived in inbox </li>'
+        superuser.save()
         newMessage.save()
         messages.add_message(request, messages.INFO, 'Your Message has been sent. We will email you back soon.')
         return redirect('accounts:index')
@@ -159,7 +170,7 @@ def Inbox(request):
     print('Inbox tab has opened.')
     all_messages = ContactUsMessage.objects.all()
     response = {}
-    if(len(all_messages)>0):
+    if (len(all_messages) > 0):
         response['admin_has_messages'] = True
     else:
         response['admin_has_messages'] = False
@@ -174,7 +185,7 @@ def Inbox(request):
 def Show_Message(request):
     response = {}
     mid = request.GET['message_id']
-    print('Message having ID ',mid,' has been opened.')
+    print('Message having ID ', mid, ' has been opened.')
     mes = get_object_or_404(ContactUsMessage, pk=mid)
     if mes:
         mes.has_been_read = True
@@ -208,3 +219,12 @@ def Delete_Message(request):
     messages.success(request, 'Message has been successfully deleted.')
     return redirect('accounts:inbox')
 
+
+@login_required
+def clear(request, pk):
+    user = request.user
+    user.noti_messages = ''
+    user.notifications = 0
+    user.save()
+    messages.success(request, f'All notifications cleared')
+    return redirect('/')
