@@ -25,7 +25,7 @@ SECRET_KEY = '^m#@+o*^1dj#px1l(s8gv9vl873p6j8ol+wd2qa*b@2ngsz+92'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1','nitadda.herokuapp.com']
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1','nitadda.herokuapp.com','nitadda.tech']
 
 # Application definition
 
