@@ -161,6 +161,8 @@ def UploadContent(request):
     response = {}
     courses = Course.objects.all()
     response["courses"] = courses
+    colleges = College.objects.all()
+    response["colleges"] = colleges
     subjects = Subject.objects.all()
     response["subjects"] = subjects
     if request.method == 'POST':
@@ -181,6 +183,7 @@ def UploadContent(request):
             note.title = request.POST['title']
             # course.title=request.POST['courses']
             note.subject = Subject.objects.get(id=request.POST['subjects'])
+            note.college = College.objects.get(id=request.POST['colleges'])
             note.course = Course.objects.get(id=request.POST['courses'])
             note.note_pdf = request.FILES["files"]
             note.user_id = request.user.id;
@@ -204,12 +207,13 @@ def UploadContent(request):
             print("YE HAI WO SUBJECT ID: ", request.POST.get('subjects2'))
             paper.subject = Subject.objects.get(id=request.POST.get('subjects2'))
             paper.course = Course.objects.get(id=request.POST['courses'])
-
+            paper.college =  College.objects.get(id=request.POST['colleges'])
             paper.batch_year = str(request.POST['batch'])[0:4]
+            print(paper.batch_year)
             paper.semester = request.POST['semesters']
             paper.exam = request.POST['exams']
             paper.exam_type = request.POST['types']
-            paper.title = str(paper.subject.title) + " {" + paper.exam_type + ")"
+            paper.title = str(paper.subject.title) + " (" + paper.exam_type + ")"
             paper.paper_pdf = request.FILES["files"]
             paper.user_id = request.user.id;
             paper.save()
@@ -251,6 +255,8 @@ def Show_Note(request, slug):
     lstatus=[]
     providers = []
     for n in notes:
+        if len(n.title) > 80:
+            n.title = n.title[:80] + '...'
         prv = CustomUser.objects.get(id=n.user_id)
         providers.append(prv.username)
         if n.upvotes.filter(id=request.user.id).exists():
@@ -260,8 +266,10 @@ def Show_Note(request, slug):
     response['data'] = zip(notes, lstatus, providers)
     year = []
     for p in papers:
-        if p.semester%2 != 0:
-            p.semester += 1
+        if len(p.title) > 20:
+            p.title = p.title[:20] + '...'
+        # if p.semester%2 != 0:
+        #     p.semester += 1
         x = int(p.batch_year - p.semester/2)
         year.append(x)
     response['papers'] = zip(papers, year)
@@ -302,6 +310,8 @@ def Show_Subject_Note(request, slug):
     lstatus = []
     providers = []
     for n in notes:
+        if len(n.title) > 80:
+            n.title = n.title[:80] + '...'
         prv = CustomUser.objects.get(id=n.user_id)
         providers.append(prv.username)
         if n.upvotes.filter(id=request.user.id).exists():
@@ -312,6 +322,8 @@ def Show_Subject_Note(request, slug):
     response['sname'] = sname
     year = []
     for p in papers:
+        if len(p.title) > 20:
+            p.title = p.title[:20] + '...'
         if p.semester % 2 != 0:
             p.semester += 1
         x = int(p.batch_year - p.semester / 2)

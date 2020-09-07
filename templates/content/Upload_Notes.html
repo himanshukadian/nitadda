@@ -110,6 +110,17 @@
                                     <input for="firstName" class="form-control" name="title" id="nt" required>
                                 </div>
                                 <div class="form-group">
+                                    <label class="formText" for="selectCourse1">Select College</label>
+                                    <select class="form-control" id="selectCollege1" name="colleges" required>
+                                        <option selected disabled>Choose college</option>
+                                        {% for college in colleges %}
+                                            <option value="{{ college.id }}">
+                                                {{ college.name }}, ({{ college.abbreviation }})
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
                                     <label class="formText" for="selectCourse1">Select Course</label>
                                     <select class="form-control" id="selectCourse1" name="courses" required>
                                         <option selected disabled>Choose course</option>
@@ -139,6 +150,17 @@
                         <div id="login-tab-content">
                             <form method="POST" action="/content/upload/" enctype="multipart/form-data">
                                 {% csrf_token %}
+                                <div class="form-group">
+                                    <label class="formText" for="selectCourse1">Select College</label>
+                                    <select class="form-control" id="selectCollege2" name="colleges" required>
+                                        <option selected disabled>Choose college</option>
+                                        {% for college in colleges %}
+                                            <option value="{{ college.id }}">
+                                                {{ college.name }}, ({{ college.abbreviation }})
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
                                 <div class="form-group">
                                     <input type="hidden" name="content_type" id="checker" value="paper">
                                     <label class="formText" for="">Select Course</label>
