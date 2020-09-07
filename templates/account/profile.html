@@ -20,23 +20,22 @@
         <script type="text/javascript"
                 src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
     </head>
-    <div class="container panel panel-default panel-info" style="min-width:min-content;margin-bottom: 8%;">
-        <div class="row" style="margin:10px">
+    <div class="container panel panel-default panel-info" style="background-color:rgba(0,0,0,0);border-radius:0px;width:75%; min-width:min-content;margin-bottom: 8%;">
+        <div class="row" style="margin:10px;">
             <div class="box box-primary">
                 <div class="box-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="panel panel-default panel-info Profile">
-                                <div class="panel-heading"> Profile</div>
-                                <div class="panel-body">
-                                    <div>
+                                <div class="panel-body" >
+                                    <div style="background-color:rgba(0,0,0,0);">
                                         <div id="profile__img">
-                                            <img src="{{ user.image.url }}" alt="" width="165px" height="160px">
+                                            <img src="{{ user.image.url }}" alt="" width="200px" height="200px">
                                         </div>
                                         <p class='text-muted'>
                                         <ul class="list-group" style="margin-top: 35px">
                                             <li class="list-group-item list-group-item-light">
-                                                Name: {{ user.name }}
+                                                <div class="profile-name">{{ user.first_name }} {{ user.last_name }}</div>
                                             </li>
                                             <li class="list-group-item list-group-item-light">
                                                 Email: {{ user.email }}
@@ -44,6 +43,10 @@
                                             <li class="list-group-item list-group-item-light">
                                                 Mobile: {{ user.mobile }}
                                             </li>
+                                            <li class="list-group-item list-group-item-light">
+                                                College: {{ user.college }}
+                                            </li>
+
                                             <li class="list-group-item list-group-item-light">
                                                 Registration number: {{ user.registration_number }}
                                             </li>
@@ -61,12 +64,10 @@
                                 </div> <!-- end panel-body -->
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                             <div class="tabs">
-                                <h3 class="signup-tab"><a class="active" href="#signup-tab-content">Notes Uploaded by
-                                    You</a></h3>
-                                <h3 class="login-tab"><a href="#login-tab-content">Notes Liked by
-                                    You</a></h3>
+                                <h3 class="signup-tab"><a class="active" href="#signup-tab-content">Uploads</a></h3>
+                                <h3 class="login-tab"><a href="#login-tab-content">Likes</a></h3>
                             </div>
                             <div class="tabs-content">
                                 <div id="signup-tab-content" class="active">

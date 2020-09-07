@@ -201,9 +201,9 @@ body {
     margin: 0;
 }
 
-.navbar .nav > li > a:hover, .dropdown-content > a:hover, .menu_dropdown:hover {
-    background-color: #e7e7e7;
-    color: darkcyan;
+.navbar .nav > li > a:hover, .dropdown-content > a:hover, .menu_dropdown:hover, .navbar .nav > li:active>a {
+    background-color: #ffd13d;
+    color: #146471;
     font-size: 14px;
     font-weight: bold;
     text-decoration: none;
@@ -322,8 +322,9 @@ footer img {
 }
 
 .site-footer h6 {
-    color: #fff;
-    font-size: 16px;
+    color: darkcyan;
+    font-weight: bold;
+    font-size: 14px;
     text-transform: uppercase;
     margin-top: 5px;
     letter-spacing: 2px
@@ -372,7 +373,8 @@ footer img {
     margin-left: 6px;
     margin-right: 0;
     border-radius: 100%;
-    background-color: #33353d
+    color: darkcyan;
+    background-color: #ffd13d;
 }
 
 .copyright-text {
@@ -491,9 +493,7 @@ label {
 }
 
 .table{
-    -webkit-box-shadow: 0px 5px 7px 0px rgb(26, 26, 26);
-    -moz-box-shadow: 0px 5px 7px 0px rgb(26, 26, 26);
-    box-shadow: 0px 5px 7px 0px rgb(26, 26, 26);
+    box-shadow: 0px 5px 10px 0px rgb(152, 152, 152);
 }
 .table thead, .table th {
     font-weight: normal;
@@ -765,9 +765,7 @@ label {
     z-index: 1;
     transition: all .2s ease-in-out;
     transform: scale(1);
-    -webkit-box-shadow: 0px 8px 7px 0px rgb(26, 26, 26);
-    -moz-box-shadow: 0px 8px 7px 0px rgb(26, 26, 26);
-    box-shadow: 0px 8px 7px 0px rgb(26, 26, 26);
+    box-shadow: 0px 6px 15px 0px rgb(116, 116, 116);
 }
 
 .block-2:hover {
@@ -794,7 +792,7 @@ label {
 }
 
 .active {
-    color: darkcyan;
+    color: #146471;
 }
 
 .like_grow {
@@ -1136,6 +1134,7 @@ center h1 {
 .tabs h3 {
     float: left;
     width: 50%;
+    font-size: 16px;
 }
 
 .tabs h3 a {
@@ -1143,13 +1142,12 @@ center h1 {
     text-align: center;
     font-weight: 400;
     text-decoration: none;
-    background-color: #e6e7e8;
+    background-color: darkcyan;
     display: block;
-    color: #666;
+    color: white;
 }
-
 .tabs h3 a.active {
-    background-color: #fff;
+    background-color: #00b1b1;
 }
 
 #profile__img {
@@ -1511,6 +1509,7 @@ html, body {
 	 width: 100%;
 	 position: absolute;
 	 top: 25px;
+     left: 15px;
 	 padding: 15px;
 	 font-size: 20px;
 	 font-family: sans-serif;
@@ -1521,6 +1520,7 @@ html, body {
  .element-card .card-top .card-batch-year {
 	 position: absolute;
 	 padding: 5px;
+     left: 0px;
 	 font-size: 14px;
 	 font-family: sans-serif;
 	 color: white;
@@ -1550,3 +1550,9 @@ html, body {
 	 align-items: center;
 }
  /* PAPER styles end */
+
+.profile-name{
+    color: Black;
+    font-weight: bold;
+    font-size: 24px ;
+}

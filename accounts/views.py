@@ -59,7 +59,7 @@ class UserFormView(generic.View):
 
 class UserUpdateFormView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = CustomUser
-    fields = ['email', 'name', 'mobile', 'gender', 'registration_number', 'image']
+    fields = ['email', 'first_name','last_name', 'mobile', 'gender', 'registration_number', 'image']
     template_name = 'account/registration_form.html'
 
     def form_valid(self, form):
@@ -146,7 +146,7 @@ def Contact_Us(request):
     if request.method == 'POST':
         print('Contact us message recieved.')
         newMessage = ContactUsMessage()
-        newMessage.sender_name = request.POST['fullName']
+        newMessage.sender_name = request.POST['fullast_name']
         newMessage.email = request.POST['email']
         newMessage.phone = request.POST['phone']
         newMessage.subject = request.POST['subject']
