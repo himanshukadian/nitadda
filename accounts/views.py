@@ -9,7 +9,7 @@ from django.views.generic import UpdateView
 from django.utils.http import is_safe_url
 from content.views import logout, checkuserifscrutinyuser
 from django.template.loader import render_to_string
-from env.Lib.base64 import urlsafe_b64encode
+from base64 import urlsafe_b64encode
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -65,7 +65,7 @@ class UserFormView(generic.View):
             user.set_password(password)
             user.save()
             current_site = get_current_site(request)
-            mail_subject = 'Activate your blog account.'
+            mail_subject = 'Activate your NITADDA account.'
             message = render_to_string('acc_active_email.html', {
                 'user': user,
                 'domain': current_site.domain,
@@ -76,8 +76,13 @@ class UserFormView(generic.View):
             email = EmailMessage(
                 mail_subject, message, to=[to_email]
             )
-            email.send()
-            return HttpResponse('Please confirm your email address to complete the registration')
+            email.content_subtype = 'html'
+            try:
+                email.send()
+                messages.success(request,f'Your account has been created and you are logged in.Please confirm your email address to complete the registration')
+            except:
+                messages.success(request,f'Please enter valid email for registration')
+            return redirect('/')
 
         return render(request, self.template_name, {'form': form})
 
@@ -264,6 +269,7 @@ def activate(request, uidb64, token):
         user.save()
         login(request, user)
         # return redirect('home')
-        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+        messages.success(request, f'Thank you for your email confirmation. Now you can login your account.')
+        return redirect('/')
     else:
         return HttpResponse('Activation link is invalid!')
