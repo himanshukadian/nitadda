@@ -32,14 +32,14 @@
 
     </head>
     <body>
-{#    <div id="like" class="alert alert-warning message_container" style="display: none">#}
-{#        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>#}
-{#        <strong>you have liked this</strong>#}
-{#    </div>#}
-{#    <div id="dislike" class="alert alert-warning message_container" style="display: none">#}
-{#        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>#}
-{#        <strong>you have disliked this</strong>#}
-{#    </div>#}
+    <div id="like" class="alert alert-warning message_container" style="display: none">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>you have liked this</strong>
+    </div>
+    <div id="dislike" class="alert alert-warning message_container" style="display: none">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>you have disliked this</strong>
+    </div>
     {% if messages %}
         {% for mes in messages %}
             <div class="alert alert-warning message_container">
@@ -65,36 +65,7 @@
                     <div class="tabs-content" style="padding:0px">
                         <div id="signup-tab-content" class="active">
                             <caption><h3 class="table_title">Notes - {{ cname|title }}</h3></caption>
-
-                            <form method="POST" action={% url 'content:Course_Note' cname.slug %} enctype="multipart/form-data">
-                                {% csrf_token %}
-                                <label class="filter-label">College</label>
-                                <select class="filter-dropdown" id="collegeFilter" name="colleges" required>
-                                    {% if current_college_id == 0 %}
-                                        <option value="0" selected>All</option>
-                                        {% for college in colleges %}
-                                            <option value="{{ college.id }}">
-                                                {{ college.name }}
-                                            </option>
-                                        {% endfor %}
-                                    {% else %}
-                                        <option value="0">All</option>
-                                            {% for college in colleges %}
-                                                {% if current_college_id == college.id %}
-                                                    <option value="{{ college.id }}" selected>
-                                                        {{ college.name }}
-                                                    </option>
-                                                {% else %}
-                                                    <option value="{{ college.id }}">
-                                                        {{ college.name }}
-                                                    </option>
-                                                {%  endif %}
-                                        {% endfor %}
-                                    {% endif %}
-                                </select>
-                                <button type="submit" class="formButton">Go</button>
-                            </form>
-                            <table class="table table-striped table-responsive-md" id="notes-table">
+                            <table class="table table-striped table-responsive-md" id="example">
                                 <thead class="thead-dark">
                                 <tr>
                                     <th scope="col">Title</th>
@@ -294,108 +265,6 @@
                 $(tab_content).addClass('active');
             });
         });
-
-         $( "#selection-button-wrong" ).click(function(event) {
-            event.preventDefault();
-            var collegeSelected = $('#collegeFilter').find(":selected").val();
-            console.log('filter button clicked')
-            $.ajax({
-                {#console.log('path is: ',request.path);#}
-                url: 'listing',
-                method: 'GET',
-                data : {
-                    filter_category: parseInt(collegeSelected),
-                },
-                success: function(notes){
-                    console.log(notes)
-                    {#document.getElementById('collegeFilter').value=collegeSelected;#}
-                    t = document.getElementById('notes-table')
-                    table_content = "<thead class=\"thead-dark\">\n" +
-                        "                                <tr>\n" +
-                        "                                    <th scope=\"col\">Title</th>\n" +
-                        "                                    <th scope=\"col\">Subject</th>\n" +
-                        "                                    <th scope=\"col\">Rating</th>\n" +
-                        "                                    {% if user.is_authenticated and user.is_superuser %}\n"+
-                            "                                        <th scope=\"col\">Actions</th>\n"+
-                            "                                    {% endif %}\n" +
-                        "                                </tr>\n" +
-                        "                                </thead>\n" +
-                        "                                <tbody>"
-                    for (let i = 0; i < notes.length; i++) {
-                        table_content += "{% if  user.is_authenticated and user.is_superuser or i.is_approved %}"+
-                            "                                          <td style=\"vertical-align:middle\"><a style=\"font-weight: bold\"\n" +
-                            "                                                                                 href=\"../../view/"+notes[i].note_id +"\">"+notes[i].title+"</a>\n" +
-                            "                                                <br>\n" +
-                            "                                                <span class=\"ref\"> - contributed by <b>"+"someone"+"</b></span>\n" +
-                            "                                            </td>\n" +
-                            "                                            <td style=\"vertical-align:middle\"><span>"+"notes.subject.title"+"</span></td>\n" +
-                            "                                            {#                    href = {% url 'upvote/ i.note_id / user.id ' %}#}\n" +
-                            "                                            {% if  j %}\n"+
-                                "                                                <td style=\"vertical-align:middle\">\n"
-                                +
-                                "                                                    <div class=\"like_grow\" id=\""+notes[i].note_id +"\"\n"
-                                +
-                                "                                                         onclick=\"updateVote( this.id )\">\n"
-                                +
-                                "                                                        <i id=\""+notes[i].note_id +"1\"\n"+
-                                "                                                           class=\"fa fa-thumbs-up fa-2x like active\"\n"
-                                +
-                                "                                                           aria-hidden=\"true\"></i>\n"
-                                +
-                                "                                                    </div>\n"+
-                                "                                                    <span class=\"likes_counter\" style=\"font-family:'Amaranth'\"\n"
-                                +
-                                "                                                          id=\""+notes[i].note_id +"2\">\n"+
-                                "                                                        "+notes[i].total_upvotes+"\n"+
-                                "                                                    </span>\n"+
-                                "                                                </td>\n"+
-                                "                                            {% else %}\n"+
-                                "                                                <td style=\"vertical-align:middle\">\n"
-                                +
-                                "                                                    <div class=\"like_grow\" id=\""+notes[i].note_id +"\"\n"
-                                +
-                                "                                                         onclick=\"updateVote( this.id )\">\n"
-                                +
-                                "                                                        <i id=\""+notes[i].note_id +"1\" class=\"fa fa-thumbs-up fa-2x like\"\n"
-                                +
-                                "                                                           aria-hidden=\"true\"></i>\n"
-                                +
-                                "                                                    </div>\n"+
-                                "                                                    <span class=\"likes_counter\" style=\"font-family:'Amaranth'\"\n"
-                                +
-                                "                                                          id=\" "+notes[i].note_id +"2\">\n"+
-                                "                                                        "+notes[i].total_upvotes+"\n"+
-                                "                                                    </span>\n"+
-                                "                                                </td>\n"+
-                                "                                            {% endif %}\n" +
-                                "{% if user.is_authenticated and user.is_superuser %}"+
-                                    "                                                <td scope=\"col\">\n"+
-                                    "                                                    {% if  "+notes[i].is_approved+" %}\n"+
-                                        "                                                        <a class=\"btn\">Approved</a>\n"
-                                        +
-                                        "                                                    {% else %}\n"+
-                                        "                                                        <a href=\"../approvenote/"+ notes[i].note_id +"+\"\n"
-                                        +
-                                        "                                                           class=\"btn btn-danger\">Approve</a>\n"
-                                        +
-                                        "                                                    {% endif %}\n"+
-                                    "                                                    <a href=\"../deletenote/"+ notes[i].note_id +"+\" class=\"btn btn-danger\">Remove</a>\n"
-                                    +
-                                    "                                                </td>\n"+
-                                    "                                            {% endif %}\n" +
-                            "                                        </tr>\n" ;
-                    }
-                    table_content += "{% endif %} </tbody>"
-                    t.innerHTML = table_content
-                },
-                error: function(xhr, errmsg, err){
-                    console.log("error");
-                    console.log(error_data);
-                }
-            });
-        });
-
     </script>
     {# Main Section #}
 {% endblock content %}
-

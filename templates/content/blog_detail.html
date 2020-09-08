@@ -13,13 +13,14 @@
     </div>
 
     <div class="container" style="margin-bottom: 50px">
-{#        {{ this_note.total_upvotes | pprint}}#}
+        <h3>{{ this_blog.title}}</h3>
         <div class=" md-3" style="margin-top:0.5%;">
-            <iframe src="../../media/{{ this_note.note_pdf }}#view=FitH&toolbar=0&navpanes=0" frameborder="0" scrolling: "no" style="-webkit-overflow-scrolling: auto;;width: 100%; height: 85%;"></iframe>
+{#            <iframe src="../../media/{{ this_blog.note_pdf }}#view=FitH&toolbar=0&navpanes=0" frameborder="0" scrolling: "no" style="-webkit-overflow-scrolling: auto;;width: 100%; height: 85%;"></iframe>#}
+            <p>{{ this_blog.description}}</p>
         </div>
         <div id="post-options" style="display: table-row; left: 50px;">
             <div style="margin-top: 25%; display: table-cell;">
-                <a style="padding: 10px"
+                <a style="padding: 10px; width: 40px"
                    class="formButton"
                    data-toggle="modal" data-target="#myReportModal"
                    href="#">
@@ -29,7 +30,7 @@
             <div class="modal fade" id="myReportModal" role="dialog">
                 <div class="modal-dialog modal-lg">
                   <div class="modal-content ">
-                      <form method="POST" action="/content/report/{{ this_note.note_id }}" enctype="multipart/form-data">
+                      <form method="POST" action="/content/report/{{ this_blog.id }}" enctype="multipart/form-data">
                     <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal">&times;</button>
                       <h4 class="modal-title">
@@ -67,22 +68,22 @@
             </div>
             <div style="display: table-cell; text-align: right;width: 100%">
                 {%  if user_has_liked %}
-                    <div class="like_grow" id="{{ this_note.note_id }}"
+                    <div class="like_grow" id="{{ this_blog.id }}"
                          onclick="updateVote( this.id )">
-                        <i id="{{ this_note.note_id }}1"
+                        <i id="{{ this_blog.id }}1"
                            class="fa fa-thumbs-up fa-2x like active"
                            aria-hidden="true"></i>
                     </div>
                 {% else %}
-                    <div class="like_grow" id="{{ this_note.note_id }}"
+                    <div class="like_grow" id="{{ this_blog.id }}"
                          onclick="updateVote( this.id )">
-                        <i id="{{ this_note.note_id }}1" class="fa fa-thumbs-up fa-2x like"
+                        <i id="{{ this_blog.id }}1" class="fa fa-thumbs-up fa-2x like"
                            aria-hidden="true"></i>
                     </div>
                 {% endif %}
                 <span class="likes_counter" style="font-family:'Amaranth'"
-                      id="{{ this_note.note_id }}2">
-                    {{ this_note.total_upvotes }}
+                      id="{{ this_blog.id }}2">
+                    {{ this_blog.total_upvotes }}
                 </span>
             </div>
         </div>
@@ -92,14 +93,14 @@
     </body>
 
     <script>
-        function updateVote(note_id) {
-            console.log("note id value: " + note_id);
+        function updateVote(id) {
+            console.log("note id value: " + id);
 
             $.ajax({
                 url: "/content/upvote/",
                 type: "POST",
                 {#async: true,#}
-                data: {'noteid': note_id, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                data: {'noteid': id, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
                 {#dataType: "json",#}
                 success: function (data) {
                     if (data[0]) {

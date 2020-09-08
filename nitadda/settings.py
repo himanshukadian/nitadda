@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 import  django_heroku
 import django_otp
+import rest_framework
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -41,6 +42,7 @@ INSTALLED_APPS = [
     'content',
     'accounts',
     'search',
+    'rest_framework',
     'django_otp',
     'django_otp.plugins.otp_totp',
     'django_otp.plugins.otp_hotp',
@@ -155,9 +157,17 @@ EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 TEMP_ROOT = os.path.join(BASE_DIR, 'media/tmp')
-
+# APPEND_SLASH=False
 # CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 AUTH_USER_MODEL = "accounts.CustomUser"
 
 django_heroku.settings(locals())
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}

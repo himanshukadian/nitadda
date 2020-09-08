@@ -13,7 +13,7 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ['username', 'email', 'first_name', 'last_name', 'college', 'mobile', 'gender', 'registration_number', 'image']
+        fields = ['username', 'email', 'first_name', 'last_name', 'college', 'mobile', 'gender', 'image']
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -49,7 +49,7 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ['email', 'first_name', 'last_name', 'college', 'mobile', 'gender', 'registration_number', 'image']
+        fields = ['email', 'first_name', 'last_name', 'college', 'mobile', 'gender', 'image']
 
     def clean_password(self):
         return self.initial["password"]
@@ -78,7 +78,7 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = (
         ('Login', {'fields': ('username', 'password')}),
         ('Profile', {'fields': (
-        'first_name', 'last_name', 'college','mobile', 'email', 'gender', 'registration_number', 'image', 'notifications', 'noti_messages')}),
+        'first_name', 'last_name', 'college','mobile', 'email', 'gender', 'image', 'notifications', 'noti_messages')}),
         ('Permissions', {'fields': (
             'is_admin', 'admin', 'is_active', 'groups', 'user_permissions',
         )}),
