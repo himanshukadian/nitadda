@@ -3,14 +3,27 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.views import generic
+from django.http import HttpResponse
+
 from django.views.generic import UpdateView
 from django.utils.http import is_safe_url
 from content.views import logout, checkuserifscrutinyuser
+from django.template.loader import render_to_string
+from env.Lib.base64 import urlsafe_b64encode
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+
+
+
+from nitadda.tokens import account_activation_token
 from .admin import UserCreationForm
 from django.contrib import messages
 from content.models import *
 from .models import *
 from django.views.decorators.csrf import csrf_exempt
+from django.core.mail import EmailMessage
+
 
 
 def index(request):
@@ -51,15 +64,27 @@ class UserFormView(generic.View):
             password = form.cleaned_data['password1']
             user.set_password(password)
             user.save()
-            messages.success(request, 'Your account has been successfully created.')
-            return redirect('accounts:index')
+            current_site = get_current_site(request)
+            mail_subject = 'Activate your blog account.'
+            message = render_to_string('acc_active_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)).encode().decode(),
+                'token': account_activation_token.make_token(user),
+            })
+            to_email = form.cleaned_data.get('email')
+            email = EmailMessage(
+                mail_subject, message, to=[to_email]
+            )
+            email.send()
+            return HttpResponse('Please confirm your email address to complete the registration')
 
         return render(request, self.template_name, {'form': form})
 
 
 class UserUpdateFormView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = CustomUser
-    fields = ['email', 'first_name','last_name', 'mobile', 'gender', 'registration_number', 'image']
+    fields = ['email', 'first_name','last_name', 'mobile', 'gender', 'image']
     template_name = 'account/registration_form.html'
 
     def form_valid(self, form):
@@ -88,9 +113,6 @@ def user_login(request):
         try:
             username = CustomUser.objects.get(email=username).username
         except CustomUser.DoesNotExist:
-            try:
-                username = CustomUser.objects.get(registration_number=username).username
-            except CustomUser.DoesNotExist:
                 username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
@@ -228,3 +250,20 @@ def clear(request, pk):
     user.save()
     messages.success(request, f'All notifications cleared')
     return redirect('/')
+
+
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = CustomUser.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        login(request, user)
+        # return redirect('home')
+        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+    else:
+        return HttpResponse('Activation link is invalid!')

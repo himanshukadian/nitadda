@@ -81,7 +81,7 @@ TEMPLATES = [
         },
     },
 ]
-
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.AllowAllUsersModelBackend']
 WSGI_APPLICATION = 'nitadda.wsgi.application'
 
 # Database
@@ -116,7 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-                 
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # context processors
@@ -149,6 +149,14 @@ USE_TZ = True
 
 # AUTH_USER_MODEL = "accounts.CustomUser"
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+# STATIC_URL = '/static/'
+# #location where django collect all static files
+# STATIC_ROOT = os.path.join(BASE_DIR,'static')
+# # location where you will store your static files
+# STATICFILES_DIRS = [os.path.join(BASE_DIR,'nitadda/static')
+# ]
+
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static")
 STATIC_URL = '/static/'
 #location where django collect all static files
 STATIC_ROOT = os.path.join(BASE_DIR,'static')
@@ -166,4 +174,11 @@ TEMP_ROOT = os.path.join(BASE_DIR, 'media/tmp')
 # CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 AUTH_USER_MODEL = "accounts.CustomUser"
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER ='himanshu25101998@gmail.com'
+EMAIL_HOST_PASSWORD = 'vosnsmaowolrgfpf'
 
