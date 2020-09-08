@@ -28,4 +28,6 @@ urlpatterns = [
                   url(r'^', include(('accounts.urls', 'accounts'), namespace='accounts')),
                   url(r'^search/', include(('search.urls', 'search'), namespace='search')),
                   url(r'content/', include(('content.urls', 'content'), namespace='content')),
+                  # url('auth/', include('social_django.urls', namespace='social')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
