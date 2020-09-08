@@ -9,7 +9,7 @@ from django.views.generic import UpdateView
 from django.utils.http import is_safe_url
 from content.views import logout, checkuserifscrutinyuser
 from django.template.loader import render_to_string
-from env.Lib.base64 import urlsafe_b64encode
+from venv.Lib.base64 import urlsafe_b64encode
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
