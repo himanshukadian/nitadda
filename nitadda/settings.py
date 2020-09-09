@@ -35,7 +35,7 @@ SECRET_KEY =os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1','nitadda.herokuapp.com','www.nitadda.tech']
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1','nitadda.herokuapp.com','www.nitadda.tech','nitadda.tech']
 
 # Application definition
 
@@ -68,6 +68,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
+
+PREPEND_WWW = True
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
