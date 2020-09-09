@@ -4,6 +4,40 @@
 <html>
 <head>
     <style>
+        body {
+  overflow: hidden;
+}
+
+
+/* Preloader */
+
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+  /* change if the mask should have another color then white */
+  z-index: 99;
+  /* makes sure it stays on top */
+}
+
+#status {
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  left: 50%;
+  /* centers the loading animation horizontally one the screen */
+  top: 50%;
+  /* centers the loading animation vertically one the screen */
+  background-image: url("{% static 'images/double.gif' %}");
+  /* path to your loading animation */
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: -100px 0 0 -100px;
+  /* is width and height divided by two */
+}
         .notification {
             min-width: 20px;
             height: 20px;
@@ -63,6 +97,11 @@
         {% block head_css_page %}{% endblock head_css_page %}
     {% endblock head_css %}
     <script>
+        $(window).on('load', function() { // makes sure the whole site is loaded
+  $('#status').fadeOut(); // will first fade out the loading animation
+  $('#preloader').delay(300).fadeOut('slow'); // will fade out the white DIV that covers the website.
+  $('body').delay(3000).css({'overflow':'visible'});
+})
         function myFunction() {
             document.getElementById("myDropdown").classList.toggle("show");
         }
@@ -108,6 +147,9 @@
 
 </head>
 <body style="background-image: url({% static "images/bg1.jpg" %})">
+<div id="preloader">
+  <div id="status">&nbsp;</div>
+</div>
 <header>
     <nav style="background-image: url({% static "images/bg5.jpg" %});margin-bottom: 50px; background-color:#fff;font-size: 14px;z-index: 1000;"
          class="navbar  ">
