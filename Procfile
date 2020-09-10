@@ -1,1 +1,1 @@
-'web: gunicorn nitadda.wsgi --log-file -' 
+web: gunicorn nitadda.wsgi --log-file -
