@@ -13,7 +13,7 @@ urlpatterns = [
                   url(r'^upvote/$', views.Upvote),
                   url(r'^show_full_blog/(?P<blog_id>\w+)', views.show_full_blog),
                   url(r'^course_notes/(?P<slug>[-\w]+)/$', views.Show_Note, name='Course_Note'),
-                  url(r'^course_notes/(?P<slug>[-\w]+)/listing/', NoteTableData.as_view(), name='listing'),
+                  # url(r'^course_notes/(?P<slug>[-\w]+)/listing/', NoteTableData.as_view(), name='listing'),
                    # path('listing/', NoteTableData.as_view(), name='listing'),
                   url(r'^report/(?P<note_id>\w+)', views.report_post),
                   url('upload/', views.UploadContent, name='Upload_Content'),
