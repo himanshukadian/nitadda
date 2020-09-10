@@ -12,7 +12,7 @@ import  django_heroku
 import django_otp
 import dotenv
 import dj_database_url
-import enchant
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -192,8 +192,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'himanshu25101998@gmail.com'
 EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
-
-enchant.dict_exists('en')
 DEFAULT = {
     'selector': 'textarea',
     'theme': 'modern',
