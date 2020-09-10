@@ -41,6 +41,7 @@ urlpatterns = [
                       name='password_reset_done'),
                   url('password-reset-complete/', accounts.views.PasswordResetCompleteView.as_view(
                       template_name='account/password_reset_complete.html'), name='password_reset_complete'),
+                  url(r'^tinymce/', include('tinymce.urls'))
                   # url('auth/', include('social_django.urls', namespace='social')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

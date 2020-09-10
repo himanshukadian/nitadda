@@ -3,6 +3,8 @@ from django.core.validators import FileExtensionValidator
 from django.template.defaultfilters import slugify
 from django.utils.text import slugify
 from accounts.models import CustomUser
+from tinymce.models import HTMLField
+
 
 class College(models.Model):
     name = models.CharField(max_length=255, default='')
@@ -192,14 +194,14 @@ class Book(models.Model):
 
 class Blog(models.Model):
     title = models.CharField(max_length=300)
-    description = models.CharField(max_length=10000)
+    description = HTMLField()
     author = models.ForeignKey(CustomUser, verbose_name="Provider", on_delete=models.CASCADE, blank=True, null=True)
     date = models.DateTimeField()
     college = models.ForeignKey(College, verbose_name="College", on_delete=models.CASCADE, blank=True, null=True)
     course = models.ForeignKey(Course, verbose_name="Course", on_delete=models.CASCADE, blank=True, null=True)
     image = models.ImageField(default='download.jpg', upload_to='blogs/')
 
-    upvotes = models.ManyToManyField(CustomUser, related_name='blog_upvotes')
+    upvotes = models.ManyToManyField(CustomUser, related_name='blog_upvotes',blank=True, null=True)
     @property
     def total_upvotes(self):
         return self.upvotes.count()

@@ -10,8 +10,9 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 import  django_heroku
 import django_otp
-
+import dotenv
 import dj_database_url
+import enchant
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -32,7 +33,7 @@ SECRET_KEY =os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1','nitadda.herokuapp.com','www.nitadda.tech','nitadda.tech']
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'nitadda.herokuapp.com', 'www.nitadda.tech', 'nitadda.tech']
 
 # Application definition
 
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
     'content',
     'accounts',
     'search',
+    'tinymce',
     'django_otp',
     'django_otp.plugins.otp_totp',
     'django_otp.plugins.otp_hotp',
@@ -188,5 +190,21 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER ='himanshu25101998@gmail.com'
+EMAIL_HOST_USER = 'himanshu25101998@gmail.com'
 EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+
+enchant.dict_exists('en')
+DEFAULT = {
+    'selector': 'textarea',
+    'theme': 'modern',
+    'plugins': 'link image preview codesample contextmenu table code',
+    'toolbar1': 'bold italic underline | alignleft aligncenter alignright alignjustify '
+           '| bullist numlist | outdent indent | table | link image | codesample | preview code',
+    'contextmenu': 'formats | link image',
+    'menubar': False,
+    'inline': False,
+    'statusbar': True,
+    'height': 360,
+}
+TINYMCE_SPELLCHECKER = True
+TINYMCE_COMPRESSOR = True

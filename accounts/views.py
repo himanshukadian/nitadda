@@ -40,9 +40,7 @@ def index(request):
     response = {}
     print(request.user, " logged in : RENDER HOME ")
     blogs = Blog.objects.all()
-    for b in blogs:
-        if len(b.description) > 300:
-            b.description = b.description[:300]
+
     response['blogs'] = blogs
     return render(request, 'home.html', response)
 

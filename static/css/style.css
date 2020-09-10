@@ -1608,7 +1608,7 @@ ul.nav li.dropdown:hover ul.dropdown-menu{ display: block; }
 }
 
 /**/
-body {background-color:#163a63; color:#163a63; padding-top:15px;}
+body {background-color:#163a63; color:#163a63;}
 
 .list-group {box-shadow: 0px 11px 23px 5px rgba(0,0,0,0.34);}
 
