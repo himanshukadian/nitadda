@@ -18,7 +18,6 @@ from content.decorators import login_required_message
 from django.contrib.auth.decorators import login_required
 from rest_framework import generics
 from rest_framework.generics import ListAPIView
-from .serializers import NoteSerializers
 
 
 
@@ -508,18 +507,18 @@ def getCourseDuration(request):
             content_type="application/json"
         )
 
-class NoteTableData(ListAPIView):
-    serializer_class = NoteSerializers
+# class NoteTableData(ListAPIView):
+#     serializer_class = NoteSerializers
 
-    def get_queryset(self, *args, **kwargs):
-        print('ha notes table data')
-        filter_category = self.request.GET.get("filter_category")
-        if filter_category==0:
-            queryset = Note.objects.filter()
-        else:
-            queryset = Note.objects.filter(college=filter_category)
-        queryset_filtered = queryset.filter()
-        return queryset_filtered
+#     def get_queryset(self, *args, **kwargs):
+#         print('ha notes table data')
+#         filter_category = self.request.GET.get("filter_category")
+#         if filter_category==0:
+#             queryset = Note.objects.filter()
+#         else:
+#             queryset = Note.objects.filter(college=filter_category)
+#         queryset_filtered = queryset.filter()
+#         return queryset_filtered
 
 @csrf_exempt
 @login_required(login_url="/content/login")
