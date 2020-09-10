@@ -204,5 +204,3 @@ DEFAULT = {
     'statusbar': True,
     'height': 360,
 }
-TINYMCE_SPELLCHECKER = True
-TINYMCE_COMPRESSOR = True
