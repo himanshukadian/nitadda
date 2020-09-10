@@ -221,7 +221,7 @@
                     {% if user.is_authenticated and user.is_superuser %}
                         <li {% if request.path == '/inbox' %}style="background: #ffd13d"{% endif %}>
                             <a href="/inbox" class="faa-parent animated-hover"
-                               {% if request.path == '/inbox' %}style="color: #146471;"{% endif %}>>
+                               {% if request.path == '/inbox' %}style="color: #146471;"{% endif %}>
                                 <i class="fa fa-fw fa-lg fa fa-envelope faa-tada faa-fast"></i>Inbox
                             </a>
                         </li>
@@ -230,7 +230,7 @@
                 <ul id="rightnav" class="nav navbar-nav navbar-right">
                     {% if user.is_authenticated %}
                         <li>
-                            <a data-toggle="modal" href="#myModal" class="faa-parent animated-hover">
+                            <a data-toggle="modal" href="#myNotificationstModal" class="faa-parent animated-hover">
                                 <i class="fa fa-fw fa-lg fa-bell  faa-tada faa-fast"></i>&nbsp;
                                 {% if user.notifications > 0 %}
                                     <span class="notification">{{ user.notifications }}</span>
@@ -267,7 +267,7 @@
     MAIN CONTENT FOR PROJECT
 {% endblock content %}
 {% if user.is_authenticated %}
-    <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal fade" id="myNotificationstModal" role="dialog">
         <div class="modal-dialog">
 
             <!-- Modal content-->

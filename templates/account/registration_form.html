@@ -23,40 +23,38 @@
         {% endfor %}
         <div class="row" style="margin-top: 2%;">
             <div class="col-sm-6 col-sm-offset-3">
-                <div class="well well-lg">
+                <div id="uploadForm" class="well well-lg">
                     <formset>
                         {% if user.is_authenticated %}
                             <legend>Update Profile</legend>
                         {% else %}
                             <legend>Register</legend>
                         {% endif %}
-                        <div id="uploadForm" class="well well-lg">
-                            <form method="POST" enctype="multipart/form-data">
-                                {% csrf_token %}
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                {% for field in form %}
+                                    <label class="formText">
+                                        {{ field.label_tag }}
+                                    </label><br>
+                                    {{ field }}
+                                {% endfor %}
+                            </div>
+                            {% if user.is_authenticated %}
                                 <div class="form-group">
-                                    {% for field in form %}
-                                        <label class="formText">
-                                            {{ field.label_tag }}
-                                        </label><br>
-                                        {{ field }}
-                                        </p>
-                                    {% endfor %}
+                                    <button class="formButton" type="submit">Update</button>
                                 </div>
-                                {% if user.is_authenticated %}
-                                    <div class="form-group">
-                                        <button class="formButton" type="submit">Update</button>
-                                    </div></form>
-                                {% else %}
-                                    <div class="form-group">
-                                        <button class="formButton" type="submit">Sign Up</button>
-                                    </div>
-                                    </form>
-                                    <div class="border-top pt-3">
-                                        <small class="text-muted">
-                                            Already Have An Account? <a class="ml-2" href="/content/login">Sign In</a>
-                                        </small>
-                                    </div>
-                                {% endif %}
+                            {% else %}
+                                <div class="form-group">
+                                    <button class="formButton" type="submit">Sign Up</button>
+                                </div>
+                                </form>
+                                <div class="border-top pt-3">
+                                    <small class="text-muted">
+                                        Already Have An Account? <a class="ml-2" href="/content/login">Sign In</a>
+                                    </small>
+                                </div>
+                            {% endif %}
                     </formset>
                     <br>
                 </div>

@@ -39,20 +39,11 @@ from django.core.mail import EmailMessage
 def index(request):
     response = {}
     print(request.user, " logged in : RENDER HOME ")
-    note = Note.objects.all()[:5]
-    lstatus = []
-    providers = []
-    for n in note:
-        prv = CustomUser.objects.get(id=n.user_id)
-        providers.append(prv.username)
-        if n.upvotes.filter(id=request.user.id).exists():
-            lstatus.append(True)
-        else:
-            lstatus.append(False)
-    response['data'] = zip(note, lstatus, providers)
-    # messages.add_message(request, 20, 'Login Successful!')
-    # info = messages.get_messages(request)
-    # response = {'message': info}
+    blogs = Blog.objects.all()
+    for b in blogs:
+        if len(b.description) > 300:
+            b.description = b.description[:300]
+    response['blogs'] = blogs
     return render(request, 'home.html', response)
 
 
@@ -166,15 +157,32 @@ def profile(request):
 
     response['data1'] = zip(liked_notes, lstatus, providers)
     if len(liked_notes) > 0:
-        response['user_has_liked'] = True;
+        response['user_has_liked_notes'] = True;
     else:
-        response['user_has_liked'] = False;
+        response['user_has_liked_notes'] = False;
+    response['liked_notes'] = liked_notes
+
     uploaded_notes = Note.objects.filter(user_id=request.user.id)
-    response['data'] = uploaded_notes
+    uploaded_papers = Exam_Paper.objects.filter(user_id=request.user.id)
+    uploaded_books = Book.objects.filter(user_id=request.user.id)
+
+
+    response['uploaded_notes'] = uploaded_notes
+    response['uploaded_papers'] = uploaded_papers
+    response['uploaded_books'] = uploaded_books
+
     if len(uploaded_notes) > 0:
-        response['user_has_uploaded'] = True;
+        response['user_has_uploaded_notes'] = True;
     else:
-        response['user_has_uploaded'] = False;
+        response['user_has_uploaded_notes'] = False;
+    if len(uploaded_papers) > 0:
+        response['user_has_uploaded_papers'] = True;
+    else:
+        response['user_has_uploaded_papers'] = False;
+    if len(uploaded_books) > 0:
+        response['user_has_uploaded_books'] = True;
+    else:
+        response['user_has_uploaded_books'] = False;
     response['user'] = request.user
     return render(request, 'account/profile.html', response)
 
@@ -184,7 +192,7 @@ def Contact_Us(request):
     if request.method == 'POST':
         print('Contact us message recieved.')
         newMessage = ContactUsMessage()
-        newMessage.sender_name = request.POST['fullast_name']
+        newMessage.sender_name = request.POST['fullName']
         newMessage.email = request.POST['email']
         newMessage.phone = request.POST['phone']
         newMessage.subject = request.POST['subject']

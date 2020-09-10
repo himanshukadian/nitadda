@@ -491,9 +491,18 @@ label {
 .dataTable > thead > tr > th[class*="sort"]:after {
     content: "" !important;
 }
+/*#display_table {*/
+/*    color:red;*/
+/*}*/
+.dataTables_length {
+color: black !important;
+}
+.dataTables_filter {
+color: black !important;
+}
 
 .table{
-    box-shadow: 0px 5px 10px 0px rgb(152, 152, 152);
+    box-shadow: 0px 3px 10px 0px rgb(194, 194, 194);
 }
 .table thead, .table th {
     font-weight: normal;
@@ -853,14 +862,16 @@ label {
 }
 
 #uploadForm {
-    border-radius: 0px;
+    border-radius: 0;
     background-color: white;
     margin: auto;
+    /*padding-left: 25%;*/
+    /*padding-right: 25%;*/
     max-width: 720px;
     height: auto;
-    -webkit-box-shadow: 0px 10px 15px 0px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0px 10px 15px 0px rgba(0, 0, 0, 0.5);
-    box-shadow: 0px 10px 15px 0px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0px 5px 15px 0px rgba(150, 150, 150, 0.25);
+    -moz-box-shadow: 0px 5px 15px 0px rgba(150, 150, 150, 0.25);
+    box-shadow: 0px 5px 15px 0px rgba(150, 150, 150, 0.25);
 }
 
 .formText {
@@ -995,6 +1006,8 @@ center h1 {
 
 .formButton:hover {
     background: #00aaaa;
+    text-decoration: none;
+    color:white;
     box-shadow: 0px 0px 7px 2px rgba(2, 184, 212, 0.51);
 }
 
@@ -1152,9 +1165,15 @@ center h1 {
 
 #profile__img {
     position: relative;
-    width: 165px;
-    height: 160px;
+    width: 205px;
+    height: 205px;
     display: block;
+    margin: 0 auto;
+}
+#profile__img img{
+    background-color: #ffd13d;
+    border: 5px solid #ffd13d;
+    border-radius: 5px;
     margin: 0 auto;
 }
 
@@ -1556,3 +1575,69 @@ html, body {
     font-weight: bold;
     font-size: 24px ;
 }
+
+ul.nav li.dropdown:hover ul.dropdown-menu{ display: block; }
+
+#myReportModal .modal-content{
+    border-radius: 0;
+    margin: auto;
+    max-width: 640px;
+    padding: 0 1%;
+}
+#myNotificationstModal .modal-content{
+    border-radius: 0;
+    margin: auto;
+    max-width: 640px;
+    padding: 0 3%;
+}
+
+#update-profile-button hover{
+    text-decoration: none;
+    color: white;
+}
+
+.filter-label{
+    color: #4e5052;
+    font-weight: normal;
+    font-size: 16px;
+}
+
+.filter-dropdown{
+    width: 50%;
+    margin: 0 auto;
+}
+
+/**/
+body {background-color:#163a63; color:#163a63; padding-top:15px;}
+
+.list-group {box-shadow: 0px 11px 23px 5px rgba(0,0,0,0.34);}
+
+.list-group-item {background-color: rgba(255,255,255,0.7); border:0;}
+
+.btn-toolbar {margin-top:10px;}
+
+ .blogShort img {
+  float:left;
+  margin-right:15px;
+  height: 128px;
+  width: 128px;
+}
+/* ==== SOME BOOTSTRAP MODS/STYLING ==== */
+.btn-blog {
+    color: #ffffff;
+    background-color: #37d980;
+    border-color: #37d980;
+    border-radius:0;
+    margin-bottom:10px
+}
+.btn-blog:hover,
+.btn-blog:focus,
+.btn-blog:active,
+.btn-blog.active,
+.open .dropdown-toggle.btn-blog {
+    color: white;
+    background-color:#34ca78;
+    border-color: #34ca78;
+}
+ h2{color:#34ca78;}
+ .margin10{margin-bottom:10px; margin-right:10px;}

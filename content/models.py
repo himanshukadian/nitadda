@@ -94,7 +94,13 @@ class Note(models.Model):
                                    validators=[FileExtensionValidator(["pdf"])],
                                    null=True, blank=True, default=None)
 
+    reports = models.ManyToManyField(CustomUser, related_name='reports')
     upvotes = models.ManyToManyField(CustomUser, related_name='upvotes')
+
+    @property
+    def total_reports(self):
+        return self.reports.count()
+
     @property
     def total_upvotes(self):
         return self.upvotes.count()
@@ -152,7 +158,9 @@ class Exam_Paper_Count(models.Model):
         return str(self.paper_cnt)
 
 class Book(models.Model):
+    # book_id = models.CharField(max_length=20, primary_key=True)
     title = models.CharField(max_length=300)
+    user = models.ForeignKey(CustomUser, verbose_name="Provider", on_delete=models.CASCADE, blank=True, null=True)
     author = models.CharField(max_length=300)
     college = models.ForeignKey(College, verbose_name="College", on_delete=models.CASCADE, blank=True, null=True)
     course = models.ForeignKey(Course, verbose_name="Course", on_delete=models.CASCADE, blank=True, null=True)
@@ -180,3 +188,27 @@ class Book(models.Model):
                     self.slug = slug
                     break
         super(Book, self).save()
+
+
+class Blog(models.Model):
+    title = models.CharField(max_length=300)
+    description = models.CharField(max_length=10000)
+    author = models.ForeignKey(CustomUser, verbose_name="Provider", on_delete=models.CASCADE, blank=True, null=True)
+    date = models.DateTimeField()
+    college = models.ForeignKey(College, verbose_name="College", on_delete=models.CASCADE, blank=True, null=True)
+    course = models.ForeignKey(Course, verbose_name="Course", on_delete=models.CASCADE, blank=True, null=True)
+    image = models.ImageField(default='download.jpg', upload_to='blogs/')
+
+    upvotes = models.ManyToManyField(CustomUser, related_name='blog_upvotes')
+    @property
+    def total_upvotes(self):
+        return self.upvotes.count()
+
+    is_approved = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return str(self.blog_id)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Blog, self).save(*args, **kwargs)

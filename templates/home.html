@@ -4,6 +4,9 @@
 {% block content %}
     <head>
         <script src="https://kit.fontawesome.com/57456f662e.js" crossorigin="anonymous"></script>
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     </head>
     <body>
     {% if messages %}
@@ -62,6 +65,22 @@
             </div>
         </div>
     </div>
+
+    <div class="container" style="min-width:min-content;margin-bottom: 8%">
+        <div class="row" style="margin: 0%;">
+            {%  for blog in blogs %}
+            <div class="col-md-10 blogShort">
+                 <h1>{{ blog.title }}</h1>
+                 <img src="http://www.kaczmarek-photo.com/wp-content/uploads/2012/06/guinnes-150x150.jpg" alt="post img" class="pull-left img-responsive thumb margin10 img-thumbnail">
+                 <article><p>
+                     {{ blog.description}}
+                     </p></article>
+                 <a class="btn btn-blog pull-right marginBottom10" href="content/show_full_blog/{{ blog.id}}">READ MORE</a>
+             </div>
+            {%  endfor %}
+        </div>
+    </div>
+
     <div class="container-fluid">
          <div class="panel panel-primary">
             <div class="panel-body">
