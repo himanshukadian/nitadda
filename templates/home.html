@@ -71,7 +71,7 @@
             {%  for blog in blogs %}
             <div class="col-md-10 blogShort">
                  <h1>{{ blog.title }}</h1>
-                 <img src="{{ blog.image }}" alt="post img" class="pull-left img-responsive thumb margin10 img-thumbnail">
+                 <img src="{{ blog.image.url }}" alt="post img" class="pull-left img-responsive thumb margin10 img-thumbnail">
                 <article>
                      {{ blog.description|truncatechars_html:40|safe}}
                      </article>
