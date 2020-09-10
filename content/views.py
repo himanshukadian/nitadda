@@ -21,6 +21,7 @@ from rest_framework.generics import ListAPIView
 
 
 
+
 @csrf_exempt
 def checkuserifscrutinyuser(user):
     if user.groups.filter(name="owner").exists() and user.is_superuser:
