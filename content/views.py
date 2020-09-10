@@ -18,7 +18,7 @@ from content.decorators import login_required_message
 from django.contrib.auth.decorators import login_required
 from rest_framework import generics
 from rest_framework.generics import ListAPIView
-# from .serializers import NoteSerializers
+
 
 
 
@@ -510,7 +510,7 @@ def getCourseDuration(request):
 
 # class NoteTableData(ListAPIView):
 #     serializer_class = NoteSerializers
-#
+
 #     def get_queryset(self, *args, **kwargs):
 #         print('ha notes table data')
 #         filter_category = self.request.GET.get("filter_category")

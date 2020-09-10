@@ -15,4 +15,6 @@ urlpatterns = [
     url(r'^inbox/mark_as_read/$', views.Mark_As_Read, name='mark_as_read'),
     url(r'^inbox/delete_message/$', views.Delete_Message, name='delete_message'),
     path('<int:pk>/clear/', views.clear, name='clear-noti'),
+    url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        views.activate, name='activate'),
 ]

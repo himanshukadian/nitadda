@@ -20,6 +20,7 @@
     <div class="site-section">
         <div class="container">
             <div class="searchinput">
+                <p class="h1" style="font-size: 3vw;">Search Study Materials</p>
                 <form class="search-form" method="get" action="search/">
                     <span class="current-selection">
   </span>
@@ -35,38 +36,36 @@
             </div>
             <div class="row">
                 <div class="col-lg-4 col-md-6 col-xs-12">
-                    <div id="redBlock" class="block-2 red">
+                    <div id="redBlock"  style="cursor:none" class="block-2 red">
               <span class="wrap-icon">
                 <span class="icon-home"><i class="fa fa-fw fa-lg fa-edit faa-tada faa-fast"></i></span>
               </span>
                         <h2>Notes</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima nesciunt, mollitia, hic enim
-                            id culpa.</p>
+                        <p>Notes for all Semesters, Courses and Subjects</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-xs-12">
-                    <div id="yellowBlock" class="block-2 yellow">
+                    <div id="yellowBlock" style="cursor: none" class="block-2 yellow">
               <span class="wrap-icon">
                 <span class="icon-person"><i class="fa fa-fw fa-lg fa-file-powerpoint-o faa-tada faa-fast"></i></span>
               </span>
                         <h2>Previous Year Papers</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima nesciunt, mollitia, hic enim
-                            id culpa.</p>
+                        <p>Previous Papers for all Semesters, Courses and Subjects</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-xs-12">
-                    <div id="tealBlock" class="block-2 teal">
+                    <div id="tealBlock" style="cursor: none" class="block-2 teal">
               <span class="wrap-icon">
                 <span class="icon-cog"><i class="fa fa-fw fa-lg fa-book faa-tada faa-fast"></i></span>
               </span>
                         <h2>Books</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima nesciunt, mollitia, hic enim
-                            id culpa.</p>
+                        <p>Books for all Semesters, Courses and Subjects</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <div class="container" style="min-width:min-content;margin-bottom: 8%">
         <div class="row" style="margin: 0%;">
             {%  for blog in blogs %}
@@ -81,7 +80,21 @@
             {%  endfor %}
         </div>
     </div>
+
     <div class="container-fluid">
+         <div class="panel panel-primary">
+            <div class="panel-body">
+                <div class="row">
+                    <p class="col-md-12 text-justify text-primary">
+                        <i class="fa fa-arrow-circle-right"></i> &nbsp;Your valuable feedback will help us to improve the service
+                    </p>
+
+                    <p class="col-md-12 text-justify text-primary">
+                        <i class="fa fa-arrow-circle-right"></i> &nbsp;For any issues, you may contact us.
+                    </p>
+                </div>
+            </div>
+        </div>
         <div class="contact-parent">
             <div class="contact-child child1">
                 <p>
@@ -99,10 +112,9 @@
 
                 <p>
                     <i class=" far fa-envelope"></i> General Support <br/>
-                    <span>hello@nitadda.in</span>
+                    <span>hello.nitadda@gmail.com</span>
                 </p>
             </div>
-
             <div class="contact-child child2" style="background: floralwhite">
 
                 <div style="width: 100%" id="uploadForm" class="well well-lg">
