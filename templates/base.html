@@ -96,6 +96,16 @@
         {% block head_css_section %}{% endblock head_css_section %}
         {% block head_css_page %}{% endblock head_css_page %}
     {% endblock head_css %}
+   <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-177781311-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-177781311-1');
+</script>
+
     <script>
         $(window).on('load', function() { // makes sure the whole site is loaded
   $('#status').fadeOut(); // will first fade out the loading animation
