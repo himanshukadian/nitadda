@@ -85,6 +85,9 @@ def get_note_path(instance, filename):
 def get_paper_path(instance, filename):
     return 'Exam_Paper/{0}/pdf/{1}'.format(instance.paper_id, filename)
 
+def get_book_path(instance, filename):
+    return 'Book/{0}/pdf/{1}'.format(instance.book_id, filename)
+
 class Note(models.Model):
     note_id = models.CharField(max_length=20, primary_key=True)
     user = models.ForeignKey(CustomUser, verbose_name="Provider", on_delete=models.CASCADE, blank=True, null=True)
@@ -140,6 +143,12 @@ class Exam_Paper(models.Model):
                                  validators=[FileExtensionValidator(["pdf"])],
                                  null=True, blank=True, default=None)
 
+    reports = models.ManyToManyField(CustomUser, related_name='paper_reports')
+
+    @property
+    def total_reports(self):
+        return self.reports.count()
+
     # upvotes = models.ManyToManyField(CustomUser, related_name='upvotes')
     # @property
     # def total_upvotes(self):
@@ -160,17 +169,29 @@ class Exam_Paper_Count(models.Model):
         return str(self.paper_cnt)
 
 class Book(models.Model):
-    # book_id = models.CharField(max_length=20, primary_key=True)
+    UPLOAD_TYPES = (('L', 'Link'), ('P', 'PDF'))
+    book_id = models.CharField(max_length=20, primary_key=True)
     title = models.CharField(max_length=300)
     user = models.ForeignKey(CustomUser, verbose_name="Provider", on_delete=models.CASCADE, blank=True, null=True)
     author = models.CharField(max_length=300)
     college = models.ForeignKey(College, verbose_name="College", on_delete=models.CASCADE, blank=True, null=True)
     course = models.ForeignKey(Course, verbose_name="Course", on_delete=models.CASCADE, blank=True, null=True)
     subject = models.ForeignKey(Subject, verbose_name="Subject", on_delete=models.CASCADE, blank=True, null=True)
-    image = models.ImageField(default='download.jpg', upload_to='books/')
+    # image = models.ImageField(default='download.jpg', upload_to='books/')
     flink = models.CharField(max_length=300, blank=True)
-    alink = models.CharField(max_length=300, default="", blank=True)
+
+    upload_type = models.CharField(max_length=1, choices=UPLOAD_TYPES, default='L')
     slug = models.SlugField(max_length=30, unique=True, editable=False)
+    book_pdf = models.FileField(upload_to=get_book_path,
+                                 validators=[FileExtensionValidator(["pdf"])],
+                                 null=True, blank=True, default=None)
+
+    reports = models.ManyToManyField(CustomUser, related_name='book_reports')
+    is_approved = models.BooleanField(default=False)
+    @property
+    def total_reports(self):
+        return self.reports.count()
+
 
     def __unicode__(self):
         return str(self.title)
@@ -193,6 +214,7 @@ class Book(models.Model):
 
 
 class Blog(models.Model):
+
     title = models.CharField(max_length=300)
     description = HTMLField()
     author = models.ForeignKey(CustomUser, verbose_name="Provider", on_delete=models.CASCADE, blank=True, null=True)
@@ -200,8 +222,12 @@ class Blog(models.Model):
     college = models.ForeignKey(College, verbose_name="College", on_delete=models.CASCADE, blank=True, null=True)
     course = models.ForeignKey(Course, verbose_name="Course", on_delete=models.CASCADE, blank=True, null=True)
     image = models.ImageField(default='download.jpg', upload_to='blogs/')
+    reports = models.ManyToManyField(CustomUser, related_name='blog_reports',  blank=True)
+    upvotes = models.ManyToManyField(CustomUser, related_name='blog_upvotes', blank=True)
 
-    upvotes = models.ManyToManyField(CustomUser, related_name='blog_upvotes',blank=True, null=True)
+    @property
+    def total_reports(self):
+        return self.reports.count()
     @property
     def total_upvotes(self):
         return self.upvotes.count()
@@ -209,8 +235,14 @@ class Blog(models.Model):
     is_approved = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return str(self.blog_id)
+        return str(self.id)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         super(Blog, self).save(*args, **kwargs)
+
+class Book_Count(models.Model):
+    book_cnt = models.IntegerField(default=0)
+
+    def __unicode__(self):
+        return str(self.book_cnt)

@@ -29,6 +29,72 @@
                         }
                     });
                 });
+            })
+            $(document).ready(function () {
+                $('select#selectCourse3').change(function () {
+                    let optionSelected = $(this).find("option:selected");
+                    {#let valueSelected  = optionSelected.val();#}
+                    let course_name = optionSelected.text();
+                    console.log("Course selected is :", course_name);
+                    $.ajax({
+                        url: "/content/getSubjects/",
+                        type: "POST",
+                        data: {'cn': course_name},
+                        success: function (sub) {
+                            console.log("ha bhai11");
+                            $("#selectSubject3 option").remove();
+                            $("#selectSubject3").append("<option selected disabled>Choose subject</option>");
+                            for (var i = sub.length - 1; i >= 0; i--) {
+                                {
+                                    console.log(sub[i].id + "   ");
+                                }
+                                $("#selectSubject3").append("<option value=" + sub[i].id + ">" + sub[i].title + "</option>");
+                            }
+                        }
+                    });
+                });
+            });
+
+             $(document).ready(function () {
+                $('select#selectUploadType').change(function () {
+                    let optionSelected = $(this).find("option:selected");
+                    let type = optionSelected.text();
+
+                    let A = document.getElementById("book_type");
+                    let B = document.getElementById("book-submit-button");
+
+                    if(A != null)
+                        A.remove();
+                    if(B != null)
+                        B.remove();
+
+                    let book_upload_type = document.getElementById("upload_type_checker");
+
+                    let book_form = document.getElementById("book_form");
+                    console.log("Upload type selected is :", type);
+                    let fileTag = document.createElement("div");
+                    fileTag.setAttribute("class", "form-group");
+                    fileTag.setAttribute("id", "book_type");
+
+                    if(type == "Link to buy") {
+                        fileTag.innerHTML = "<label class=\"formText\">Paste link (URL)</label>\n"+
+                                    "<input class=\"form-control\" name=\"link\" id=\"upload_book\" required>";
+                        book_form.append(fileTag);
+                        book_upload_type.setAttribute("value", "link")
+
+                    }
+                    else{
+                        fileTag.innerHTML = "<label class=\"formText\">Select File</label>\n" +
+                                    "<input class=\"form-control\" type=\"File\" name=\"file\" id=\"upload_book\"\n" +
+                            "                                           required>";
+                        book_form.append(fileTag);
+                        book_upload_type.setAttribute("value", "pdf")
+
+                    }
+                    let btnTag = document.createElement("CENTER");
+                    btnTag.innerHTML = "<button type=\"submit\" id=\"book-submit-button\" class=\"formButton\">Upload</button>"
+                    book_form.append(btnTag);
+                });
             });
 
             $(document).ready(function () {
@@ -96,8 +162,11 @@
             <div class="sm-3 ">
                 <div id="uploadForm" class="well well-lg">
                     <div class="tabs">
-                        <h3 class="signup-tab"><a class="active" href="#signup-tab-content">Upload Notes</a></h3>
-                        <h3 class="login-tab"><a href="#login-tab-content">Upload Papers</a></h3>
+                        <ul>
+                        <li class="signup-tab"><a class="active" href="#signup-tab-content">Upload Notes</a></li>
+                        <li class="login-tab"><a href="#login-tab-content">Upload Papers</a></li>
+                        <li class="login1-tab"><a href="#login1-tab-content">Upload Books</a></li>
+                        </ul>
                     </div>
                     <div class="tabs-content">
                         <div id="signup-tab-content" class="active">
@@ -109,6 +178,7 @@
                                     <label class="formText" for="nt">Note Title</label>
                                     <input for="firstName" class="form-control" name="title" id="nt" required>
                                 </div>
+
                                 <div class="form-group">
                                     <label class="formText" for="selectCourse1">Select College</label>
                                     <select class="form-control" id="selectCollege1" name="colleges" required>
@@ -120,6 +190,7 @@
                                         {% endfor %}
                                     </select>
                                 </div>
+
                                 <div class="form-group">
                                     <label class="formText" for="selectCourse1">Select Course</label>
                                     <select class="form-control" id="selectCourse1" name="courses" required>
@@ -226,6 +297,64 @@
                                 </center>
                             </form>
                         </div>
+                        <div id="login1-tab-content">
+                            <form id="book_form" method="POST" action="/content/upload/" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <input type="hidden" name="content_type" id="checker" value="note">
+                                    <label class="formText" for="book_title">Book Title</label>
+                                    <input for="firstName" class="form-control" name="title" id="book_title" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="hidden" name="content_type" id="checker" value="note">
+                                    <label class="formText" for="book_author">Book Author</label>
+                                    <input for="firstName" class="form-control" name="author" id="book_author" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="formText" for="selectCollege1">Select College</label>
+                                    <select class="form-control" id="selectCollege1" name="colleges" required>
+                                        <option selected disabled>Choose college</option>
+                                        {% for college in colleges %}
+                                            <option value="{{ college.id }}">
+                                                {{ college.name }}, ({{ college.abbreviation }})
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <input type="hidden" name="content_type" id="checker" value="book">
+                                    <label class="formText" for="">Select Course</label>
+                                    <select class="form-control" id="selectCourse3" name="courses" required>
+                                        <option selected disabled>Choose course</option>
+                                        {% for course in courses %}
+                                            <option value="{{ course.id }}">
+                                                {{ course.title }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <input type="hidden" name="book_upload_type" id="upload_type_checker" value=" ">
+                                    <label class="formText" for="selectSubject3">Select Subject</label>
+                                    <select class="form-control" id="selectSubject3" name="subjects" required>
+                                        <option selected disabled>Choose subject</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="formText" for="selectUploadType">Select Upload type</label>
+                                    <select class="form-control" id="selectUploadType" name="book_upload_type" required>
+                                        <option value=" " selected disabled>Choose form</option>
+                                        <option value="L">Link to buy</option>
+                                        <option value="P">PDF</option>
+                                    </select>
+                                </div>
+
+                                <center>
+                                    <button type="submit" id="book-submit-button" class="formButton">Upload</button>
+                                </center>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -233,7 +362,7 @@
     </div>
     <script>
         jQuery(document).ready(function ($) {
-            tab = $('.tabs h3 a');
+            tab = $('.tabs ul li a');
 
             tab.on('click', function (event) {
                 event.preventDefault();

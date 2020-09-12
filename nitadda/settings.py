@@ -68,11 +68,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
-
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = True
-
-PREPEND_WWW = True
+#
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# SECURE_SSL_REDIRECT = True
+#
+# PREPEND_WWW = True
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
@@ -101,12 +101,12 @@ WSGI_APPLICATION = 'nitadda.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'nitadda',
-        'USER': 'postgres',
-        'PASSWORD': 'yes',
+        'USER': 'root',
+        'PASSWORD': '',
         'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'PORT': '3306',
     }
 }
 db_from_env = dj_database_url.config(conn_max_age=600)
@@ -168,13 +168,11 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 # STATICFILES_DIRS = [os.path.join(BASE_DIR,'nitadda/static')
 # ]
 
-STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static")
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
-#location where django collect all static files
-STATIC_ROOT = os.path.join(BASE_DIR,'static')
-# location where you will store your static files
-STATICFILES_DIRS = [os.path.join(BASE_DIR,'nitadda/static')
-]
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 LOGIN_REDIRECT_URL = 'home'
 # LOGOUT_REDIRECT_URL = 'home'
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"

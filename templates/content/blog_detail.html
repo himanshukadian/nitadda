@@ -18,56 +18,22 @@
 {#            <iframe src="../../media/{{ this_blog.note_pdf }}#view=FitH&toolbar=0&navpanes=0" frameborder="0" scrolling: "no" style="-webkit-overflow-scrolling: auto;;width: 100%; height: 85%;"></iframe>#}
             <p>{{ this_blog.description|safe}}</p>
         </div>
-        <div id="post-options" style="display: table-row; left: 50px;">
-            <div style="margin-top: 25%; display: table-cell;">
-                <a style="padding: 10px; width: 40px"
+        <div id="post-options" style="display:flex;margin-top: 25px; padding:20px 5px;
+                background-image: url({% static "images/bg5.jpg" %}); border: 2px solid white">
+            <div style="margin: 10px auto;width: 100%;text-align: center">
+                <a style="padding: 10px"
                    class="formButton"
                    data-toggle="modal" data-target="#myReportModal"
                    href="#">
-                    <i class="fa fa-exclamation-circle"></i> Report post
+                    <i class="fa fa-exclamation-circle"></i> Report
                 </a>
             </div>
-            <div class="modal fade" id="myReportModal" role="dialog">
-                <div class="modal-dialog modal-lg">
-                  <div class="modal-content ">
-                      <form method="POST" action="/content/report/{{ this_blog.id }}" enctype="multipart/form-data">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      <h4 class="modal-title">
-                        <caption><h3 class="table_title" style="color: #232323;">Report this post</h3></caption>
-                        </h4>
-                    </div>
-                    <div class="modal-body">
 
-                        <label class="formText" for="subject">Instruction</label>
-                        <ul>
-                            <li>First</li>
-                            <li>First</li>
-                            <li>First</li>
-                        </ul>
-                       {% csrf_token %}
-                                <div class="form-group">
-                                    <label class="formText" for="subject">Subject</label>
-                                    <input class="form-control" name="subject" id="subject" required>
-                                </div>
-                                <div class="form-group">
-                                    <label class="formText" for="message">Description</label>
-                                    <textarea rows="6" cols="30" class="form-control" name="message" id="message"
-                                              required></textarea>
-                                </div>
-                            <br>
-                    </div>
-                    <div class="modal-footer">
-                      <center>
-                            <button type="submit" id="btn" class="formButton">Report</button>
-                        </center>
-                    </div>
-                      </form>
-                  </div>
-                </div>
+            <div style="margin: 10px auto;width: 100%;text-align: center; color: #4e5052;">
+                <b>Posted on : {{ this_blog.date | date:"M d, Y" }}</b>
             </div>
-            <div style="display: table-cell; text-align: right;width: 100%">
-                {%  if user_has_liked %}
+            <div style="margin: 0 auto;width: 100%;;text-align: center">
+                {% if user_has_liked %}
                     <div class="like_grow" id="{{ this_blog.id }}"
                          onclick="updateVote( this.id )">
                         <i id="{{ this_blog.id }}1"
@@ -83,24 +49,61 @@
                 {% endif %}
                 <span class="likes_counter" style="font-family:'Amaranth'"
                       id="{{ this_blog.id }}2">
-                    {{ this_blog.total_upvotes }}
-                </span>
+                        {{ this_blog.total_upvotes }}
+                    </span>
             </div>
         </div>
-
+        <div class="modal fade" id="myReportModal" role="dialog">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content ">
+                  <form method="POST" action="/content/report/{{ this_blog.id }}" enctype="multipart/form-data">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">
+                    <caption><h3 class="table_title" style="color: #232323;">Report this post</h3></caption>
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <label class="formText" for="subject">Instruction</label>
+                    <ul>
+                        <li>First</li>
+                        <li>First</li>
+                        <li>First</li>
+                    </ul>
+                   {% csrf_token %}
+                            <div class="form-group">
+                                <label class="formText" for="subject">Subject</label>
+                                <input class="form-control" name="subject" id="subject" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="formText" for="message">Description</label>
+                                <textarea rows="6" cols="30" class="form-control" name="message" id="message"
+                                          required></textarea>
+                            </div>
+                        <br>
+                </div>
+                <div class="modal-footer">
+                  <center>
+                        <button type="submit" id="btn" class="formButton">Report</button>
+                    </center>
+                </div>
+                  </form>
+              </div>
+            </div>
+        </div>
     </div>
 
     </body>
 
     <script>
         function updateVote(id) {
-            console.log("note id value: " + id);
+            console.log("blog id value: " + id);
 
             $.ajax({
-                url: "/content/upvote/",
+                url: "/content/upvote_blog/",
                 type: "POST",
                 {#async: true,#}
-                data: {'noteid': id, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                data: {'blogid': id, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
                 {#dataType: "json",#}
                 success: function (data) {
                     if (data[0]) {
