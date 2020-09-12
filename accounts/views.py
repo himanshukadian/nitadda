@@ -39,7 +39,7 @@ from django.core.mail import EmailMessage
 def index(request):
     response = {}
     print(request.user, " logged in : RENDER HOME ")
-    blogs = Blog.objects.all()
+    blogs = Blog.objects.all()[:4]
     for b in blogs:
         if len(b.description) > 300:
             b.description = b.description[:300]

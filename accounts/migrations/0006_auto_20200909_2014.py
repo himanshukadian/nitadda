@@ -10,10 +10,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='customuser',
-            name='registration_number',
-        ),
         migrations.AlterField(
             model_name='customuser',
             name='is_active',

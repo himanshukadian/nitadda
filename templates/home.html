@@ -20,7 +20,7 @@
     <div class="site-section">
         <div class="container">
             <div class="searchinput">
-                <p class="h1" style="font-size: 3vw;">Search Study Materials</p>
+                <p class="h1" style="font-size: 2vw;">Search Study Materials</p>
                 <form class="search-form" method="get" action="search/">
                     <span class="current-selection">
   </span>
@@ -67,18 +67,20 @@
     </div>
 
     <div class="container" style="min-width:min-content;margin-bottom: 8%">
+        <h3 class="table_title">Trending News</h3>
+        {%  for blog in blogs %}
         <div class="row" style="margin: 0%;">
-            {%  for blog in blogs %}
             <div class="col-md-10 blogShort">
-                 <h1>{{ blog.title }}</h1>
-                 <img src="http://www.kaczmarek-photo.com/wp-content/uploads/2012/06/guinnes-150x150.jpg" alt="post img" class="pull-left img-responsive thumb margin10 img-thumbnail">
-                 <article><p>
-                     {{ blog.description}}
-                     </p></article>
+                 <h1 style="font-size: 2vw;">{{ blog.title }}</h1>
+                 <img src="{{ blog.image.url }}" alt="post img" class="pull-left img-responsive thumb margin10 img-thumbnail">
+                <article>
+                     {{ blog.description|truncatechars_html:40|safe}}
+                     </article>
                  <a class="btn btn-blog pull-right marginBottom10" href="content/show_full_blog/{{ blog.id}}">READ MORE</a>
              </div>
-            {%  endfor %}
         </div>
+       {%  endfor %}
+        <a class="btn btn-blog pull-right marginBottom10" href="content/all_blogs">READ ALL NEWS</a>
     </div>
 
     <div class="container-fluid">

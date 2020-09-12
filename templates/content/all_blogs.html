@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% block title %}Home NIT ADDA{% endblock title %}
+{% load static %}
+{% block content %}
+    <head>
+        <script src="https://kit.fontawesome.com/57456f662e.js" crossorigin="anonymous"></script>
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    </head>
+    <body>
+
+    <div class="container" style="min-width:min-content;margin-bottom: 8%">
+        <h3 class="table_title">All Latest News</h3>
+        {%  for blog in blogs %}
+        <div class="row" style="margin: 0%;">
+            <div class="col-md-10 blogShort">
+                 <h1 style="font-size: 3vw;">{{ blog.title }}</h1>
+                 <img src="{{ blog.image.url }}" alt="post img" class="pull-left img-responsive thumb margin10 img-thumbnail">
+                <article>
+                     {{ blog.description|truncatechars_html:40|safe}}
+                     </article>
+                 <a class="btn btn-blog pull-right marginBottom10" href="../show_full_blog/{{ blog.id}}">READ MORE</a>
+             </div>
+        </div>
+       {%  endfor %}
+    </div>
+
+    </body>
+    <script>
+        $(document).ready(function () {
+            //Auto Search
+            var searchForm = $(".search-form")
+            var searchInput = searchForm.find("[name='q']")
+            var searchBtn = searchForm.find("[type='submit']")
+            var slctInput = searchForm.find("[name='op']")
+            var typingTimer;
+            var typingInterval = 500
+            searchInput.keyup(function (event) {
+                clearTimeout(typingTimer)
+                typingTimer = setTimeout(performSearch, typingInterval)
+            })
+            searchInput.keydown(function (event) {
+                clearTimeout(typingTimer)
+            })
+
+            function performSearch() {
+                searchBtn.addClass("disabled")
+                searchBtn.html("<i class='fa fa-spin fa-spinner'></i>")
+                setTimeout(function () {
+                    window.location.href = '/search/?op=' + slctInput.val() + '&q=' + searchInput.val()
+                },1000)
+            }
+
+            $('table.table').DataTable({
+                "bPaginate": true,
+                "bLengthChange": false,
+                "bFilter": true,
+                "bInfo": false,
+                "aaSorting": [],
+                "bAutoWidth": false,
+            });
+        });
+
+        function updateVote(note_id, user_is_logged) {
+            console.log("note id value: " + note_id);
+            $.ajax({
+                url: "/content/upvote/",
+                type: "POST",
+                {#async: true,#}
+                data: {'noteid': note_id, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                {#dataType: "json",#}
+                success: function (data) {
+                    console.log("data[0] value: " + data[0]);
+                    if (data[0]) {
+                        console.log("if");
+                        console.log("id : " + data[1]);
+                        if (document.getElementById(data[1] + "2"))
+                            document.getElementById(data[1] + "2").innerHTML = parseInt(document.getElementById(data[1] + "2").innerHTML) - 1;
+                        if (document.getElementById(data[1] + "1"))
+                            document.getElementById(data[1] + "1").classList.remove("active");
+                        {#document.getElementById(data[1] + "3").classList.remove("active");#}
+                    } else {
+                        console.log("else");
+                        document.getElementById(data[1] + "1").classList.add("active");
+                        {#document.getElementById(data[1] + "3").classList.rekmove("active");#}
+                        document.getElementById(data[1] + "2").innerHTML = parseInt(document.getElementById(data[1] + "2").innerHTML) + 1;
+                    }
+                }
+            });
+        }
+
+        var placeholderText = {
+            "n": "Please enter title, course, subject",
+            "b": "Please enter title, author, course, subject",
+            "p": "Please enter title, sem, year, course, subject"
+        };
+        $("#dropdown").on("change", function () {
+            var selection = $("#dropdown");
+            var inputBox = $("#txt");
+
+            var selectedVal = $(':selected', selection).val();
+            console.log(selectedVal);
+            if (placeholderText[selectedVal] !== undefined) {
+                inputBox.attr('placeholder', placeholderText[selectedVal]);
+            }
+        });
+    </script>
+
+{% endblock content %}

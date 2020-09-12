@@ -96,6 +96,16 @@
         {% block head_css_section %}{% endblock head_css_section %}
         {% block head_css_page %}{% endblock head_css_page %}
     {% endblock head_css %}
+   <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-177781311-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-177781311-1');
+</script>
+
     <script>
         $(window).on('load', function() { // makes sure the whole site is loaded
   $('#status').fadeOut(); // will first fade out the loading animation
@@ -268,7 +278,7 @@
 {% endblock content %}
 {% if user.is_authenticated %}
     <div class="modal fade" id="myNotificationstModal" role="dialog">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered" style="left: 0">
 
             <!-- Modal content-->
             <div class="modal-content">
@@ -351,5 +361,3 @@
     {% block footer_javascript_page %}{% endblock footer_javascript_page %}
 {% endblock footer_javascript %}
 </html>
-
-
