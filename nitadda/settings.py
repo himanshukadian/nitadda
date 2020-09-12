@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'django_otp.plugins.otp_hotp',
     'django_otp.plugins.otp_static',
     'whitenoise.runserver_nostatic',
+    'django.contrib.sitemaps',
     # 'crispy_forms',
 ]
 

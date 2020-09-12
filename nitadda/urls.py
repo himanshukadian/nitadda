@@ -22,11 +22,22 @@ from django.views.generic.base import RedirectView
 from django.conf import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.static import serve
-
 import accounts
+from nitadda import sitemaps
+from django.contrib.sitemaps.views import sitemap
+
+from nitadda.sitemaps import Course_Notes_Sitemap, Subject_Notes_Sitemap, Blogs_Sitemap
+
+sitemaps = {
+    'course_notes': Course_Notes_Sitemap,
+    'subject_notes': Subject_Notes_Sitemap,
+    'blogs': Blogs_Sitemap,
+    'static': sitemaps.StaticViewSitemap
+}
 
 urlpatterns = [
                   url('admin/', admin.site.urls),
+                  url('sitemap.xml', sitemap, {'sitemaps': sitemaps}),
                   url(r'^', include(('accounts.urls', 'accounts'), namespace='accounts')),
                   url(r'^search/', include(('search.urls', 'search'), namespace='search')),
                   url(r'content/', include(('content.urls', 'content'), namespace='content')),
@@ -41,6 +52,7 @@ urlpatterns = [
                       name='password_reset_done'),
                   url('password-reset-complete/', accounts.views.PasswordResetCompleteView.as_view(
                       template_name='account/password_reset_complete.html'), name='password_reset_complete'),
+                  url(r'^tinymce/', include('tinymce.urls'))
                   # url('auth/', include('social_django.urls', namespace='social')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

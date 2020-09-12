@@ -9,10 +9,11 @@ from .views import *
 
 urlpatterns = [
                   url(r'^$', views.index, name='index'),
-                  url(r'^meetOurTeam/$', TemplateView.as_view(template_name='meet_our_team.html')),
+                  url(r'^meetOurTeam/$', TemplateView.as_view(template_name='meet_our_team.html'),name='team'),
                   url(r'^upvote/$', views.Upvote),
                   url(r'^upvote_blog/$', views.Upvote_Blog),
-                  url(r'^show_full_blog/(?P<blog_id>\w+)', views.Show_Full_Blog),
+                  url(r'^show_full_blog/(?P<blog_id>\w+)', views.show_full_blog,name='blogs'),
+                  url(r'^course_notes/(?P<slug>[-\w]+)/$', views.Show_Note, name='Course_Note'),
                   # url(r'^course_notes/(?P<slug>[-\w]+)/listing/', NoteTableData.as_view(), name='listing'),
                    # path('listing/', NoteTableData.as_view(), name='listing'),
                   url(r'^report/(?P<post_id>\w+)', views.report_post),
