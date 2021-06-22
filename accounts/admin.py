@@ -97,3 +97,4 @@ class UserAdmin(BaseUserAdmin):
         return form
 
 admin.site.register(CustomUser, UserAdmin)
+

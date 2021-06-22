@@ -85,6 +85,9 @@
     {% endblock head_meta %}
     {% block head_css %}
         {% block head_css_site %}
+            <!-- MDBootstrap Datatables  -->
+            <link href="css/addons/datatables.min.css" rel="stylesheet">
+            <!--  MDB end -->
             <link rel="stylesheet" href="{% static 'css/style.css' %}">
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -92,6 +95,10 @@
             <!--FONT AWESOME CDN LINK FOR FONT-AWESOME FONT -->
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
             <link href="https://fonts.googleapis.com/css?family=Amarante|Amaranth&display=swap" rel="stylesheet">
+            <!-- MDBootstrap Datatables  -->
+            <script type="text/javascript" src="js/addons/datatables.min.js"></script>
+            <!--  MDB end -->
+
         {% endblock head_css_site %}
         {% block head_css_section %}{% endblock head_css_section %}
         {% block head_css_page %}{% endblock head_css_page %}
@@ -236,8 +243,8 @@
                             </a>
                         </li>
                     {% endif %}
-                </ul>
-                <ul id="rightnav" class="nav navbar-nav navbar-right">
+                    </ul>
+                    <ul id="rightnav" class="nav navbar-nav navbar-right">
                     {% if user.is_authenticated %}
                         <li>
                             <a data-toggle="modal" href="#myNotificationstModal" class="faa-parent animated-hover">

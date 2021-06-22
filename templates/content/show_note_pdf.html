@@ -1,163 +1,163 @@
-{% extends 'base.html' %}
-{% block title %}Home NIT ADDA{% endblock title %}
-{% load static %}
-{% block content3 %}"../media/{{ user.image }}"{% endblock content3 %}
-{% block content %}
-    <head xmlns:scrolling="http://www.w3.org/1999/xhtml">
-        <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    </head>
-    <body>
-    <div class="row main_header">
-        <!-- <center><h2><b>Registration</b></h2></center>
-<br>-->
-    </div>
+    {% extends 'base.html' %}
+    {% block title %}Home NIT ADDA{% endblock title %}
+    {% load static %}
+    {% block content3 %}"../media/{{ user.image }}"{% endblock content3 %}
+    {% block content %}
+        <head xmlns:scrolling="http://www.w3.org/1999/xhtml">
+            <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        </head>
+        <body>
+        <div class="row main_header">
+            <!-- <center><h2><b>Registration</b></h2></center>
+    <br>-->
+        </div>
 
-    <div class="container" style="margin-bottom: 50px">
-        {% if data_type == "note" %}
-            <div class=" md-3" style="margin-top:0.5%;">
-                <iframe src="../../media/{{ this_data.note_pdf }}#view=FitH&toolbar=0&navpanes=0" frameborder="0"
-                        scrolling:"no" style="-webkit-overflow-scrolling: auto;;width: 100%; height: 85%;">
-                </iframe>
-            </div>
-            <div id="post-options" style="display:flex;margin-top: 25px; padding:20px 5px;
-                    background-image: url({% static "images/bg5.jpg" %}); border: 2px solid white">
-                <div style="margin: 10px auto;width: 100%;text-align: center">
-                    <a style="padding: 10px"
-                       class="formButton"
-                       data-toggle="modal" data-target="#myReportModal"
-                       href="#">
-                        <i class="fa fa-exclamation-circle"></i> Report
-                    </a>
+        <div class="container" style="margin-bottom: 50px">
+            {% if data_type == "note" %}
+                <div class=" md-3" style="margin-top:0.5%;">
+                    <iframe src="../../media/{{ this_data.note_pdf }}#view=FitH&toolbar=0&navpanes=0" frameborder="0"
+                            scrolling:"no" style="-webkit-overflow-scrolling: auto;;width: 100%; height: 85%;">
+                    </iframe>
                 </div>
-                <div style="margin: 0 auto;width: 100%;;text-align: center">
-                    {% if user_has_liked %}
-                        <div class="like_grow" id="{{ this_data.note_id }}"
-                             onclick="updateVote( this.id )">
-                            <i id="{{ this_data.note_id }}1"
-                               class="fa fa-thumbs-up fa-2x like active"
-                               aria-hidden="true"></i>
-                        </div>
-                    {% else %}
-                        <div class="like_grow" id="{{ this_data.note_id }}"
-                             onclick="updateVote( this.id )">
-                            <i id="{{ this_data.note_id }}1" class="fa fa-thumbs-up fa-2x like"
-                               aria-hidden="true"></i>
-                        </div>
-                    {% endif %}
-                    <span class="likes_counter" style="font-family:'Amaranth'"
-                          id="{{ this_data.note_id }}2">
-                            {{ this_data.total_upvotes }}
-                    </span>
-                </div>
-            </div>
-
-        {% elif data_type == "paper" %}
-            <div class=" md-3" style="margin-top:0.5%;">
-                <iframe src="../../media/{{ this_data.paper_pdf }}#view=FitH&toolbar=0&navpanes=0" frameborder="0"
-                        scrolling:"no" style="-webkit-overflow-scrolling: auto;;width: 100%; height: 85%;">
-                </iframe>
-            </div>
-            <div id="post-options" style="display:flex;margin-top: 25px; padding:20px 5px;
-                    background-image: url({% static "images/bg5.jpg" %}); border: 2px solid white">
-                <div style="margin: 10px auto;width: 100%;text-align: center">
-                    <a style="padding: 10px"
-                       class="formButton"
-                       data-toggle="modal" data-target="#myReportModal"
-                       href="#">
-                        <i class="fa fa-exclamation-circle"></i> Report
-                    </a>
-                </div>
-            </div>
-        {% else %}
-            <div class=" md-3" style="margin-top:0.5%;">
-                <iframe src="../../media/{{ this_data.book_pdf }}#view=FitH&toolbar=0&navpanes=0" frameborder="0"
-                        scrolling:"no" style="-webkit-overflow-scrolling: auto;;width: 100%; height: 85%;">
-                </iframe>
-            </div>
-            <div id="post-options" style="display:flex;margin-top: 25px; padding:20px 5px;
-                    background-image: url({% static "images/bg5.jpg" %}); border: 2px solid white">
-                <div style="margin: 10px auto;width: 100%;text-align: center">
-                    <a style="padding: 10px"
-                       class="formButton"
-                       data-toggle="modal" data-target="#myReportModal"
-                       href="#">
-                        <i class="fa fa-exclamation-circle"></i> Report
-                    </a>
-                </div>
-            </div>
-        {% endif %}
-
-        <div class="modal fade" id="myReportModal" role="dialog">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content ">
-                    <form method="POST" action="/content/report/{{ this_data.paper_id }}" enctype="multipart/form-data">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">
-                                <caption><h3 class="table_title" style="color: #232323;">Report this post</h3></caption>
-                            </h4>
-                        </div>
-                        <div class="modal-body">
-
-                            <label class="formText" for="subject">Instruction</label>
-                            <ul>
-                                <li>First</li>
-                                <li>First</li>
-                                <li>First</li>
-                            </ul>
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <label class="formText" for="subject">Subject</label>
-                                <input class="form-control" name="subject" id="subject" required>
+                <div id="post-options" style="display:flex;margin-top: 25px; padding:20px 5px;
+                        background-image: url({% static "images/bg5.jpg" %}); border: 2px solid white">
+                    <div style="margin: 10px auto;width: 100%;text-align: center">
+                        <a style="padding: 10px"
+                           class="formButton"
+                           data-toggle="modal" data-target="#myReportModal"
+                           href="#">
+                            <i class="fa fa-exclamation-circle"></i> Report
+                        </a>
+                    </div>
+                    <div style="margin: 0 auto;width: 100%;;text-align: center">
+                        {% if user_has_liked %}
+                            <div class="like_grow" id="{{ this_data.note_id }}"
+                                 onclick="updateVote( this.id )">
+                                <i id="{{ this_data.note_id }}1"
+                                   class="fa fa-thumbs-up fa-2x like active"
+                                   aria-hidden="true"></i>
                             </div>
-                            <div class="form-group">
-                                <label class="formText" for="message">Description</label>
-                                <textarea rows="6" cols="30" class="form-control" name="message" id="message"
-                                          required></textarea>
+                        {% else %}
+                            <div class="like_grow" id="{{ this_data.note_id }}"
+                                 onclick="updateVote( this.id )">
+                                <i id="{{ this_data.note_id }}1" class="fa fa-thumbs-up fa-2x like"
+                                   aria-hidden="true"></i>
                             </div>
-                            <br>
-                        </div>
-                        <div class="modal-footer">
-                            <center>
-                                <button type="submit" id="btn" class="formButton">Report</button>
-                            </center>
-                        </div>
-                    </form>
+                        {% endif %}
+                        <span class="likes_counter" style="font-family:'Amaranth'"
+                              id="{{ this_data.note_id }}2">
+                                {{ this_data.total_upvotes }}
+                        </span>
+                    </div>
+                </div>
+
+            {% elif data_type == "paper" %}
+                <div class=" md-3" style="margin-top:0.5%;">
+                    <iframe src="../../media/{{ this_data.paper_pdf }}#view=FitH&toolbar=0&navpanes=0" frameborder="0"
+                            scrolling:"no" style="-webkit-overflow-scrolling: auto;;width: 100%; height: 85%;">
+                    </iframe>
+                </div>
+                <div id="post-options" style="display:flex;margin-top: 25px; padding:20px 5px;
+                        background-image: url({% static "images/bg5.jpg" %}); border: 2px solid white">
+                    <div style="margin: 10px auto;width: 100%;text-align: center">
+                        <a style="padding: 10px"
+                           class="formButton"
+                           data-toggle="modal" data-target="#myReportModal"
+                           href="#">
+                            <i class="fa fa-exclamation-circle"></i> Report
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <div class=" md-3" style="margin-top:0.5%;">
+                    <iframe src="../../media/{{ this_data.book_pdf }}#view=FitH&toolbar=0&navpanes=0" frameborder="0"
+                            scrolling:"no" style="-webkit-overflow-scrolling: auto;;width: 100%; height: 85%;">
+                    </iframe>
+                </div>
+                <div id="post-options" style="display:flex;margin-top: 25px; padding:20px 5px;
+                        background-image: url({% static "images/bg5.jpg" %}); border: 2px solid white">
+                    <div style="margin: 10px auto;width: 100%;text-align: center">
+                        <a style="padding: 10px"
+                           class="formButton"
+                           data-toggle="modal" data-target="#myReportModal"
+                           href="#">
+                            <i class="fa fa-exclamation-circle"></i> Report
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="modal fade" id="myReportModal" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content ">
+                        <form method="POST" action="/content/report/{{ this_data.paper_id }}" enctype="multipart/form-data">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">
+                                    <caption><h3 class="table_title" style="color: #232323;">Report this post</h3></caption>
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+
+                                <label class="formText" for="subject">Instruction</label>
+                                <ul>
+                                    <li>First</li>
+                                    <li>First</li>
+                                    <li>First</li>
+                                </ul>
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label class="formText" for="subject">Subject</label>
+                                    <input class="form-control" name="subject" id="subject" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="formText" for="message">Description</label>
+                                    <textarea rows="6" cols="30" class="form-control" name="message" id="message"
+                                              required></textarea>
+                                </div>
+                                <br>
+                            </div>
+                            <div class="modal-footer">
+                                <center>
+                                    <button type="submit" id="btn" class="formButton">Report</button>
+                                </center>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    </body>
+        </body>
 
-    <script>
-        function updateVote(note_id) {
-            console.log("note id value: " + note_id);
+        <script>
+            function updateVote(note_id) {
+                console.log("note id value: " + note_id);
 
-            $.ajax({
-                url: "/content/upvote/",
-                type: "POST",
-                {#async: true,#}
-                data: {'noteid': note_id, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
-                {#dataType: "json",#}
-                success: function (data) {
-                    if (data[0]) {
-                        document.getElementById(data[1] + "2").innerHTML = parseInt(document.getElementById(data[1] + "2").innerHTML) - 1;
-                        document.getElementById(data[1] + "1").classList.remove("active");
-                        $('#dislike').show();
-                        {#document.getElementById(data[1] + "3").classList.remove("active");#}
-                    } else {
-                        document.getElementById(data[1] + "1").classList.add("active");
-                        $('#like').show();
-                        {#document.getElementById(data[1] + "3").classList.rekmove("active");#}
-                        document.getElementById(data[1] + "2").innerHTML = parseInt(document.getElementById(data[1] + "2").innerHTML) + 1;
+                $.ajax({
+                    url: "/content/upvote/",
+                    type: "POST",
+                    {#async: true,#}
+                    data: {'noteid': note_id, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                    {#dataType: "json",#}
+                    success: function (data) {
+                        if (data[0]) {
+                            document.getElementById(data[1] + "2").innerHTML = parseInt(document.getElementById(data[1] + "2").innerHTML) - 1;
+                            document.getElementById(data[1] + "1").classList.remove("active");
+                            $('#dislike').show();
+                            {#document.getElementById(data[1] + "3").classList.remove("active");#}
+                        } else {
+                            document.getElementById(data[1] + "1").classList.add("active");
+                            $('#like').show();
+                            {#document.getElementById(data[1] + "3").classList.rekmove("active");#}
+                            document.getElementById(data[1] + "2").innerHTML = parseInt(document.getElementById(data[1] + "2").innerHTML) + 1;
+                        }
+                        setTimeout(function () {
+                            $('.message_container').fadeOut('slow');
+                        }, 3000);
                     }
-                    setTimeout(function () {
-                        $('.message_container').fadeOut('slow');
-                    }, 3000);
-                }
-            });
-        }
+                });
+            }
 
-    </script>
-{% endblock content %}
+        </script>
+    {% endblock content %}
