@@ -18,7 +18,7 @@ from content.decorators import login_required_message
 from django.contrib.auth.decorators import login_required
 from rest_framework import generics
 from rest_framework.generics import ListAPIView
-from .serializers import NoteSerializers
+
 
 
 
@@ -76,7 +76,7 @@ def Add_Subject(request):
 @user_passes_test(checkuserifscrutinyuser, login_url="/content/login/")
 def index(request):
     response = {}
-    blogs = Blog.objects.all()
+    blogs = Blog.objects.all()[:4]
     print(request.user," home tab clicked : RENDER HOME ")
     for b in blogs:
         if len(b.description) > 300:
@@ -136,7 +136,6 @@ def Display_Note(request, noteid):
 @login_required_message(message="You should be logged in, in order to perform this")
 @login_required
 def Delete_Note(request, noteid):
-    response = {}
     cd = Note.objects.get(note_id=noteid)
     cd.delete()
     messages.success(request, 'successfully deleted')
@@ -146,10 +145,18 @@ def Delete_Note(request, noteid):
 @login_required_message(message="You should be logged in, in order to perform this")
 @login_required
 def Delete_Paper(request, paperid):
-    response = {}
     cd = Exam_Paper.objects.get(pk=paperid)
     cd.delete()
     messages.success(request, 'Successfully deleted Exam Paper')
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+
+@csrf_exempt
+@login_required_message(message="You should be logged in, in order to perform this")
+@login_required
+def Delete_Book(request, bookid):
+    cd = Book.objects.get(pk=bookid)
+    cd.delete()
+    messages.success(request, 'Successfully deleted Book')
     return redirect(request.META.get('HTTP_REFERER', '/'))
 
 
@@ -218,6 +225,34 @@ def UploadContent(request):
             paper.save()
             messages.success(request, "Successfully Uploaded Exam Paper.")
             return redirect('/content/upload/')
+        else:
+            cnt = Book_Count.objects.get()
+            year = datetime.datetime.now().year
+            yy = str(year)
+            p1 = yy[2:]
+            p2 = str(cnt.book_cnt).zfill(4)
+            cnt.book_cnt = cnt.book_cnt + 1
+            cnt.save()
+            Name = "BOOK"
+            bookID = Name + p1 + p2
+            print(bookID)
+            book = Book()
+            # course=Course()
+            book.book_id = bookID
+            book.title = request.POST['title']
+            book.author = request.POST['author']
+            book.subject = Subject.objects.get(id=request.POST['subjects'])
+            book.college = College.objects.get(id=request.POST['colleges'])
+            book.course = Course.objects.get(id=request.POST['courses'])
+            book.user_id = request.user.id
+            book.upload_type = request.POST['book_upload_type']
+            if book.upload_type == "L":
+                book.flink = request.POST["link"]
+            else:
+                book.book_pdf = request.FILES["file"]
+            book.save()
+            messages.success(request, "Successfully Uploaded Book")
+            return redirect('/content/upload/')
 
     return render(request, 'content/Upload_Notes.html', response)
 
@@ -248,65 +283,70 @@ def Show_Note(request, slug):
     response = {}
     print(request.user)
     cname = Course.objects.get(slug=slug)
-    if request.method == 'POST' and request.POST.get('colleges') is not 0:
+    if request.method == 'POST' and request.POST.get('colleges') is not "0":
         clg = request.POST.get('colleges')
         print("CLG ID: ", clg)
+        print("content type ", request.POST.get('content_type'))
+        response['current_tab'] = request.POST.get('content_type')
         notes = Note.objects.filter(course=cname.id, college=clg).annotate(num_votes=Count('upvotes')).order_by('-num_votes')
+        print("Length notes= ", len(notes))
+        papers = Exam_Paper.objects.filter(course=cname.id, college=clg).order_by('-batch_year')
+        print("Length papers= ", len(papers))
+        books = Book.objects.filter(course=cname.id, college=clg)
+        print("Length books= ", len(books))
     else:
         clg = 0
         print("is  0")
+        response['current_tab'] = "note"
         notes = Note.objects.filter(course=cname.id).annotate(num_votes=Count('upvotes')).order_by('-num_votes')
-    papers = Exam_Paper.objects.filter(course=cname.id).order_by('-batch_year')
+        papers = Exam_Paper.objects.filter(course=cname.id).order_by('-batch_year')
+        books = Book.objects.filter(course=cname.id)
     colleges = College.objects.all()
     print(cname)
     lstatus=[]
-    providers = []
     for n in notes:
         if len(n.title) > 80:
             n.title = n.title[:80] + '...'
         prv = CustomUser.objects.get(id=n.user_id)
-        providers.append(prv.username)
         if n.upvotes.filter(id=request.user.id).exists():
             lstatus.append(True)
         else:
             lstatus.append(False)
-    response['data'] = zip(notes, lstatus, providers)
-    year = []
+    response['data'] = zip(notes, lstatus)
+
     for p in papers:
         if len(p.title) > 20:
             p.title = p.title[:20] + '...'
-        # if p.semester%2 != 0:
-        #     p.semester += 1
-        x = int(p.batch_year - p.semester/2)
-        year.append(x)
-    response['papers'] = zip(papers, year)
-    # response['year'] = year
+    response['papers'] = papers
+
+    for b in books:
+        if len(b.title) > 20:
+            b.title = b.title[:20] + '...'
+    response['books'] = books
     response['cname'] = cname
-    book = Book.objects.filter(course=cname.id)
-    response['book'] = book
     if clg:
         response['current_college_id'] = clg
     else:
-        response['current_college_id'] = 0
+        response['current_college_id'] = "0"
     response['colleges'] = colleges
     return render(request, 'content/all_Notes.html', response)
 
 
-@csrf_exempt
-@login_required_message(message="You should be logged in, in order to perform this")
-@login_required
-def Get_Subject_Note(request):
-    response = {}
-    notes = Note.objects.all()
-    n = len(notes)
-    allnotes = []
-    subjectnotes = Note.objects.values('subject', 'subject_id')
-    subjects = {item['subject'] for item in subjectnotes}
-    for subject in subjects:
-        note = Note.objects.filter(subject=subject)
-        allnotes.append(note)
-    response["allnotes"] = allnotes
-    return render(request, 'content/all_Subject_Notes.html', response)
+# @csrf_exempt
+# @login_required_message(message="You should be logged in, in order to perform this")
+# @login_required
+# def Get_Subject_Note(request):
+#     response = {}
+#     notes = Note.objects.all()
+#     n = len(notes)
+#     allnotes = []
+#     subjectnotes = Note.objects.values('subject', 'subject_id')
+#     subjects = {item['subject'] for item in subjectnotes}
+#     for subject in subjects:
+#         note = Note.objects.filter(subject=subject)
+#         allnotes.append(note)
+#     response["allnotes"] = allnotes
+#     return render(request, 'content/all_Subject_Notes.html', response)
 
 
 @csrf_exempt
@@ -316,33 +356,54 @@ def Show_Subject_Note(request, slug):
     response = {}
     print(request.user)
     sname = Subject.objects.get(slug=slug)
-    notes = Note.objects.filter(subject=sname.id).annotate(num_votes=Count('upvotes')).order_by('-num_votes')
-    papers = Exam_Paper.objects.filter(subject=sname.id).order_by('-batch_year')
+    if request.method == 'POST' and request.POST.get('colleges') is not "0":
+        clg = request.POST.get('colleges')
+        print("CLG ID: ", clg)
+        print("content type ", request.POST.get('content_type'))
+        response['current_tab'] = request.POST.get('content_type')
+        notes = Note.objects.filter(subject=sname.id, college=clg).annotate(num_votes=Count('upvotes')).order_by(
+            '-num_votes')
+        print("Length notes= ", len(notes))
+        papers = Exam_Paper.objects.filter(subject=sname.id, college=clg).order_by('-batch_year')
+        print("Length papers= ", len(papers))
+        books = Book.objects.filter(subject=sname.id, college=clg)
+        print("Length books= ", len(books))
+    else:
+        clg = 0
+        print("is  0")
+        response['current_tab'] = "note"
+        notes = Note.objects.filter(subject=sname.id).annotate(num_votes=Count('upvotes')).order_by('-num_votes')
+        papers = Exam_Paper.objects.filter(subject=sname.id).order_by('-batch_year')
+        books = Book.objects.filter(subject=sname.id)
+    colleges = College.objects.all()
     print(sname)
     lstatus = []
-    providers = []
     for n in notes:
         if len(n.title) > 80:
             n.title = n.title[:80] + '...'
         prv = CustomUser.objects.get(id=n.user_id)
-        providers.append(prv.username)
         if n.upvotes.filter(id=request.user.id).exists():
             lstatus.append(True)
         else:
             lstatus.append(False)
-    response['data'] = zip(notes, lstatus, providers)
-    response['sname'] = sname
-    year = []
+    response['data'] = zip(notes, lstatus)
+
     for p in papers:
         if len(p.title) > 20:
             p.title = p.title[:20] + '...'
-        if p.semester % 2 != 0:
-            p.semester += 1
-        x = int(p.batch_year - p.semester / 2)
-        year.append(x)
-    response['papers'] = zip(papers, year)
-    book = Book.objects.filter(subject=sname.id)
-    response['book'] = book
+    response['papers'] = papers
+
+    for b in books:
+        if len(b.title) > 20:
+            b.title = b.title[:20] + '...'
+    response['books'] = books
+    response['sname'] = sname
+    if clg:
+        response['current_college_id'] = clg
+    else:
+        response['current_college_id'] = "0"
+    response['colleges'] = colleges
+    # return render(request, 'content/all_Notes.html', response)
     return render(request, 'content/all_Subject_Notes.html', response)
 
 @csrf_exempt
@@ -372,7 +433,7 @@ def getSubjects(request):
 def Display_Pdf(request, noteid):
     response = {}
     cd = Note.objects.get(note_id=noteid)
-    response["this_note"] = cd
+    response["this_data"] = cd
 
     if cd.upvotes.filter(username__contains=request.user.username):
         print("user has liked ")
@@ -381,6 +442,7 @@ def Display_Pdf(request, noteid):
         print("user has not liked ")
         user_has_liked = False
     response['user_has_liked'] = user_has_liked
+    response['data_type'] = "note"
     return render(request, 'content/show_note_pdf.html', response)
 
 @login_required_message(message="You should be logged in, in order to perform this")
@@ -388,8 +450,22 @@ def Display_Pdf(request, noteid):
 def Display_Paper_Pdf(request, paperid):
     response = {}
     cd = Exam_Paper.objects.get(pk=paperid)
-    response["data"] = cd
+    response["this_data"] = cd
+    response["data_type"] = "paper"
     return render(request, 'content/show_note_pdf.html', response)
+
+@login_required_message(message="You should be logged in, in order to perform this")
+@login_required
+def Display_Book_Pdf(request, bookid):
+    response = {}
+    cd = Book.objects.get(pk=bookid)
+    if(cd.upload_type == 'L'):
+        return redirect(str(cd.flink))
+    else:
+        response["this_data"] = cd
+        response["data_type"] = "book"
+        return render(request, 'content/show_note_pdf.html', response)
+
 
 @login_required(login_url="/content/login")
 def Upvote(request):
@@ -412,34 +488,110 @@ def Upvote(request):
     return HttpResponse(json.dumps(data), content_type='application/json')
 
 @login_required(login_url="/content/login")
-def report_post(request, note_id):
-    print("Report post called for", note_id)
+def Upvote_Blog(request):
+    print("Blog upvote")
+    if request.method == 'POST':
+        user = request.user
+        blogid = request.POST.get('blogid')
+        blog = Blog.objects.get(id=blogid)
+        if blog.upvotes.filter(id=user.id).exists():
+            blog.upvotes.remove(user)
+            alreadyVoted = True
+        else:
+            blog.upvotes.add(user)
+            alreadyVoted = False
+    data=[]
+    data.append(alreadyVoted)
+    data.append(blogid)
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
+@login_required(login_url="/content/login")
+def report_post(request, post_id):
+    print("Report post called for", post_id)
     if request.method == 'POST':
         user = CustomUser.objects.get(pk=request.user.id)
-        trimmed_id = str(note_id).strip()
-        note = Note.objects.get(note_id=trimmed_id)
-        if note.reports.filter(id=request.user.id).exists():
-            already_reported = True
+        trimmed_id = str(post_id).strip()
+        if trimmed_id[0] == 'N':
+            data_type = "note"
+        elif trimmed_id[0] == 'P':
+            data_type = "paper"
         else:
-            note.reports.add(request.user)
-            already_reported = False
-            print('Report post message recieved.')
-            newMessage = ContactUsMessage()
-            newMessage.sender_name = user.first_name
-            newMessage.email = user.email
-            newMessage.phone = user.mobile
-            newMessage.subject =  '<REPORTED note having ID ' + trimmed_id + '> ' + request.POST['subject']
-            newMessage.message = request.POST['message']
-            superuser = CustomUser.objects.filter(is_superuser=True).first()
-            superuser.notifications = superuser.notifications + 1
-            superuser.noti_messages = superuser.noti_messages + '<li> New message has arrived in inbox </li>'
-            superuser.save()
-            newMessage.save()
-            messages.add_message(request, messages.INFO, 'Your Message has been sent. We will email you back soon.')
-        response={}
-        response['already_reported'] = already_reported
-        response['note_id'] = note_id
-        return render(request, 'content/show_note_pdf.html', response)
+            data_type = "blog"
+        if data_type == "note":
+            note = Note.objects.get(note_id=trimmed_id)
+            if note.reports.filter(id=request.user.id).exists():
+                already_reported = True
+            else:
+                note.reports.add(request.user)
+                already_reported = False
+                print('Report post message recieved.')
+                newMessage = ContactUsMessage()
+                newMessage.sender_name = user.first_name
+                newMessage.email = user.email
+                newMessage.phone = user.mobile
+                newMessage.subject =  '<REPORTED Notes having ID ' + trimmed_id + '> ' + request.POST['subject']
+                newMessage.message = request.POST['message']
+                superuser = CustomUser.objects.filter(is_superuser=True).first()
+                superuser.notifications = superuser.notifications + 1
+                superuser.noti_messages = superuser.noti_messages + '<li> New message has arrived in inbox </li>'
+                superuser.save()
+                newMessage.save()
+                messages.add_message(request, messages.INFO, 'You have successfully reported these notes.Thank you for feedback')
+            response={}
+            response['already_reported'] = already_reported
+            response['note_id'] = post_id
+            return Display_Pdf(request, post_id)
+        elif data_type == "paper":
+            print("trimmed id", trimmed_id)
+            paper = Exam_Paper.objects.get(paper_id=trimmed_id)
+            if paper.reports.filter(id=request.user.id).exists():
+                already_reported = True
+            else:
+                paper.reports.add(request.user)
+                already_reported = False
+                print('Report post message recieved.')
+                newMessage = ContactUsMessage()
+                newMessage.sender_name = user.first_name
+                newMessage.email = user.email
+                newMessage.phone = user.mobile
+                newMessage.subject =  '<REPORTED Exam paper having ID ' + trimmed_id + '> ' + request.POST['subject']
+                newMessage.message = request.POST['message']
+                superuser = CustomUser.objects.filter(is_superuser=True).first()
+                superuser.notifications = superuser.notifications + 1
+                superuser.noti_messages = superuser.noti_messages + '<li> New message has arrived in inbox </li>'
+                superuser.save()
+                newMessage.save()
+                messages.add_message(request, messages.INFO, 'You have successfully reported this exam paper.Thank you for feedback')
+            response={}
+            response['already_reported'] = already_reported
+            response['note_id'] = post_id
+            return Display_Pdf(request, post_id)
+
+        else:
+            blog = Blog.objects.get(id=trimmed_id)
+            if blog.reports.filter(id=request.user.id).exists():
+                already_reported = True
+            else:
+                blog.reports.add(request.user)
+                already_reported = False
+                print('Report post message recieved.')
+                newMessage = ContactUsMessage()
+                newMessage.sender_name = user.first_name
+                newMessage.email = user.email
+                newMessage.phone = user.mobile
+                newMessage.subject = '<REPORTED News Blog having ID ' + trimmed_id + '> ' + request.POST['subject']
+                newMessage.message = request.POST['message']
+                superuser = CustomUser.objects.filter(is_superuser=True).first()
+                superuser.notifications = superuser.notifications + 1
+                superuser.noti_messages = superuser.noti_messages + '<li> New message has arrived in inbox </li>'
+                superuser.save()
+                newMessage.save()
+                messages.add_message(request, messages.INFO, 'You have successfully reported this news blog.Thank you for feedback')
+            response = {}
+            response['already_reported'] = already_reported
+            response['note_id'] = post_id
+            return Show_Full_Blog(request, post_id)
+
     else:
         print('Report post message ERROR.')
         return render(request, 'all_Notes.html')
@@ -489,6 +641,23 @@ def Approve_Paper(request, paperid):
     return redirect(request.META.get('HTTP_REFERER', '/'))
 
 @csrf_exempt
+@login_required(login_url="/content/login")
+@user_passes_test(checkuserifscrutinyuser, login_url="/content/login/")
+def Approve_Book(request,bookid):
+    cd = get_object_or_404(Book, pk=bookid)
+    # course = get_object_or_404(Course, title=cd.course)
+    if cd.is_approved:
+        messages.success(request, "already approved")
+    else:
+        cd.is_approved = True
+        cd.user.notifications = cd.user.notifications + 1
+        cd.user.noti_messages = cd.user.noti_messages + '<li> Admin has approved your book : ' + str(cd.title) + '</li>'
+        messages.success(request, 'Successfully approved Book')
+    cd.save()
+    cd.user.save()
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+
+@csrf_exempt
 def getCourseDuration(request):
     if request.method == 'POST':
         course_name = request.POST.get('cn')
@@ -508,22 +677,22 @@ def getCourseDuration(request):
             content_type="application/json"
         )
 
-class NoteTableData(ListAPIView):
-    serializer_class = NoteSerializers
+# class NoteTableData(ListAPIView):
+#     serializer_class = NoteSerializers
 
-    def get_queryset(self, *args, **kwargs):
-        print('ha notes table data')
-        filter_category = self.request.GET.get("filter_category")
-        if filter_category==0:
-            queryset = Note.objects.filter()
-        else:
-            queryset = Note.objects.filter(college=filter_category)
-        queryset_filtered = queryset.filter()
-        return queryset_filtered
+#     def get_queryset(self, *args, **kwargs):
+#         print('ha notes table data')
+#         filter_category = self.request.GET.get("filter_category")
+#         if filter_category==0:
+#             queryset = Note.objects.filter()
+#         else:
+#             queryset = Note.objects.filter(college=filter_category)
+#         queryset_filtered = queryset.filter()
+#         return queryset_filtered
 
 @csrf_exempt
 @login_required(login_url="/content/login")
-def show_full_blog(request, blog_id):
+def Show_Full_Blog(request, blog_id):
     response = {}
     cd = Blog.objects.get(id=blog_id)
     response["this_blog"] = cd
@@ -536,3 +705,16 @@ def show_full_blog(request, blog_id):
         user_has_liked = False
     response['user_has_liked'] = user_has_liked
     return render(request, 'content/blog_detail.html', response)
+
+@csrf_exempt
+@login_required(login_url="/content/login")
+def All_Blogs(request):
+    response = {}
+    blogs = Blog.objects.all()
+    print(request.user, " home tab clicked : RENDER HOME ")
+    for b in blogs:
+        if len(b.description) > 300:
+            b.description = b.description[:300]
+
+    response['blogs'] = blogs
+    return render(request, 'content/all_blogs.html', response)

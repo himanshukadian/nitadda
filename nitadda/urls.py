@@ -23,9 +23,24 @@ from django.conf import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.static import serve
 
+import accounts
+
 urlpatterns = [
                   url('admin/', admin.site.urls),
                   url(r'^', include(('accounts.urls', 'accounts'), namespace='accounts')),
                   url(r'^search/', include(('search.urls', 'search'), namespace='search')),
                   url(r'content/', include(('content.urls', 'content'), namespace='content')),
+                  url('password-reset$',
+                      accounts.views.PasswordResetView.as_view(template_name='account/password_reset.html'),
+                      name='password_reset'),
+                  url('password-reset-confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
+                      accounts.views.PasswordResetConfirmView.as_view(
+                          template_name='account/password_reset_confirm.html'), name='password_reset_confirm'),
+                  url('password-reset/done/',
+                      accounts.views.PasswordResetDoneView.as_view(template_name='account/password_reset_done.html'),
+                      name='password_reset_done'),
+                  url('password-reset-complete/', accounts.views.PasswordResetCompleteView.as_view(
+                      template_name='account/password_reset_complete.html'), name='password_reset_complete'),
+                  # url('auth/', include('social_django.urls', namespace='social')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

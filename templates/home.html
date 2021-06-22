@@ -3,6 +3,8 @@
 {% load static %}
 {% block content %}
     <head>
+        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
         <script src="https://kit.fontawesome.com/57456f662e.js" crossorigin="anonymous"></script>
         <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
@@ -20,6 +22,7 @@
     <div class="site-section">
         <div class="container">
             <div class="searchinput">
+                <p class="h1" style="font-size: 2vw;">Search Study Materials</p>
                 <form class="search-form" method="get" action="search/">
                     <span class="current-selection">
   </span>
@@ -35,53 +38,67 @@
             </div>
             <div class="row">
                 <div class="col-lg-4 col-md-6 col-xs-12">
-                    <div id="redBlock" class="block-2 red">
+                    <div id="redBlock"  style="cursor:none" class="block-2 red">
               <span class="wrap-icon">
                 <span class="icon-home"><i class="fa fa-fw fa-lg fa-edit faa-tada faa-fast"></i></span>
               </span>
                         <h2>Notes</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima nesciunt, mollitia, hic enim
-                            id culpa.</p>
+                        <p>Notes for all Semesters, Courses and Subjects</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-xs-12">
-                    <div id="yellowBlock" class="block-2 yellow">
+                    <div id="yellowBlock" style="cursor: none" class="block-2 yellow">
               <span class="wrap-icon">
                 <span class="icon-person"><i class="fa fa-fw fa-lg fa-file-powerpoint-o faa-tada faa-fast"></i></span>
               </span>
                         <h2>Previous Year Papers</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima nesciunt, mollitia, hic enim
-                            id culpa.</p>
+                        <p>Previous Papers for all Semesters, Courses and Subjects</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-xs-12">
-                    <div id="tealBlock" class="block-2 teal">
+                    <div id="tealBlock" style="cursor: none" class="block-2 teal">
               <span class="wrap-icon">
                 <span class="icon-cog"><i class="fa fa-fw fa-lg fa-book faa-tada faa-fast"></i></span>
               </span>
                         <h2>Books</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima nesciunt, mollitia, hic enim
-                            id culpa.</p>
+                        <p>Books for all Semesters, Courses and Subjects</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <div class="container" style="min-width:min-content;margin-bottom: 8%">
+        <h3 class="table_title">Trending News</h3>
+        {%  for blog in blogs %}
         <div class="row" style="margin: 0%;">
-            {%  for blog in blogs %}
-            <div class="col-md-10 blogShort">
-                 <h1>{{ blog.title }}</h1>
-                 <img src="http://www.kaczmarek-photo.com/wp-content/uploads/2012/06/guinnes-150x150.jpg" alt="post img" class="pull-left img-responsive thumb margin10 img-thumbnail">
-                 <article><p>
-                     {{ blog.description}}
-                     </p></article>
+            <div class="col-md-12 blogShort">
+                 <h1 style="font-size: 2vw;">{{ blog.title }}</h1>
+                 <img src="{{ blog.image.url }}" alt="post img" class="pull-left img-responsive thumb margin10 img-thumbnail">
+                <article>
+                     {{ blog.description|truncatechars_html:40|safe}}
+                     </article>
                  <a class="btn btn-blog pull-right marginBottom10" href="content/show_full_blog/{{ blog.id}}">READ MORE</a>
              </div>
-            {%  endfor %}
         </div>
+       {%  endfor %}
+        <a class="btn btn-blog pull-right marginBottom10" href="content/all_blogs">READ ALL NEWS</a>
     </div>
+
     <div class="container-fluid">
+         <div class="panel panel-primary">
+            <div class="panel-body">
+                <div class="row">
+                    <p class="col-md-12 text-justify text-primary">
+                        Your valuable feedback will help us to improve the service
+                    </p>
+
+                    <p class="col-md-12 text-justify text-primary">
+                        For any issues, you may contact us.
+                    </p>
+                </div>
+            </div>
+        </div>
         <div class="contact-parent">
             <div class="contact-child child1">
                 <p>
@@ -99,10 +116,9 @@
 
                 <p>
                     <i class=" far fa-envelope"></i> General Support <br/>
-                    <span>hello@nitadda.in</span>
+                    <span>hello.nitadda@gmail.com</span>
                 </p>
             </div>
-
             <div class="contact-child child2" style="background: floralwhite">
 
                 <div style="width: 100%" id="uploadForm" class="well well-lg">

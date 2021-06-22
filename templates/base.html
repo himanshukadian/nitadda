@@ -4,6 +4,40 @@
 <html>
 <head>
     <style>
+        body {
+  overflow: hidden;
+}
+
+
+/* Preloader */
+
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+  /* change if the mask should have another color then white */
+  z-index: 99;
+  /* makes sure it stays on top */
+}
+
+#status {
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  left: 50%;
+  /* centers the loading animation horizontally one the screen */
+  top: 50%;
+  /* centers the loading animation vertically one the screen */
+  background-image: url("{% static 'images/double.gif' %}");
+  /* path to your loading animation */
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: -100px 0 0 -100px;
+  /* is width and height divided by two */
+}
         .notification {
             min-width: 20px;
             height: 20px;
@@ -24,6 +58,13 @@
             will-change: opacity, transform;
         }
     </style>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-3033950016222496",
+    enable_page_level_ads: true
+  });
+</script>
     <title>{% block title %}HOME{% endblock title %} | NIT ADDA</title>
     {% block head_favicon %}
         <link rel="icon" type="image/png"
@@ -44,6 +85,9 @@
     {% endblock head_meta %}
     {% block head_css %}
         {% block head_css_site %}
+            <!-- MDBootstrap Datatables  -->
+            <link href="css/addons/datatables.min.css" rel="stylesheet">
+            <!--  MDB end -->
             <link rel="stylesheet" href="{% static 'css/style.css' %}">
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -51,11 +95,30 @@
             <!--FONT AWESOME CDN LINK FOR FONT-AWESOME FONT -->
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
             <link href="https://fonts.googleapis.com/css?family=Amarante|Amaranth&display=swap" rel="stylesheet">
+            <!-- MDBootstrap Datatables  -->
+            <script type="text/javascript" src="js/addons/datatables.min.js"></script>
+            <!--  MDB end -->
+
         {% endblock head_css_site %}
         {% block head_css_section %}{% endblock head_css_section %}
         {% block head_css_page %}{% endblock head_css_page %}
     {% endblock head_css %}
+   <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-177781311-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-177781311-1');
+</script>
+
     <script>
+        $(window).on('load', function() { // makes sure the whole site is loaded
+  $('#status').fadeOut(); // will first fade out the loading animation
+  $('#preloader').delay(300).fadeOut('slow'); // will fade out the white DIV that covers the website.
+  $('body').delay(3000).css({'overflow':'visible'});
+})
         function myFunction() {
             document.getElementById("myDropdown").classList.toggle("show");
         }
@@ -101,6 +164,9 @@
 
 </head>
 <body style="background-image: url({% static "images/bg1.jpg" %})">
+<div id="preloader">
+  <div id="status">&nbsp;</div>
+</div>
 <header>
     <nav style="background-image: url({% static "images/bg5.jpg" %});margin-bottom: 50px; background-color:#fff;font-size: 14px;z-index: 1000;"
          class="navbar  ">
@@ -177,8 +243,8 @@
                             </a>
                         </li>
                     {% endif %}
-                </ul>
-                <ul id="rightnav" class="nav navbar-nav navbar-right">
+                    </ul>
+                    <ul id="rightnav" class="nav navbar-nav navbar-right">
                     {% if user.is_authenticated %}
                         <li>
                             <a data-toggle="modal" href="#myNotificationstModal" class="faa-parent animated-hover">
@@ -219,7 +285,7 @@
 {% endblock content %}
 {% if user.is_authenticated %}
     <div class="modal fade" id="myNotificationstModal" role="dialog">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered" style="left: 0">
 
             <!-- Modal content-->
             <div class="modal-content">
@@ -248,8 +314,8 @@
         <div class=" text-center row">
             <div class="col-sm-12 col-md-6">
                 <h6 id="about">About</h6>
-                <p class="text-justify">Nitadda.com is an initiative to help the students to get note, previous year
-                    examination papers and schedule for various events and many other notifications .NITADDA focuses on
+                <p class="text-justify">Nitadda.tech is an initiative to help the students to get note, previous year
+                    examination papers and schedule for various events and many other notifications.NITADDA focuses on
                     providing students all the help they need to score well in their academics as well for their
                     practical projects.</p>
             </div>
@@ -257,17 +323,17 @@
             <div class="col-xs-6 col-md-3">
                 <h6>Browse By </h6>
                 <ul class="footer-links">
-                    <li><a href="">Courses</a></li>
-                    <li><a href="">Subjects</a></li>
+                    <li><a href="/content/all_course">Courses</a></li>
+                    <li><a href="/content/all_subject">Subjects</a></li>
                 </ul>
             </div>
 
             <div class="col-xs-6 col-md-3">
                 <h6>We Offer</h6>
                 <ul class="footer-links">
-                    <li><a href="">Notes</a></li>
-                    <li><a href="">Books</a></li>
-                    <li><a href="">Previous Year Papers</a></li>
+                    <li><p>Notes</p></li>
+                    <li><p>Books</p></li>
+                    <li><p>Previous Year Papers</p></li>
                 </ul>
             </div>
         </div>
@@ -276,7 +342,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-sm-6 col-xs-12">
-                <p class="copyright-text">Copyright &copy; 2020 All Rights Reserved by
+                <p class="copyright-text"><b>Version</b> 1.0, Copyright &copy; 2020 All Rights Reserved by
                     <a href="#">NITADDA</a>.
                 </p>
             </div>
@@ -302,5 +368,3 @@
     {% block footer_javascript_page %}{% endblock footer_javascript_page %}
 {% endblock footer_javascript %}
 </html>
-
-

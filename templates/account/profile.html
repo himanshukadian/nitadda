@@ -67,9 +67,11 @@
                             </div>
                         </div>
                         <div class="col-md-8">
-                            <div class="tabs">
-                                <h3 class="signup-tab"><a class="active" href="#signup-tab-content">Uploads</a></h3>
-                                <h3 class="login-tab"><a href="#login-tab-content">Likes</a></h3>
+                            <div class="tabs" style="margin:3% auto;">
+                                <ul>
+                                    <li class="signup-tab" style="width: 50%"><a class="active" href="#signup-tab-content">Uploads</a></li>
+                                    <li class="login-tab" style="width: 50%"><a href="#login-tab-content">Likes</a></li>
+                                </ul>
                             </div>
                             <div class="tabs-content">
                                 <div id="signup-tab-content" class="active">
@@ -81,20 +83,21 @@
                                         <div class="tab-content">
                                             <div id="uploaded-notes" class="tab-pane fade in active">
                                             {%  if user_has_uploaded_notes %}
-                                              <table class="table table-striped table-responsive-md" id="display_table">
+                                              <table class="table table-striped dt-responsive table-responsive-md" id="display_table">
                                                 <thead class="thead-dark">
                                                 <tr>
                                                     <th scope="col">Title</th>
                                                     <th scope="col">Subject</th>
-                                                    <th scope="col">Rating</th>
+                                                    <th scope="col">Likes</th>
                                                     <th scope="col">Status</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                 {% for i in uploaded_notes %}
                                                     <tr>
-                                                        <td style="vertical-align:middle"><a style="font-weight: bold"
-                                                                                             href="/content/view/{{ i.note_id }}">{{ i.title }}</a>
+                                                        <td style="vertical-align:middle">
+                                                            <a style="font-weight: bold"
+                                                               href="/content/view/{{ i.note_id }}">{{ i.title }}</a>
                                                             <br>
                                                             <span class="ref"> - contributed by <b>you</b></span>
                                                         </td>
@@ -135,11 +138,11 @@
                                             </div>
                                             <div id="uploaded-papers" class="tab-pane fade">
                                                 {%  if user_has_uploaded_papers %}
-                                                    <table class="table table-striped table-responsive-md" id="display_table">
+                                                    <table class="table table-striped dt-responsive table-responsive-md" id="display_table">
                                                         <thead class="thead-dark">
                                                         <tr>
-                                                            <th scope="col">Batch year</th>
                                                             <th scope="col">Title</th>
+                                                            <th scope="col">Batch year</th>
                                                             <th scope="col">Subject</th>
                                                             <th scope="col">Semester</th>
                                                             <th scope="col">Status</th>
@@ -148,12 +151,12 @@
                                                         <tbody>
                                                         {% for i in uploaded_papers %}
                                                             <tr>
-                                                                <td style="vertical-align:middle"><span>{{ i.batch_year }}</span></td>
                                                                 <td style="vertical-align:middle"><a style="font-weight: bold"
                                                                                                      href="/content/view/{{ i.paper_id }}">{{ i.title }}</a>
                                                                     <br>
                                                                     <span class="ref"> - contributed by <b>you</b></span>
                                                                 </td>
+                                                                <td style="vertical-align:middle"><span>{{ i.batch_year }}</span></td>
                                                                 <td style="vertical-align:middle"><span>{{ i.subject }}</span></td>
                                                                 <td style="vertical-align:middle"><span>{{ i.semester }}</span></td>
                                                                 {% if  i.is_approved %}
@@ -190,50 +193,37 @@
                                             </div>
                                             <div id="uploaded-books" class="tab-pane fade">
                                               {%  if user_has_uploaded_books %}
-                                              <table class="table table-striped table-responsive-md" id="display_table">
+                                              <table class="table table-striped dt-responsive table-responsive-md" id="display_table">
                                                 <thead class="thead-dark">
                                                 <tr>
                                                     <th scope="col">Title</th>
                                                     <th scope="col">Subject</th>
                                                     <th scope="col">Author</th>
-                                                    <th scope="col">Rating</th>
+                                                    <th scope="col">College</th>
                                                     <th scope="col">Status</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                 {% for i in uploaded_books %}
                                                     <tr>
-                                                        <td style="vertical-align:middle"><a style="font-weight: bold"
-                                                                                             href="/content/view/{{ i.book_id }}">{{ i.title }}</a>
+                                                        <td style="vertical-align:middle">
+                                                            <a style="font-weight: bold"
+                                                               href="/content/view/{{ i.book_id }}">{{ i.title }}</a>
                                                             <br>
                                                             <span class="ref"> - contributed by <b>you</b></span>
                                                         </td>
                                                         <td style="vertical-align:middle"><span>{{ i.subject }}</span></td>
                                                         <td style="vertical-align:middle"><span>{{ i.author }}</span></td>
-{#                                                        {% if  i.is_approved %}#}
-{#                                                            <td style="vertical-align:middle">#}
-{#                                                                <div class="like_grow" id="{{ i.book_id }}">#}
-{#                                                                    <i id="{{ i.book_id }}1"#}
-{#                                                                       class="fa fa-thumbs-up fa-2x like active"#}
-{#                                                                       aria-hidden="true"></i>#}
-{#                                                                </div>#}
-{#                                                                <span class="likes_counter"#}
-{#                                                                      style="font-family:'Amaranth', sans-serif;"#}
-{#                                                                      id="{{ i.book_id }}2">#}
-{#                                                                    {{ i.total_upvotes }}#}
-{#                                                                </span>#}
-{#                                                            </td>#}
-{#                                                            <td style="color:green ; vertical-align:middle">#}
-{#                                                                <div class="info info-success">Approved</div>#}
-{#                                                            </td>#}
-{#                                                        {% else %}#}
-{#                                                            <td style="color:red ; vertical-align:middle">#}
-{#                                                                <div class="info info-failure">N/A</div>#}
-{#                                                            </td>#}
-{#                                                            <td style="color:blue; vertical-align:middle">#}
-{#                                                                <div class="info info-waiting">Approval Pending</div>#}
-{#                                                            </td>#}
-{#                                                        {% endif %}#}
+                                                        <td style="vertical-align:middle"><span>{{ i.college }}</span></td>
+                                                        {% if  i.is_approved %}
+                                                         <td style="color:green ; vertical-align:middle">
+                                                                <div class="info info-success">Approved</div>
+                                                            </td>
+                                                        {% else %}
+                                                            <td style="color:blue; vertical-align:middle">
+                                                                <div class="info info-waiting">Approval Pending</div>
+                                                            </td>
+                                                        {% endif %}
                                                     </tr>
                                                 {% endfor %}
                                                 </tbody>
@@ -253,12 +243,12 @@
 {#                                    <div class="tab-content">#}
 {#                                        <div id="liked-notes" class="tab-pane fade in active">#}
                                         {%  if user_has_liked_notes %}
-                                          <table class="table table-striped table-responsive-md" id="display_table">
+                                          <table class="table table-striped dt-responsive table-responsive-md" id="display_table">
                                             <thead class="thead-dark">
                                             <tr>
                                                 <th scope="col">Title</th>
                                                 <th scope="col">Subject</th>
-                                                <th scope="col">Rating</th>
+                                                <th scope="col">Likes</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -290,118 +280,6 @@
                                         {% else %}
                                             <h5>You have no liked notes.</h5>
                                         {% endif %}
-
-{#                                        </div>#}
-{#                                        <div id="liked-papers" class="tab-pane fade">#}
-{#                                            {%  if user_has_uploaded_papers %}#}
-{#                                                <table class="table table-striped table-responsive-md" id="display_table">#}
-{#                                                    <thead class="thead-dark">#}
-{#                                                    <tr>#}
-{#                                                        <th scope="col">Batch year</th>#}
-{#                                                        <th scope="col">Title</th>#}
-{#                                                        <th scope="col">Subject</th>#}
-{#                                                        <th scope="col">Semester</th>#}
-{#                                                        <th scope="col">Status</th>#}
-{#                                                    </tr>#}
-{#                                                    </thead>#}
-{#                                                    <tbody>#}
-{#                                                    {% for i in uploaded_papers %}#}
-{#                                                        <tr>#}
-{#                                                            <td style="vertical-align:middle"><span>{{ i.batch_year }}</span></td>#}
-{#                                                            <td style="vertical-align:middle"><a style="font-weight: bold"#}
-{#                                                                                                 href="/content/view/{{ i.paper_id }}">{{ i.title }}</a>#}
-{#                                                                <br>#}
-{#                                                                <span class="ref"> - contributed by <b>you</b></span>#}
-{#                                                            </td>#}
-{#                                                            <td style="vertical-align:middle"><span>{{ i.subject }}</span></td>#}
-{#                                                            <td style="vertical-align:middle"><span>{{ i.semester }}</span></td>#}
-{#                                                            {% if  i.is_approved %}#}
-{#                                                                <td style="vertical-align:middle">#}
-{#                                                                    <div class="like_grow" id="{{ i.note_id }}">#}
-{#                                                                        <i id="{{ i.note_id }}1"#}
-{#                                                                           class="fa fa-thumbs-up fa-2x like active"#}
-{#                                                                           aria-hidden="true"></i>#}
-{#                                                                    </div>#}
-{#                                                                    <span class="likes_counter"#}
-{#                                                                          style="font-family:'Amaranth', sans-serif;"#}
-{#                                                                          id="{{ i.note_id }}2">#}
-{#                                                                        {{ i.total_upvotes }}#}
-{#                                                                    </span>#}
-{#                                                                </td>#}
-{#                                                                <td style="color:green ; vertical-align:middle">#}
-{#                                                                    <div class="info info-success">Approved</div>#}
-{#                                                                </td>#}
-{#                                                            {% else %}#}
-{#                                                                <td style="color:red ; vertical-align:middle">#}
-{#                                                                    <div class="info info-failure">N/A</div>#}
-{#                                                                </td>#}
-{#                                                                <td style="color:blue; vertical-align:middle">#}
-{#                                                                    <div class="info info-waiting">Approval Pending</div>#}
-{#                                                                </td>#}
-{#                                                            {% endif %}#}
-{#                                                        </tr>#}
-{#                                                    {% endfor %}#}
-{#                                                    </tbody>#}
-{#                                                </table>#}
-{#                                            {% else %}#}
-{#                                                <h5>You have not contributed exam papers yet.</h5>#}
-{#                                            {% endif %}#}
-{#                                        </div>#}
-{#                                        <div id="liked-books" class="tab-pane fade">#}
-{#                                          {%  if user_has_liked_books %}#}
-{#                                          <table class="table table-striped table-responsive-md" id="display_table">#}
-{#                                            <thead class="thead-dark">#}
-{#                                            <tr>#}
-{#                                                <th scope="col">Title</th>#}
-{#                                                <th scope="col">Subject</th>#}
-{#                                                <th scope="col">Author</th>#}
-{#                                                <th scope="col">Rating</th>#}
-{#                                                <th scope="col">Status</th>#}
-{#                                            </tr>#}
-{#                                            </thead>#}
-{#                                            <tbody>#}
-{#                                            {% for i in liked_books %}#}
-{#                                                <tr>#}
-{#                                                    <td style="vertical-align:middle"><a style="font-weight: bold"#}
-{#                                                                                         href="/content/view/{{ i.book_id }}">{{ i.title }}</a>#}
-{#                                                        <br>#}
-{#                                                        <span class="ref"> - contributed by <b>you</b></span>#}
-{#                                                    </td>#}
-{#                                                    <td style="vertical-align:middle"><span>{{ i.subject }}</span></td>#}
-{#                                                    <td style="vertical-align:middle"><span>{{ i.author }}</span></td>#}
-{#                                                        {% if  i.is_approved %}#}
-{#                                                            <td style="vertical-align:middle">#}
-{#                                                                <div class="like_grow" id="{{ i.book_id }}">#}
-{#                                                                    <i id="{{ i.book_id }}1"#}
-{#                                                                       class="fa fa-thumbs-up fa-2x like active"#}
-{#                                                                       aria-hidden="true"></i>#}
-{#                                                                </div>#}
-{#                                                                <span class="likes_counter"#}
-{#                                                                      style="font-family:'Amaranth', sans-serif;"#}
-{#                                                                      id="{{ i.book_id }}2">#}
-{#                                                                    {{ i.total_upvotes }}#}
-{#                                                                </span>#}
-{#                                                            </td>#}
-{#                                                            <td style="color:green ; vertical-align:middle">#}
-{#                                                                <div class="info info-success">Approved</div>#}
-{#                                                            </td>#}
-{#                                                        {% else %}#}
-{#                                                            <td style="color:red ; vertical-align:middle">#}
-{#                                                                <div class="info info-failure">N/A</div>#}
-{#                                                            </td>#}
-{#                                                            <td style="color:blue; vertical-align:middle">#}
-{#                                                                <div class="info info-waiting">Approval Pending</div>#}
-{#                                                            </td>#}
-{#                                                        {% endif %}#}
-{#                                                </tr>#}
-{#                                            {% endfor %}#}
-{#                                            </tbody>#}
-{#                                        </table>#}
-{#                                        {% else %}#}
-{#                                            <h5>You have not contributed books yet.</h5>#}
-{#                                        {% endif %}#}
-{#                                        </div>#}
-{#                                      </div>#}
                                 </div><!--.login-tab-content-->
                             </div><!--.tabs-content-->
                         </div>
@@ -412,7 +290,7 @@
     </div>
     <script>
         jQuery(document).ready(function ($) {
-            tab = $('.tabs h3 a');
+            tab = $('.tabs ul li a');
 
             tab.on('click', function (event) {
                 event.preventDefault();
