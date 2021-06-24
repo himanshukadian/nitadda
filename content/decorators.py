@@ -1,8 +1,4 @@
-try:
-    from functools import wraps
-except ImportError:
-    from django.utils.functional import wraps  # Python 2.4 fallback.
-
+from functools import wraps
 from django.contrib import messages
 
 default_message = "Please log in, in order to see the requested page."

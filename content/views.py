@@ -208,9 +208,7 @@ def UploadContent(request):
             paper = Exam_Paper()
             name = "PAPER"
             paperID = name + p1 + p2
-            print("ID OF PAPER : ", paperID)
             paper.paper_id = paperID
-            print("YE HAI WO SUBJECT ID: ", request.POST.get('subjects2'))
             paper.subject = Subject.objects.get(id=request.POST.get('subjects2'))
             paper.course = Course.objects.get(id=request.POST['courses'])
             paper.college =  College.objects.get(id=request.POST['colleges'])
@@ -332,22 +330,6 @@ def Show_Note(request, slug):
     return render(request, 'content/all_Notes.html', response)
 
 
-# @csrf_exempt
-# @login_required_message(message="You should be logged in, in order to perform this")
-# @login_required
-# def Get_Subject_Note(request):
-#     response = {}
-#     notes = Note.objects.all()
-#     n = len(notes)
-#     allnotes = []
-#     subjectnotes = Note.objects.values('subject', 'subject_id')
-#     subjects = {item['subject'] for item in subjectnotes}
-#     for subject in subjects:
-#         note = Note.objects.filter(subject=subject)
-#         allnotes.append(note)
-#     response["allnotes"] = allnotes
-#     return render(request, 'content/all_Subject_Notes.html', response)
-
 
 @csrf_exempt
 @login_required_message(message="You should be logged in, in order to perform this")
@@ -358,9 +340,6 @@ def Show_Subject_Note(request, slug):
     sname = Subject.objects.get(slug=slug)
     if request.method == 'POST' and request.POST.get('colleges') is not "0":
         clg = request.POST.get('colleges')
-        print("CLG ID: ", clg)
-        print("content type ", request.POST.get('content_type'))
-        response['current_tab'] = request.POST.get('content_type')
         notes = Note.objects.filter(subject=sname.id, college=clg).annotate(num_votes=Count('upvotes')).order_by(
             '-num_votes')
         print("Length notes= ", len(notes))
@@ -370,7 +349,6 @@ def Show_Subject_Note(request, slug):
         print("Length books= ", len(books))
     else:
         clg = 0
-        print("is  0")
         response['current_tab'] = "note"
         notes = Note.objects.filter(subject=sname.id).annotate(num_votes=Count('upvotes')).order_by('-num_votes')
         papers = Exam_Paper.objects.filter(subject=sname.id).order_by('-batch_year')
@@ -403,7 +381,6 @@ def Show_Subject_Note(request, slug):
     else:
         response['current_college_id'] = "0"
     response['colleges'] = colleges
-    # return render(request, 'content/all_Notes.html', response)
     return render(request, 'content/all_Subject_Notes.html', response)
 
 @csrf_exempt
@@ -474,7 +451,6 @@ def Upvote(request):
         user = request.user
         noteid = request.POST.get('noteid')
         trimmed_id = str(noteid).strip()
-        print(noteid)
         note = Note.objects.get(note_id=trimmed_id)
         if note.upvotes.filter(id=user.id).exists():
             note.upvotes.remove(user)
@@ -507,7 +483,6 @@ def Upvote_Blog(request):
 
 @login_required(login_url="/content/login")
 def report_post(request, post_id):
-    print("Report post called for", post_id)
     if request.method == 'POST':
         user = CustomUser.objects.get(pk=request.user.id)
         trimmed_id = str(post_id).strip()
@@ -595,15 +570,6 @@ def report_post(request, post_id):
     else:
         print('Report post message ERROR.')
         return render(request, 'all_Notes.html')
-    # if request.method == 'POST':
-    #
-    #     return redirect('accounts:index')
-    # else:
-    #     print('Contact us message ERROR.')
-    #     return render(request, 'home.html')
-
-
-    # return HttpResponse(json.dumps(data), content_type='application/json')
 
 
 @csrf_exempt
@@ -628,7 +594,6 @@ def Approve_Note(request, noteid):
 @user_passes_test(checkuserifscrutinyuser, login_url="/content/login/")
 def Approve_Paper(request, paperid):
     cd = get_object_or_404(Exam_Paper, pk=paperid)
-    # course = get_object_or_404(Course, title=cd.course)
     if cd.is_approved:
         messages.success(request, "already approved")
     else:
@@ -645,7 +610,6 @@ def Approve_Paper(request, paperid):
 @user_passes_test(checkuserifscrutinyuser, login_url="/content/login/")
 def Approve_Book(request,bookid):
     cd = get_object_or_404(Book, pk=bookid)
-    # course = get_object_or_404(Course, title=cd.course)
     if cd.is_approved:
         messages.success(request, "already approved")
     else:
@@ -668,7 +632,6 @@ def getCourseDuration(request):
             selected_course = Course.objects.all()[0]
         duration = selected_course.duration
         result_set=duration
-        # result_set.append({'duration':duration})
         return HttpResponse(json.dumps(result_set), content_type='application/json')
 
     else:
@@ -676,19 +639,6 @@ def getCourseDuration(request):
             json.dumps({"nothing to see": "this isn't happening"}),
             content_type="application/json"
         )
-
-# class NoteTableData(ListAPIView):
-#     serializer_class = NoteSerializers
-
-#     def get_queryset(self, *args, **kwargs):
-#         print('ha notes table data')
-#         filter_category = self.request.GET.get("filter_category")
-#         if filter_category==0:
-#             queryset = Note.objects.filter()
-#         else:
-#             queryset = Note.objects.filter(college=filter_category)
-#         queryset_filtered = queryset.filter()
-#         return queryset_filtered
 
 @csrf_exempt
 @login_required(login_url="/content/login")
@@ -698,10 +648,8 @@ def Show_Full_Blog(request, blog_id):
     response["this_blog"] = cd
 
     if cd.upvotes.filter(username__contains=request.user.username):
-        print("user has liked ")
         user_has_liked = True
     else:
-        print("user has not liked ")
         user_has_liked = False
     response['user_has_liked'] = user_has_liked
     return render(request, 'content/blog_detail.html', response)
@@ -711,7 +659,6 @@ def Show_Full_Blog(request, blog_id):
 def All_Blogs(request):
     response = {}
     blogs = Blog.objects.all()
-    print(request.user, " home tab clicked : RENDER HOME ")
     for b in blogs:
         if len(b.description) > 300:
             b.description = b.description[:300]

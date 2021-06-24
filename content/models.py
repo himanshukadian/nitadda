@@ -3,14 +3,11 @@ from django.core.validators import FileExtensionValidator
 from django.template.defaultfilters import slugify
 from django.utils.text import slugify
 from accounts.models import CustomUser
-from tinymce.models import HTMLField
-
 
 class College(models.Model):
     name = models.CharField(max_length=255, default='')
     slug = models.SlugField(max_length=30, unique=True, editable=False)
     abbreviation = models.CharField(max_length=10, default='')
-    # courses_provided = models.CharField(max_length=10, default='')
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -149,11 +146,6 @@ class Exam_Paper(models.Model):
     def total_reports(self):
         return self.reports.count()
 
-    # upvotes = models.ManyToManyField(CustomUser, related_name='upvotes')
-    # @property
-    # def total_upvotes(self):
-    #     return self.upvotes.count()
-
     is_approved = models.BooleanField(default=False)
     def __unicode__(self):
         return str(self.paper_id)
@@ -177,7 +169,6 @@ class Book(models.Model):
     college = models.ForeignKey(College, verbose_name="College", on_delete=models.CASCADE, blank=True, null=True)
     course = models.ForeignKey(Course, verbose_name="Course", on_delete=models.CASCADE, blank=True, null=True)
     subject = models.ForeignKey(Subject, verbose_name="Subject", on_delete=models.CASCADE, blank=True, null=True)
-    # image = models.ImageField(default='download.jpg', upload_to='books/')
     flink = models.CharField(max_length=300, blank=True)
 
     upload_type = models.CharField(max_length=1, choices=UPLOAD_TYPES, default='L')
@@ -216,7 +207,7 @@ class Book(models.Model):
 class Blog(models.Model):
 
     title = models.CharField(max_length=300)
-    description = HTMLField()
+    description = models.CharField(max_length=5000)
     author = models.ForeignKey(CustomUser, verbose_name="Provider", on_delete=models.CASCADE, blank=True, null=True)
     date = models.DateTimeField()
     college = models.ForeignKey(College, verbose_name="College", on_delete=models.CASCADE, blank=True, null=True)

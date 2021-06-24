@@ -8,17 +8,13 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-import  django_heroku
+import django_heroku
 import django_otp
 import dotenv
 import dj_database_url
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
-
 
 dotenv_file = os.path.join(BASE_DIR, ".env")
 if os.path.isfile(dotenv_file):
@@ -28,7 +24,7 @@ if os.path.isfile(dotenv_file):
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY =os.environ['SECRET_KEY']
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -47,8 +43,12 @@ INSTALLED_APPS = [
     'content',
     'accounts',
     'search',
-    'tinymce',
+    'drf_yasg',
+    'django_summernote',
     'django_otp',
+    'rest_framework.authtoken',
+    'django_extensions',
+    'django_filters',
     'django_otp.plugins.otp_totp',
     'django_otp.plugins.otp_hotp',
     'django_otp.plugins.otp_static',
@@ -63,7 +63,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django_otp.middleware.OTPMiddleware',
+    # 'django_otp.middleware.OTPMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -104,7 +104,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'nitadda',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': 'password',
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
@@ -173,15 +173,14 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
-LOGIN_REDIRECT_URL = 'home'
-# LOGOUT_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = '/login/'
+LOGOUT_REDIRECT_URL = '/login/'
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 TEMP_ROOT = os.path.join(BASE_DIR, 'media/tmp')
 
-# CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 AUTH_USER_MODEL = "accounts.CustomUser"
 
@@ -190,16 +189,17 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'himanshu25101998@gmail.com'
-EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
-DEFAULT = {
-    'selector': 'textarea',
-    'theme': 'modern',
-    'plugins': 'link image preview codesample contextmenu table code',
-    'toolbar1': 'bold italic underline | alignleft aligncenter alignright alignjustify '
-           '| bullist numlist | outdent indent | table | link image | codesample | preview code',
-    'contextmenu': 'formats | link image',
-    'menubar': False,
-    'inline': False,
-    'statusbar': True,
-    'height': 360,
+EMAIL_HOST_PASSWORD = ''
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_PAGINATION_CLASS':
+        'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 5,
+    'ORDERING_PARAM': 'ordering',
 }
+
+REST_FRAMEWORK = {'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'}

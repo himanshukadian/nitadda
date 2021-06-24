@@ -27,6 +27,9 @@ from nitadda import sitemaps
 from django.contrib.sitemaps.views import sitemap
 
 from nitadda.sitemaps import Course_Notes_Sitemap, Subject_Notes_Sitemap, Blogs_Sitemap
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
 
 sitemaps = {
     'course_notes': Course_Notes_Sitemap,
@@ -34,6 +37,18 @@ sitemaps = {
     'blogs': Blogs_Sitemap,
     'static': sitemaps.StaticViewSitemap
 }
+schema_view = get_schema_view(
+    openapi.Info(
+        title="NITADDA API",
+        default_version='v1',
+        description="Test description",
+        terms_of_service="https://www.nitadda.com/policies/terms/",
+        contact=openapi.Contact(email="contact@nitadda.com"),
+        license=openapi.License(name="BSD License"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
 
 urlpatterns = [
                   url('admin/', admin.site.urls),
@@ -52,7 +67,9 @@ urlpatterns = [
                       name='password_reset_done'),
                   url('password-reset-complete/', accounts.views.PasswordResetCompleteView.as_view(
                       template_name='account/password_reset_complete.html'), name='password_reset_complete'),
-                  url(r'^tinymce/', include('tinymce.urls'))
+                  url('summernote/', include('django_summernote.urls')),
+                  url('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+                  url('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
                   # url('auth/', include('social_django.urls', namespace='social')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -38,11 +38,10 @@ from django.core.mail import EmailMessage
 
 def index(request):
     response = {}
-    print(request.user, " logged in : RENDER HOME ")
     blogs = Blog.objects.all()[:4]
-    for b in blogs:
-        if len(b.description) > 300:
-            b.description = b.description[:300]
+    for blog in blogs:
+        if len(blog.description) > 300:
+            blog.description = blog.description[:300]
     response['blogs'] = blogs
     return render(request, 'home.html', response)
 
@@ -60,8 +59,6 @@ class UserFormView(generic.View):
 
         if form.is_valid():
             user = form.save(commit=False)
-            print(user)
-            username = form.cleaned_data['username']
             password = form.cleaned_data['password1']
             user.set_password(password)
             user.save()
@@ -84,6 +81,7 @@ class UserFormView(generic.View):
                                  f'Your account has been created and you are logged in.Please confirm your email address to complete the registration')
             except:
                 messages.success(request, f'Please enter valid email for registration')
+                return render(request, self.template_name, {'form': form})
             return redirect('/')
 
         return render(request, self.template_name, {'form': form})
@@ -106,7 +104,7 @@ class UserUpdateFormView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             return True
         return False
 
-
+@csrf_exempt
 def user_login(request):
     response = {}
     if request.user.is_authenticated:
@@ -130,16 +128,24 @@ def user_login(request):
                 if is_safe_url(redirect_path, request.get_host()):
                     return redirect(redirect_path)
                 else:
-                    return redirect('accounts:index')
+                    return redirect('accounts:profile')
             else:
                 messages.warning(request, 'User is not active yet')
                 response['message'] = 'User is not active yet'
         else:
             messages.warning(request, 'User is invalid')
             response['message'] = 'User is invalid'
-
     return render(request, 'account/signin.html', response)
 
+@csrf_exempt
+def admin_logout(request):
+    next_post = request.POST.get('next')
+    logout(request)
+    messages.success(request, "you have been logged out.")
+    redirect_path = next_post
+    if is_safe_url(redirect_path, request.get_host()):
+        return redirect(redirect_path)
+    return HttpResponseRedirect('/content/login/')
 
 @login_required(login_url='/content/login')
 def profile(request):
@@ -190,7 +196,6 @@ def profile(request):
 @csrf_exempt
 def Contact_Us(request):
     if request.method == 'POST':
-        print('Contact us message recieved.')
         newMessage = ContactUsMessage()
         newMessage.sender_name = request.POST['fullName']
         newMessage.email = request.POST['email']
@@ -205,7 +210,6 @@ def Contact_Us(request):
         messages.add_message(request, messages.INFO, 'Your Message has been sent. We will email you back soon.')
         return redirect('accounts:index')
     else:
-        print('Contact us message ERROR.')
         return render(request, 'home.html')
 
 
@@ -213,7 +217,6 @@ def Contact_Us(request):
 @login_required(login_url="accounts:login")
 @user_passes_test(checkuserifscrutinyuser, login_url="accounts:login")
 def Inbox(request):
-    print('Inbox tab has opened.')
     all_messages = ContactUsMessage.objects.all()
     response = {}
     if (len(all_messages) > 0):
@@ -231,7 +234,6 @@ def Inbox(request):
 def Show_Message(request):
     response = {}
     mid = request.GET['message_id']
-    print('Message having ID ', mid, ' has been opened.')
     mes = get_object_or_404(ContactUsMessage, pk=mid)
     if mes:
         mes.has_been_read = True
@@ -247,7 +249,6 @@ def Show_Message(request):
 @user_passes_test(checkuserifscrutinyuser, login_url="accounts:login")
 def Mark_As_Read(request):
     mid = request.GET['message_id']
-    print('Message having ID ', mid, ' has been marked as read.')
     mes = get_object_or_404(ContactUsMessage, pk=mid)
     mes.has_been_read = True
     mes.save()
@@ -259,7 +260,6 @@ def Mark_As_Read(request):
 @user_passes_test(checkuserifscrutinyuser, login_url="accounts:login")
 def Delete_Message(request):
     mid = request.GET['message_id']
-    print('Message having ID ', mid, ' has been deleted.')
     mes = get_object_or_404(ContactUsMessage, pk=mid)
     mes.delete()
     messages.success(request, 'Message has been successfully deleted.')
@@ -446,8 +446,6 @@ class PasswordChangeView(PasswordContextMixin, FormView):
 
     def form_valid(self, form):
         form.save()
-        # Updating the password logs out all other sessions for the user
-        # except the current one.
         update_session_auth_hash(self.request, form.user)
         return super().form_valid(form)
 
