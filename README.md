@@ -16,7 +16,7 @@ The backend is completely build on Django and frontend using html, css, bootrap 
 * Admin can report most reported materials.
 * Admin can write blog post dynamically with markdown editor.
 
-## Backend Setup
+## Project Setup
 1. Clone this repository: `https://github.com/himanshukadian/nitadda.git`.
 2. Change the current directory to folder: `cd ./nitadda`.
 3. Create a virutal environment and install all backend dependencies with pip: `pip install -r requirements.txt`.
