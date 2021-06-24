@@ -1,3 +1,17 @@
+table.dataTable thead .sorting:after,
+table.dataTable thead .sorting:before,
+table.dataTable thead .sorting_asc:after,
+table.dataTable thead .sorting_asc:before,
+table.dataTable thead .sorting_asc_disabled:after,
+table.dataTable thead .sorting_asc_disabled:before,
+table.dataTable thead .sorting_desc:after,
+table.dataTable thead .sorting_desc:before,
+table.dataTable thead .sorting_desc_disabled:after,
+table.dataTable thead .sorting_desc_disabled:before {
+  bottom: .5em;
+}
+
+
 .dropdown-menu > li > a,
 .navbar-default .navbar-nav > li > a,
 .navbar-default .navbar-nav > .active > a,
@@ -1622,6 +1636,13 @@ body {background-color:#163a63; color:#163a63;}
 .list-group-item {background-color: rgba(255,255,255,0.7); border:0;}
 
 .btn-toolbar {margin-top:10px;}
+
+.blogShort{
+    border: 2px solid rgb(255, 179, 64);
+    background-color:   rgb(255, 219, 121);
+    margin: 10px auto;
+    /* border-radius: 5px; */
+}
 
  .blogShort img {
   float:left;

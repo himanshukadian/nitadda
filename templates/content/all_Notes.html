@@ -71,10 +71,806 @@
                         </ul>
                     </nav>
                 </div>
+{#                <div class="text-center col-xs-12 col-md-9" >#}
+{#                    {% if current_tab == "note" %}#}
+{#                        <div class="tabs-content" style="padding:0px">#}
+{##}
+{#                        <div id="signup-tab-content" class="active">#}
+{#                            <caption><h3 class="table_title">Notes - {{ cname|title }}</h3></caption>#}
+{##}
+{#                            <form method="POST" action={% url 'content:Course_Note' cname.slug %} enctype="multipart/form-data">#}
+{#                                {% csrf_token %}#}
+{#                                <input type="hidden" name="content_type" id="checker" value="note">#}
+{#                                <label class="formText" for="nt">College : </label>#}
+{#                                {% if current_college_id == "0" %}#}
+{#                                        <select class="filter-dropdown" id="collegeFilter" name="colleges" required>#}
+{#                                        yo babe={{ current_college_id }}#}
+{#                                        <option value="0" selected>All</option>#}
+{#                                        {% for college in colleges %}#}
+{#                                            <option value="{{ college.id }}">#}
+{#                                                {{ college.name }} ({{college.abbreviation}})#}
+{#                                            </option>#}
+{#                                        {% endfor %}#}
+{#                                        </select>#}
+{#                                {% else %}#}
+{#                                        <select class="filter-dropdown" id="collegeFilter" name="colleges" required>#}
+{#                                        no babe={{ current_college_id }}#}
+{#                                        <option value="0">All</option>#}
+{#                                        {% for college in colleges %}#}
+{#                                            {% if current_college_id == college.id|stringformat:"i" %}#}
+{#                                                <option value="{{ college.id }}" selected>#}
+{#                                                    {{ college.name }} ({{college.abbreviation}})#}
+{#                                                </option>#}
+{#                                            {% else %}#}
+{#                                                <option value="{{ college.id }}">#}
+{#                                                    {{ college.name }} ({{college.abbreviation}})#}
+{#                                                </option>#}
+{#                                            {%  endif %}#}
+{#                                        {% endfor %}#}
+{#                                        </select>#}
+{#                                {% endif %}#}
+{##}
+{#                                <button type="submit" class="formButton">Go</button>#}
+{#                            </form>#}
+{#                            <div>#}
+{#                            <table class="table table-striped dt-responsive table-responsive-md" id="notes-table">#}
+{#                                <thead class="thead-dark">#}
+{#                                <tr>#}
+{#                                    <th scope="col">Title</th>#}
+{#                                    <th scope="col">Subject</th>#}
+{#                                    <th scope="col">Likes</th>#}
+{#                                    {% if user.is_authenticated and user.is_superuser %}#}
+{#                                        <th scope="col">Actions</th>#}
+{#                                    {% endif %}#}
+{#                                </tr>#}
+{#                                </thead>#}
+{#                                <tbody>#}
+{#                                {% for i, j in data %}#}
+{#                                    {% if  user.is_authenticated and user.is_superuser or i.is_approved %}#}
+{#                                        <tr>#}
+{#                                            <td style="vertical-align:middle"><a style="font-weight: bold" href="../../view/{{ i.note_id }}">#}
+{#                                                {{ i.title|title }}</a>#}
+{#                                                <br>#}
+{#                                                <span class="ref"> - contributed by <b>{{ i.user.username }}</b></span>#}
+{#                                            </td>#}
+{#                                            <td style="vertical-align:middle"><span>{{ i.subject.title }}</span></td>#}
+                                            {#                    href = {% url 'upvote/ i.note_id / user.id ' %}#}
+{#                                            {% if  j %}#}
+{#                                                <td style="vertical-align:middle">#}
+{#                                                    <div class="like_grow" id="{{ i.note_id }}"#}
+{#                                                         onclick="updateVote( this.id )">#}
+{#                                                        <i id="{{ i.note_id }}1"#}
+{#                                                           class="fa fa-thumbs-up fa-2x like active"#}
+{#                                                           aria-hidden="true"></i>#}
+{#                                                    </div>#}
+{#                                                    <span class="likes_counter" style="font-family:'Amaranth'"#}
+{#                                                          id="{{ i.note_id }}2">#}
+{#                                                        {{ i.total_upvotes }}#}
+{#                                                    </span>#}
+{#                                                </td>#}
+{#                                            {% else %}#}
+{#                                                <td style="vertical-align:middle">#}
+{#                                                    <div class="like_grow" id="{{ i.note_id }}"#}
+{#                                                         onclick="updateVote( this.id )">#}
+{#                                                        <i id="{{ i.note_id }}1" class="fa fa-thumbs-up fa-2x like"#}
+{#                                                           aria-hidden="true"></i>#}
+{#                                                    </div>#}
+{#                                                    <span class="likes_counter" style="font-family:'Amaranth'"#}
+{#                                                          id="{{ i.note_id }}2">#}
+{#                                                        {{ i.total_upvotes }}#}
+{#                                                    </span>#}
+{#                                                </td>#}
+{#                                            {% endif %}#}
+{#                                            {% if user.is_authenticated and user.is_superuser %}#}
+{#                                                <td scope="col">#}
+{#                                                    {% if  i.is_approved %}#}
+{#                                                        <a class="btn">Approved</a>#}
+{#                                                    {% else %}#}
+{#                                                        <a href="../approvenote/{{ i.note_id }}"#}
+{#                                                           class="btn btn-danger">Approve</a>#}
+{#                                                    {% endif %}#}
+{#                                                    <a href="../deletenote/{{ i.note_id }}" class="btn btn-danger">Remove</a>#}
+{#                                                </td>#}
+{#                                            {% endif %}#}
+{#                                        </tr>#}
+{#                                    {% endif %}#}
+{#                                {% endfor %}#}
+{#                                </tbody>#}
+{#                            </table>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div id="login-tab-content">#}
+{#                            <caption><h3 class="table_title">Papers - {{ cname|title }}</h3></caption>#}
+{##}
+{#                            <form method="POST" action={% url 'content:Course_Note' cname.slug %} enctype="multipart/form-data">#}
+{#                                {% csrf_token %}#}
+{#                                <input type="hidden" name="content_type" id="checker" value="paper">#}
+{#                                <label class="formText" for="nt">College : </label>#}
+{#                                {% if current_college_id == "0" %}#}
+{#                                        <select class="filter-dropdown" id="collegeFilter" name="colleges" required>#}
+{#                                        yo babe={{ current_college_id }}#}
+{#                                        <option value="0" selected>All</option>#}
+{#                                        {% for college in colleges %}#}
+{#                                            <option value="{{ college.id }}">#}
+{#                                                {{ college.name }} ({{college.abbreviation}})#}
+{#                                            </option>#}
+{#                                        {% endfor %}#}
+{#                                        </select>#}
+{#                                {% else %}#}
+{#                                        <select class="filter-dropdown" id="collegeFilter" name="colleges" required>#}
+{#                                        no babe={{ current_college_id }}#}
+{#                                        <option value="0">All</option>#}
+{#                                        {% for college in colleges %}#}
+{#                                            {% if current_college_id == college.id|stringformat:"i" %}#}
+{#                                                <option value="{{ college.id }}" selected>#}
+{#                                                    {{ college.name }} ({{college.abbreviation}})#}
+{#                                                </option>#}
+{#                                            {% else %}#}
+{#                                                <option value="{{ college.id }}">#}
+{#                                                    {{ college.name }} ({{college.abbreviation}})#}
+{#                                                </option>#}
+{#                                            {%  endif %}#}
+{#                                        {% endfor %}#}
+{#                                        </select>#}
+{#                                {% endif %}#}
+{##}
+{#                                <button type="submit" class="formButton">Go</button>#}
+{#                            </form>#}
+{#                            <div>#}
+{#                                <table class="table table-striped dt-responsive table-responsive-md" id="display_table">#}
+{#                                    <thead class="thead-dark">#}
+{#                                    <tr>#}
+{#                                        <th scope="col">Title</th>#}
+{#                                        <th scope="col">Subject</th>#}
+{#                                        <th scope="col">Batch year</th>#}
+{#                                        <th scope="col">Semester</th>#}
+{#                                        <th scope="col">College</th>#}
+{#                                        {% if user.is_authenticated and user.is_superuser %}#}
+{#                                            <th scope="col">Actions</th>#}
+{#                                        {% endif %}#}
+{#                                    </tr>#}
+{#                                    </thead>#}
+{#                                    <tbody>#}
+{#                                    {% for i in papers %}#}
+{#                                        <tr>#}
+{#                                            <td style="vertical-align:middle"><a style="font-weight: bold"#}
+{#                                                                                 href="/content/view_paper/{{ i.paper_id }}">{{ i.title }}</a>#}
+{#                                                <br>#}
+{#                                                <span class="ref"> - contributed by <b>{{ i.user.username }}</b></span>#}
+{#                                            </td>#}
+{#                                            <td style="vertical-align:middle"><span>{{ i.subject }}</span></td>#}
+{#                                            <td style="vertical-align:middle"><span>{{ i.batch_year }}</span></td>#}
+{#                                            <td style="vertical-align:middle"><span>{{ i.semester }}</span></td>#}
+{#                                            <td style="vertical-align:middle"><span>{{ i.college }}</span></td>#}
+{##}
+{#                                            {% if user.is_authenticated and user.is_superuser %}#}
+{#                                                <td scope="col">#}
+{#                                                    {% if  i.is_approved %}#}
+{#                                                        <a class="btn">Approved</a>#}
+{#                                                    {% else %}#}
+{#                                                        <a href="../approvepaper/{{ i.paper_id }}"#}
+{#                                                           class="btn btn-danger">Approve</a>#}
+{#                                                    {% endif %}#}
+{#                                                    <a href="../deletepaper/{{ i.paper_id }}" class="btn btn-danger">Remove</a>#}
+{#                                                </td>#}
+{#                                            {% endif %}#}
+{#                                        </tr>#}
+{#                                    {% endfor %}#}
+{#                                    </tbody>#}
+{#                                </table>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div id="login1-tab-content">#}
+{#                            <caption><h3 class="table_title">Books - {{ cname|title }} </h3></caption>#}
+{#                            <form method="POST" action={% url 'content:Course_Note' cname.slug %} enctype="multipart/form-data">#}
+{#                                {% csrf_token %}#}
+{#                                <input type="hidden" name="content_type" id="checker" value="book">#}
+{#                                <label class="formText" for="nt">College : </label>#}
+{#                                {% if current_college_id == "0" %}#}
+{#                                        <select class="filter-dropdown" id="collegeFilter" name="colleges" required>#}
+{#                                        yo babe={{ current_college_id }}#}
+{#                                        <option value="0" selected>All</option>#}
+{#                                        {% for college in colleges %}#}
+{#                                            <option value="{{ college.id }}">#}
+{#                                                {{ college.name }} ({{college.abbreviation}})#}
+{#                                            </option>#}
+{#                                        {% endfor %}#}
+{#                                        </select>#}
+{#                                {% else %}#}
+{#                                        <select class="filter-dropdown" id="collegeFilter" name="colleges" required>#}
+{#                                        no babe={{ current_college_id }}#}
+{#                                        <option value="0">All</option>#}
+{#                                        {% for college in colleges %}#}
+{#                                            {% if current_college_id == college.id|stringformat:"i" %}#}
+{#                                                <option value="{{ college.id }}" selected>#}
+{#                                                    {{ college.name }} ({{college.abbreviation}})#}
+{#                                                </option>#}
+{#                                            {% else %}#}
+{#                                                <option value="{{ college.id }}">#}
+{#                                                    {{ college.name }} ({{college.abbreviation}})#}
+{#                                                </option>#}
+{#                                            {%  endif %}#}
+{#                                        {% endfor %}#}
+{#                                        </select>#}
+{#                                {% endif %}#}
+{##}
+{#                                <button type="submit" class="formButton">Go</button>#}
+{#                            </form>#}
+{#                            <div>#}
+{#                                <table class="table table-striped dt-responsive table-responsive-md" id="display_table">#}
+{#                                    <thead class="thead-dark">#}
+{#                                    <tr>#}
+{#                                        <th scope="col">Title</th>#}
+{#                                        <th scope="col">Subject</th>#}
+{#                                        <th scope="col">Author</th>#}
+{#                                        <th scope="col">College</th>#}
+{#                                        {% if user.is_authenticated and user.is_superuser %}#}
+{#                                            <th scope="col">Actions</th>#}
+{#                                        {% endif %}#}
+{#                                    </tr>#}
+{#                                    </thead>#}
+{#                                    <tbody>#}
+{#                                    {% for i in books %}#}
+{#                                        <tr>#}
+{#                                            <td style="vertical-align:middle"><a style="font-weight: bold"href="/content/view_book_pdf/{{ i.book_id }}">#}
+{#                                                {{ i.title }}</a><br>#}
+{#                                                <span class="ref"> - contributed by <b>{{ i.user.username }}</b></span>#}
+{#                                            </td>#}
+{#                                            <td style="vertical-align:middle"><span>{{ i.subject }}</span></td>#}
+{#                                            <td style="vertical-align:middle"><span>{{ i.author }}</span></td>#}
+{#                                            <td style="vertical-align:middle"><span>{{ i.college }}</span></td>#}
+{#                                            {% if user.is_authenticated and user.is_superuser %}#}
+{#                                                <td scope="col">#}
+{#                                                    {% if  i.is_approved %}#}
+{#                                                        <a class="btn">Approved</a>#}
+{#                                                    {% else %}#}
+{#                                                        <a href="../approvebook/{{ i.book_id }}"#}
+{#                                                           class="btn btn-danger">Approve</a>#}
+{#                                                    {% endif %}#}
+{#                                                    <a href="../deletebook/{{ i.book_id }}" class="btn btn-danger">Remove</a>#}
+{#                                                </td>#}
+{#                                            {% endif %}#}
+{#                                        </tr>#}
+{#                                    {% endfor %}#}
+{#                                    </tbody>#}
+{#                                </table>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    {%  elif current_tab == "paper" %}#}
+{#                        <div class="tabs-content" style="padding:0px">#}
+{##}
+{#                        <div id="signup-tab-content">#}
+{#                            <caption><h3 class="table_title">Notes - {{ cname|title }}</h3></caption>#}
+{##}
+{#                            <form method="POST" action={% url 'content:Course_Note' cname.slug %} enctype="multipart/form-data">#}
+{#                                {% csrf_token %}#}
+{#                                <input type="hidden" name="content_type" id="checker" value="note">#}
+{#                                <label class="formText" for="nt">College : </label>#}
+{#                                {% if current_college_id == "0" %}#}
+{#                                        <select class="filter-dropdown" id="collegeFilter" name="colleges" required>#}
+{#                                        yo babe={{ current_college_id }}#}
+{#                                        <option value="0" selected>All</option>#}
+{#                                        {% for college in colleges %}#}
+{#                                            <option value="{{ college.id }}">#}
+{#                                                {{ college.name }} ({{college.abbreviation}})#}
+{#                                            </option>#}
+{#                                        {% endfor %}#}
+{#                                        </select>#}
+{#                                {% else %}#}
+{#                                        <select class="filter-dropdown" id="collegeFilter" name="colleges" required>#}
+{#                                        no babe={{ current_college_id }}#}
+{#                                        <option value="0">All</option>#}
+{#                                        {% for college in colleges %}#}
+{#                                            {% if current_college_id == college.id|stringformat:"i" %}#}
+{#                                                <option value="{{ college.id }}" selected>#}
+{#                                                    {{ college.name }} ({{college.abbreviation}})#}
+{#                                                </option>#}
+{#                                            {% else %}#}
+{#                                                <option value="{{ college.id }}">#}
+{#                                                    {{ college.name }} ({{college.abbreviation}})#}
+{#                                                </option>#}
+{#                                            {%  endif %}#}
+{#                                        {% endfor %}#}
+{#                                        </select>#}
+{#                                {% endif %}#}
+{##}
+{#                                <button type="submit" class="formButton">Go</button>#}
+{#                            </form>#}
+{#                            <div>#}
+{#                            <table class="table table-striped dt-responsive table-responsive-md" id="notes-table">#}
+{#                                <thead class="thead-dark">#}
+{#                                <tr>#}
+{#                                    <th scope="col">Title</th>#}
+{#                                    <th scope="col">Subject</th>#}
+{#                                    <th scope="col">Likes</th>#}
+{#                                    {% if user.is_authenticated and user.is_superuser %}#}
+{#                                        <th scope="col">Actions</th>#}
+{#                                    {% endif %}#}
+{#                                </tr>#}
+{#                                </thead>#}
+{#                                <tbody>#}
+{#                                {% for i, j in data %}#}
+{#                                    {% if  user.is_authenticated and user.is_superuser or i.is_approved %}#}
+{#                                        <tr>#}
+{#                                            <td style="vertical-align:middle"><a style="font-weight: bold" href="../../view/{{ i.note_id }}">#}
+{#                                                {{ i.title|title }}</a>#}
+{#                                                <br>#}
+{#                                                <span class="ref"> - contributed by <b>{{ i.user.username }}</b></span>#}
+{#                                            </td>#}
+{#                                            <td style="vertical-align:middle"><span>{{ i.subject.title }}</span></td>#}
+                                            {#                    href = {% url 'upvote/ i.note_id / user.id ' %}#}
+{#                                            {% if  j %}#}
+{#                                                <td style="vertical-align:middle">#}
+{#                                                    <div class="like_grow" id="{{ i.note_id }}"#}
+{#                                                         onclick="updateVote( this.id )">#}
+{#                                                        <i id="{{ i.note_id }}1"#}
+{#                                                           class="fa fa-thumbs-up fa-2x like active"#}
+{#                                                           aria-hidden="true"></i>#}
+{#                                                    </div>#}
+{#                                                    <span class="likes_counter" style="font-family:'Amaranth'"#}
+{#                                                          id="{{ i.note_id }}2">#}
+{#                                                        {{ i.total_upvotes }}#}
+{#                                                    </span>#}
+{#                                                </td>#}
+{#                                            {% else %}#}
+{#                                                <td style="vertical-align:middle">#}
+{#                                                    <div class="like_grow" id="{{ i.note_id }}"#}
+{#                                                         onclick="updateVote( this.id )">#}
+{#                                                        <i id="{{ i.note_id }}1" class="fa fa-thumbs-up fa-2x like"#}
+{#                                                           aria-hidden="true"></i>#}
+{#                                                    </div>#}
+{#                                                    <span class="likes_counter" style="font-family:'Amaranth'"#}
+{#                                                          id="{{ i.note_id }}2">#}
+{#                                                        {{ i.total_upvotes }}#}
+{#                                                    </span>#}
+{#                                                </td>#}
+{#                                            {% endif %}#}
+{#                                            {% if user.is_authenticated and user.is_superuser %}#}
+{#                                                <td scope="col">#}
+{#                                                    {% if  i.is_approved %}#}
+{#                                                        <a class="btn">Approved</a>#}
+{#                                                    {% else %}#}
+{#                                                        <a href="../approvenote/{{ i.note_id }}"#}
+{#                                                           class="btn btn-danger">Approve</a>#}
+{#                                                    {% endif %}#}
+{#                                                    <a href="../deletenote/{{ i.note_id }}" class="btn btn-danger">Remove</a>#}
+{#                                                </td>#}
+{#                                            {% endif %}#}
+{#                                        </tr>#}
+{#                                    {% endif %}#}
+{#                                {% endfor %}#}
+{#                                </tbody>#}
+{#                            </table>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div id="login-tab-content" class="active">#}
+{#                            <caption><h3 class="table_title">Papers - {{ cname|title }}</h3></caption>#}
+{##}
+{#                            <form method="POST" action={% url 'content:Course_Note' cname.slug %} enctype="multipart/form-data">#}
+{#                                {% csrf_token %}#}
+{#                                <input type="hidden" name="content_type" id="checker" value="paper">#}
+{#                                <label class="formText" for="nt">College : </label>#}
+{#                                {% if current_college_id == "0" %}#}
+{#                                        <select class="filter-dropdown" id="collegeFilter" name="colleges" required>#}
+{#                                        yo babe={{ current_college_id }}#}
+{#                                        <option value="0" selected>All</option>#}
+{#                                        {% for college in colleges %}#}
+{#                                            <option value="{{ college.id }}">#}
+{#                                                {{ college.name }} ({{college.abbreviation}})#}
+{#                                            </option>#}
+{#                                        {% endfor %}#}
+{#                                        </select>#}
+{#                                {% else %}#}
+{#                                        <select class="filter-dropdown" id="collegeFilter" name="colleges" required>#}
+{#                                        no babe={{ current_college_id }}#}
+{#                                        <option value="0">All</option>#}
+{#                                        {% for college in colleges %}#}
+{#                                            {% if current_college_id == college.id|stringformat:"i" %}#}
+{#                                                <option value="{{ college.id }}" selected>#}
+{#                                                    {{ college.name }} ({{college.abbreviation}})#}
+{#                                                </option>#}
+{#                                            {% else %}#}
+{#                                                <option value="{{ college.id }}">#}
+{#                                                    {{ college.name }} ({{college.abbreviation}})#}
+{#                                                </option>#}
+{#                                            {%  endif %}#}
+{#                                        {% endfor %}#}
+{#                                        </select>#}
+{#                                {% endif %}#}
+{##}
+{#                                <button type="submit" class="formButton">Go</button>#}
+{#                            </form>#}
+{#                            <div>#}
+{#                                <table class="table table-striped dt-responsive table-responsive-md" id="display_table">#}
+{#                                    <thead class="thead-dark">#}
+{#                                    <tr>#}
+{#                                        <th scope="col">Title</th>#}
+{#                                        <th scope="col">Subject</th>#}
+{#                                        <th scope="col">Batch year</th>#}
+{#                                        <th scope="col">Semester</th>#}
+{#                                        <th scope="col">College</th>#}
+{#                                        {% if user.is_authenticated and user.is_superuser %}#}
+{#                                            <th scope="col">Actions</th>#}
+{#                                        {% endif %}#}
+{#                                    </tr>#}
+{#                                    </thead>#}
+{#                                    <tbody>#}
+{#                                    {% for i in papers %}#}
+{#                                        <tr>#}
+{#                                            <td style="vertical-align:middle"><a style="font-weight: bold"#}
+{#                                                                                 href="/content/view_paper/{{ i.paper_id }}">{{ i.title }}</a>#}
+{#                                                <br>#}
+{#                                                <span class="ref"> - contributed by <b>{{ i.user.username }}</b></span>#}
+{#                                            </td>#}
+{#                                            <td style="vertical-align:middle"><span>{{ i.subject }}</span></td>#}
+{#                                            <td style="vertical-align:middle"><span>{{ i.batch_year }}</span></td>#}
+{#                                            <td style="vertical-align:middle"><span>{{ i.semester }}</span></td>#}
+{#                                            <td style="vertical-align:middle"><span>{{ i.college }}</span></td>#}
+{##}
+{#                                            {% if user.is_authenticated and user.is_superuser %}#}
+{#                                                <td scope="col">#}
+{#                                                    {% if  i.is_approved %}#}
+{#                                                        <a class="btn">Approved</a>#}
+{#                                                    {% else %}#}
+{#                                                        <a href="../approvepaper/{{ i.paper_id }}"#}
+{#                                                           class="btn btn-danger">Approve</a>#}
+{#                                                    {% endif %}#}
+{#                                                    <a href="../deletepaper/{{ i.paper_id }}" class="btn btn-danger">Remove</a>#}
+{#                                                </td>#}
+{#                                            {% endif %}#}
+{#                                        </tr>#}
+{#                                    {% endfor %}#}
+{#                                    </tbody>#}
+{#                                </table>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div id="login1-tab-content">#}
+{#                            <caption><h3 class="table_title">Books - {{ cname|title }} </h3></caption>#}
+{#                            <form method="POST" action={% url 'content:Course_Note' cname.slug %} enctype="multipart/form-data">#}
+{#                                {% csrf_token %}#}
+{#                                <input type="hidden" name="content_type" id="checker" value="book">#}
+{#                                <label class="formText" for="nt">College : </label>#}
+{#                                {% if current_college_id == "0" %}#}
+{#                                        <select class="filter-dropdown" id="collegeFilter" name="colleges" required>#}
+{#                                        yo babe={{ current_college_id }}#}
+{#                                        <option value="0" selected>All</option>#}
+{#                                        {% for college in colleges %}#}
+{#                                            <option value="{{ college.id }}">#}
+{#                                                {{ college.name }} ({{college.abbreviation}})#}
+{#                                            </option>#}
+{#                                        {% endfor %}#}
+{#                                        </select>#}
+{#                                {% else %}#}
+{#                                        <select class="filter-dropdown" id="collegeFilter" name="colleges" required>#}
+{#                                        no babe={{ current_college_id }}#}
+{#                                        <option value="0">All</option>#}
+{#                                        {% for college in colleges %}#}
+{#                                            {% if current_college_id == college.id|stringformat:"i" %}#}
+{#                                                <option value="{{ college.id }}" selected>#}
+{#                                                    {{ college.name }} ({{college.abbreviation}})#}
+{#                                                </option>#}
+{#                                            {% else %}#}
+{#                                                <option value="{{ college.id }}">#}
+{#                                                    {{ college.name }} ({{college.abbreviation}})#}
+{#                                                </option>#}
+{#                                            {%  endif %}#}
+{#                                        {% endfor %}#}
+{#                                        </select>#}
+{#                                {% endif %}#}
+{##}
+{#                                <button type="submit" class="formButton">Go</button>#}
+{#                            </form>#}
+{#                            <div>#}
+{#                                <table class="table table-striped dt-responsive table-responsive-md" id="display_table">#}
+{#                                    <thead class="thead-dark">#}
+{#                                    <tr>#}
+{#                                        <th scope="col">Title</th>#}
+{#                                        <th scope="col">Subject</th>#}
+{#                                        <th scope="col">Author</th>#}
+{#                                        <th scope="col">College</th>#}
+{#                                        {% if user.is_authenticated and user.is_superuser %}#}
+{#                                            <th scope="col">Actions</th>#}
+{#                                        {% endif %}#}
+{#                                    </tr>#}
+{#                                    </thead>#}
+{#                                    <tbody>#}
+{#                                    {% for i in books %}#}
+{#                                        <tr>#}
+{#                                            <td style="vertical-align:middle"><a style="font-weight: bold"href="/content/view_book_pdf/{{ i.book_id }}">#}
+{#                                                {{ i.title }}</a><br>#}
+{#                                                <span class="ref"> - contributed by <b>{{ i.user.username }}</b></span>#}
+{#                                            </td>#}
+{#                                            <td style="vertical-align:middle"><span>{{ i.subject }}</span></td>#}
+{#                                            <td style="vertical-align:middle"><span>{{ i.author }}</span></td>#}
+{#                                            <td style="vertical-align:middle"><span>{{ i.college }}</span></td>#}
+{#                                            {% if user.is_authenticated and user.is_superuser %}#}
+{#                                                <td scope="col">#}
+{#                                                    {% if  i.is_approved %}#}
+{#                                                        <a class="btn">Approved</a>#}
+{#                                                    {% else %}#}
+{#                                                        <a href="../approvebook/{{ i.book_id }}"#}
+{#                                                           class="btn btn-danger">Approve</a>#}
+{#                                                    {% endif %}#}
+{#                                                    <a href="../deletebook/{{ i.book_id }}" class="btn btn-danger">Remove</a>#}
+{#                                                </td>#}
+{#                                            {% endif %}#}
+{#                                        </tr>#}
+{#                                    {% endfor %}#}
+{#                                    </tbody>#}
+{#                                </table>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    {%  else %}#}
+{#                        <div class="tabs-content" style="padding:0px">#}
+{#                        <div id="signup-tab-content">#}
+{#                            <caption><h3 class="table_title">Notes - {{ cname|title }}</h3></caption>#}
+{##}
+{#                            <form method="POST" action={% url 'content:Course_Note' cname.slug %} enctype="multipart/form-data">#}
+{#                                {% csrf_token %}#}
+{#                                <input type="hidden" name="content_type" id="checker" value="note">#}
+{#                                <label class="formText" for="nt">College : </label>#}
+{#                                {% if current_college_id == "0" %}#}
+{#                                        <select class="filter-dropdown" id="collegeFilter" name="colleges" required>#}
+{#                                        yo babe={{ current_college_id }}#}
+{#                                        <option value="0" selected>All</option>#}
+{#                                        {% for college in colleges %}#}
+{#                                            <option value="{{ college.id }}">#}
+{#                                                {{ college.name }} ({{college.abbreviation}})#}
+{#                                            </option>#}
+{#                                        {% endfor %}#}
+{#                                        </select>#}
+{#                                {% else %}#}
+{#                                        <select class="filter-dropdown" id="collegeFilter" name="colleges" required>#}
+{#                                        no babe={{ current_college_id }}#}
+{#                                        <option value="0">All</option>#}
+{#                                        {% for college in colleges %}#}
+{#                                            {% if current_college_id == college.id|stringformat:"i" %}#}
+{#                                                <option value="{{ college.id }}" selected>#}
+{#                                                    {{ college.name }} ({{college.abbreviation}})#}
+{#                                                </option>#}
+{#                                            {% else %}#}
+{#                                                <option value="{{ college.id }}">#}
+{#                                                    {{ college.name }} ({{college.abbreviation}})#}
+{#                                                </option>#}
+{#                                            {%  endif %}#}
+{#                                        {% endfor %}#}
+{#                                        </select>#}
+{#                                {% endif %}#}
+{##}
+{#                                <button type="submit" class="formButton">Go</button>#}
+{#                            </form>#}
+{#                            <div>#}
+{#                            <table class="table table-striped dt-responsive table-responsive-md" id="notes-table">#}
+{#                                <thead class="thead-dark">#}
+{#                                <tr>#}
+{#                                    <th scope="col">Title</th>#}
+{#                                    <th scope="col">Subject</th>#}
+{#                                    <th scope="col">Likes</th>#}
+{#                                    {% if user.is_authenticated and user.is_superuser %}#}
+{#                                        <th scope="col">Actions</th>#}
+{#                                    {% endif %}#}
+{#                                </tr>#}
+{#                                </thead>#}
+{#                                <tbody>#}
+{#                                {% for i, j in data %}#}
+{#                                    {% if  user.is_authenticated and user.is_superuser or i.is_approved %}#}
+{#                                        <tr>#}
+{#                                            <td style="vertical-align:middle"><a style="font-weight: bold" href="../../view/{{ i.note_id }}">#}
+{#                                                {{ i.title|title }}</a>#}
+{#                                                <br>#}
+{#                                                <span class="ref"> - contributed by <b>{{ i.user.username }}</b></span>#}
+{#                                            </td>#}
+{#                                            <td style="vertical-align:middle"><span>{{ i.subject.title }}</span></td>#}
+                                            {#                    href = {% url 'upvote/ i.note_id / user.id ' %}#}
+{#                                            {% if  j %}#}
+{#                                                <td style="vertical-align:middle">#}
+{#                                                    <div class="like_grow" id="{{ i.note_id }}"#}
+{#                                                         onclick="updateVote( this.id )">#}
+{#                                                        <i id="{{ i.note_id }}1"#}
+{#                                                           class="fa fa-thumbs-up fa-2x like active"#}
+{#                                                           aria-hidden="true"></i>#}
+{#                                                    </div>#}
+{#                                                    <span class="likes_counter" style="font-family:'Amaranth'"#}
+{#                                                          id="{{ i.note_id }}2">#}
+{#                                                        {{ i.total_upvotes }}#}
+{#                                                    </span>#}
+{#                                                </td>#}
+{#                                            {% else %}#}
+{#                                                <td style="vertical-align:middle">#}
+{#                                                    <div class="like_grow" id="{{ i.note_id }}"#}
+{#                                                         onclick="updateVote( this.id )">#}
+{#                                                        <i id="{{ i.note_id }}1" class="fa fa-thumbs-up fa-2x like"#}
+{#                                                           aria-hidden="true"></i>#}
+{#                                                    </div>#}
+{#                                                    <span class="likes_counter" style="font-family:'Amaranth'"#}
+{#                                                          id="{{ i.note_id }}2">#}
+{#                                                        {{ i.total_upvotes }}#}
+{#                                                    </span>#}
+{#                                                </td>#}
+{#                                            {% endif %}#}
+{#                                            {% if user.is_authenticated and user.is_superuser %}#}
+{#                                                <td scope="col">#}
+{#                                                    {% if  i.is_approved %}#}
+{#                                                        <a class="btn">Approved</a>#}
+{#                                                    {% else %}#}
+{#                                                        <a href="../approvenote/{{ i.note_id }}"#}
+{#                                                           class="btn btn-danger">Approve</a>#}
+{#                                                    {% endif %}#}
+{#                                                    <a href="../deletenote/{{ i.note_id }}" class="btn btn-danger">Remove</a>#}
+{#                                                </td>#}
+{#                                            {% endif %}#}
+{#                                        </tr>#}
+{#                                    {% endif %}#}
+{#                                {% endfor %}#}
+{#                                </tbody>#}
+{#                            </table>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div id="login-tab-content">#}
+{#                            <caption><h3 class="table_title">Papers - {{ cname|title }}</h3></caption>#}
+{##}
+{#                            <form method="POST" action={% url 'content:Course_Note' cname.slug %} enctype="multipart/form-data">#}
+{#                                {% csrf_token %}#}
+{#                                <input type="hidden" name="content_type" id="checker" value="paper">#}
+{#                                <label class="formText" for="nt">College : </label>#}
+{#                                {% if current_college_id == "0" %}#}
+{#                                        <select class="filter-dropdown" id="collegeFilter" name="colleges" required>#}
+{#                                        yo babe={{ current_college_id }}#}
+{#                                        <option value="0" selected>All</option>#}
+{#                                        {% for college in colleges %}#}
+{#                                            <option value="{{ college.id }}">#}
+{#                                                {{ college.name }} ({{college.abbreviation}})#}
+{#                                            </option>#}
+{#                                        {% endfor %}#}
+{#                                        </select>#}
+{#                                {% else %}#}
+{#                                        <select class="filter-dropdown" id="collegeFilter" name="colleges" required>#}
+{#                                        no babe={{ current_college_id }}#}
+{#                                        <option value="0">All</option>#}
+{#                                        {% for college in colleges %}#}
+{#                                            {% if current_college_id == college.id|stringformat:"i" %}#}
+{#                                                <option value="{{ college.id }}" selected>#}
+{#                                                    {{ college.name }} ({{college.abbreviation}})#}
+{#                                                </option>#}
+{#                                            {% else %}#}
+{#                                                <option value="{{ college.id }}">#}
+{#                                                    {{ college.name }} ({{college.abbreviation}})#}
+{#                                                </option>#}
+{#                                            {%  endif %}#}
+{#                                        {% endfor %}#}
+{#                                        </select>#}
+{#                                {% endif %}#}
+{##}
+{#                                <button type="submit" class="formButton">Go</button>#}
+{#                            </form>#}
+{#                            <div>#}
+{#                                <table class="table table-striped dt-responsive table-responsive-md" id="display_table">#}
+{#                                    <thead class="thead-dark">#}
+{#                                    <tr>#}
+{#                                        <th scope="col">Title</th>#}
+{#                                        <th scope="col">Subject</th>#}
+{#                                        <th scope="col">Batch year</th>#}
+{#                                        <th scope="col">Semester</th>#}
+{#                                        <th scope="col">College</th>#}
+{#                                        {% if user.is_authenticated and user.is_superuser %}#}
+{#                                            <th scope="col">Actions</th>#}
+{#                                        {% endif %}#}
+{#                                    </tr>#}
+{#                                    </thead>#}
+{#                                    <tbody>#}
+{#                                    {% for i in papers %}#}
+{#                                        <tr>#}
+{#                                            <td style="vertical-align:middle"><a style="font-weight: bold"#}
+{#                                                                                 href="/content/view_paper/{{ i.paper_id }}">{{ i.title }}</a>#}
+{#                                                <br>#}
+{#                                                <span class="ref"> - contributed by <b>{{ i.user.username }}</b></span>#}
+{#                                            </td>#}
+{#                                            <td style="vertical-align:middle"><span>{{ i.subject }}</span></td>#}
+{#                                            <td style="vertical-align:middle"><span>{{ i.batch_year }}</span></td>#}
+{#                                            <td style="vertical-align:middle"><span>{{ i.semester }}</span></td>#}
+{#                                            <td style="vertical-align:middle"><span>{{ i.college }}</span></td>#}
+{##}
+{#                                            {% if user.is_authenticated and user.is_superuser %}#}
+{#                                                <td scope="col">#}
+{#                                                    {% if  i.is_approved %}#}
+{#                                                        <a class="btn">Approved</a>#}
+{#                                                    {% else %}#}
+{#                                                        <a href="../approvepaper/{{ i.paper_id }}"#}
+{#                                                           class="btn btn-danger">Approve</a>#}
+{#                                                    {% endif %}#}
+{#                                                    <a href="../deletepaper/{{ i.paper_id }}" class="btn btn-danger">Remove</a>#}
+{#                                                </td>#}
+{#                                            {% endif %}#}
+{#                                        </tr>#}
+{#                                    {% endfor %}#}
+{#                                    </tbody>#}
+{#                                </table>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div id="login1-tab-content" class="active">#}
+{#                            <caption><h3 class="table_title">Books - {{ cname|title }} </h3></caption>#}
+{#                            <form method="POST" action={% url 'content:Course_Note' cname.slug %} enctype="multipart/form-data">#}
+{#                                {% csrf_token %}#}
+{#                                <input type="hidden" name="content_type" id="checker" value="book">#}
+{#                                <label class="formText" for="nt">College : </label>#}
+{#                                {% if current_college_id == "0" %}#}
+{#                                        <select class="filter-dropdown" id="collegeFilter" name="colleges" required>#}
+{#                                        yo babe={{ current_college_id }}#}
+{#                                        <option value="0" selected>All</option>#}
+{#                                        {% for college in colleges %}#}
+{#                                            <option value="{{ college.id }}">#}
+{#                                                {{ college.name }} ({{college.abbreviation}})#}
+{#                                            </option>#}
+{#                                        {% endfor %}#}
+{#                                        </select>#}
+{#                                {% else %}#}
+{#                                        <select class="filter-dropdown" id="collegeFilter" name="colleges" required>#}
+{#                                        no babe={{ current_college_id }}#}
+{#                                        <option value="0">All</option>#}
+{#                                        {% for college in colleges %}#}
+{#                                            {% if current_college_id == college.id|stringformat:"i" %}#}
+{#                                                <option value="{{ college.id }}" selected>#}
+{#                                                    {{ college.name }} ({{college.abbreviation}})#}
+{#                                                </option>#}
+{#                                            {% else %}#}
+{#                                                <option value="{{ college.id }}">#}
+{#                                                    {{ college.name }} ({{college.abbreviation}})#}
+{#                                                </option>#}
+{#                                            {%  endif %}#}
+{#                                        {% endfor %}#}
+{#                                        </select>#}
+{#                                {% endif %}#}
+{##}
+{#                                <button type="submit" class="formButton">Go</button>#}
+{#                            </form>#}
+{#                            <div>#}
+{#                                <table class="table table-striped dt-responsive table-responsive-md" id="display_table">#}
+{#                                    <thead class="thead-dark">#}
+{#                                    <tr>#}
+{#                                        <th scope="col">Title</th>#}
+{#                                        <th scope="col">Subject</th>#}
+{#                                        <th scope="col">Author</th>#}
+{#                                        <th scope="col">College</th>#}
+{#                                        {% if user.is_authenticated and user.is_superuser %}#}
+{#                                            <th scope="col">Actions</th>#}
+{#                                        {% endif %}#}
+{#                                    </tr>#}
+{#                                    </thead>#}
+{#                                    <tbody>#}
+{#                                    {% for i in books %}#}
+{#                                        <tr>#}
+{#                                            <td style="vertical-align:middle"><a style="font-weight: bold"href="/content/view_book_pdf/{{ i.book_id }}">#}
+{#                                                {{ i.title }}</a><br>#}
+{#                                                <span class="ref"> - contributed by <b>{{ i.user.username }}</b></span>#}
+{#                                            </td>#}
+{#                                            <td style="vertical-align:middle"><span>{{ i.subject }}</span></td>#}
+{#                                            <td style="vertical-align:middle"><span>{{ i.author }}</span></td>#}
+{#                                            <td style="vertical-align:middle"><span>{{ i.college }}</span></td>#}
+{#                                            {% if user.is_authenticated and user.is_superuser %}#}
+{#                                                <td scope="col">#}
+{#                                                    {% if  i.is_approved %}#}
+{#                                                        <a class="btn">Approved</a>#}
+{#                                                    {% else %}#}
+{#                                                        <a href="../approvebook/{{ i.book_id }}"#}
+{#                                                           class="btn btn-danger">Approve</a>#}
+{#                                                    {% endif %}#}
+{#                                                    <a href="../deletebook/{{ i.book_id }}" class="btn btn-danger">Remove</a>#}
+{#                                                </td>#}
+{#                                            {% endif %}#}
+{#                                        </tr>#}
+{#                                    {% endfor %}#}
+{#                                    </tbody>#}
+{#                                </table>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    {%  endif %}#}
+{#                </div>#}
                 <div class="text-center col-xs-12 col-md-9" >
                     {% if current_tab == "note" %}
-                        <div class="tabs-content" style="padding:0px">
-
+                        <div class="tabs-content">
                         <div id="signup-tab-content" class="active">
                             <caption><h3 class="table_title">Notes - {{ cname|title }}</h3></caption>
 
@@ -117,7 +913,7 @@
                                 <thead class="thead-dark">
                                 <tr>
                                     <th scope="col">Title</th>
-                                    <th scope="col">Subject</th>
+                                    <th scope="col">Course</th>
                                     <th scope="col">Likes</th>
                                     {% if user.is_authenticated and user.is_superuser %}
                                         <th scope="col">Actions</th>
@@ -133,7 +929,7 @@
                                                 <br>
                                                 <span class="ref"> - contributed by <b>{{ i.user.username }}</b></span>
                                             </td>
-                                            <td style="vertical-align:middle"><span>{{ i.subject.title }}</span></td>
+                                            <td style="vertical-align:middle"><span>{{ i.course.title }}</span></td>
                                             {#                    href = {% url 'upvote/ i.note_id / user.id ' %}#}
                                             {% if  j %}
                                                 <td style="vertical-align:middle">
@@ -217,11 +1013,11 @@
                                 <button type="submit" class="formButton">Go</button>
                             </form>
                             <div>
-                                <table class="table table-striped table-responsive-md" id="display_table">
+                                <table class="table table-striped dt-responsive table-responsive-md" id="display_table">
                                     <thead class="thead-dark">
                                     <tr>
                                         <th scope="col">Title</th>
-                                        <th scope="col">Subject</th>
+                                        <th scope="col">Course</th>
                                         <th scope="col">Batch year</th>
                                         <th scope="col">Semester</th>
                                         <th scope="col">College</th>
@@ -238,7 +1034,7 @@
                                                 <br>
                                                 <span class="ref"> - contributed by <b>{{ i.user.username }}</b></span>
                                             </td>
-                                            <td style="vertical-align:middle"><span>{{ i.subject }}</span></td>
+                                            <td style="vertical-align:middle"><span>{{ i.course }}</span></td>
                                             <td style="vertical-align:middle"><span>{{ i.batch_year }}</span></td>
                                             <td style="vertical-align:middle"><span>{{ i.semester }}</span></td>
                                             <td style="vertical-align:middle"><span>{{ i.college }}</span></td>
@@ -297,13 +1093,14 @@
                                 <button type="submit" class="formButton">Go</button>
                             </form>
                             <div>
-                                <table class="table table-striped table-responsive-md" id="display_table">
+                                <table class="table table-striped dt-responsive table-responsive-md" id="display_table">
                                     <thead class="thead-dark">
                                     <tr>
                                         <th scope="col">Title</th>
-                                        <th scope="col">Subject</th>
+                                        <th scope="col">Course</th>
                                         <th scope="col">Author</th>
                                         <th scope="col">College</th>
+                                        <th scope="col">Type</th>
                                         {% if user.is_authenticated and user.is_superuser %}
                                             <th scope="col">Actions</th>
                                         {% endif %}
@@ -316,9 +1113,14 @@
                                                 {{ i.title }}</a><br>
                                                 <span class="ref"> - contributed by <b>{{ i.user.username }}</b></span>
                                             </td>
-                                            <td style="vertical-align:middle"><span>{{ i.subject }}</span></td>
+                                            <td style="vertical-align:middle"><span>{{ i.course }}</span></td>
                                             <td style="vertical-align:middle"><span>{{ i.author }}</span></td>
                                             <td style="vertical-align:middle"><span>{{ i.college }}</span></td>
+                                            {% if i.upload_type == 'L'%}
+                                                <td style="vertical-align:middle"><span>Link</span></td>
+                                            {%  else %}
+                                                <td style="vertical-align:middle"><span>PDF</span></td>
+                                            {%  endif %}
                                             {% if user.is_authenticated and user.is_superuser %}
                                                 <td scope="col">
                                                     {% if  i.is_approved %}
@@ -337,9 +1139,8 @@
                             </div>
                         </div>
                     </div>
-                    {%  elif current_tab == "paper" %}
-                        <div class="tabs-content" style="padding:0px">
-
+                    {% elif current_tab == "paper" %}
+                        <div class="tabs-content">
                         <div id="signup-tab-content">
                             <caption><h3 class="table_title">Notes - {{ cname|title }}</h3></caption>
 
@@ -382,7 +1183,7 @@
                                 <thead class="thead-dark">
                                 <tr>
                                     <th scope="col">Title</th>
-                                    <th scope="col">Subject</th>
+                                    <th scope="col">Course</th>
                                     <th scope="col">Likes</th>
                                     {% if user.is_authenticated and user.is_superuser %}
                                         <th scope="col">Actions</th>
@@ -398,7 +1199,7 @@
                                                 <br>
                                                 <span class="ref"> - contributed by <b>{{ i.user.username }}</b></span>
                                             </td>
-                                            <td style="vertical-align:middle"><span>{{ i.subject.title }}</span></td>
+                                            <td style="vertical-align:middle"><span>{{ i.course.title }}</span></td>
                                             {#                    href = {% url 'upvote/ i.note_id / user.id ' %}#}
                                             {% if  j %}
                                                 <td style="vertical-align:middle">
@@ -482,11 +1283,11 @@
                                 <button type="submit" class="formButton">Go</button>
                             </form>
                             <div>
-                                <table class="table table-striped table-responsive-md" id="display_table">
+                                <table class="table table-striped dt-responsive table-responsive-md" id="display_table">
                                     <thead class="thead-dark">
                                     <tr>
                                         <th scope="col">Title</th>
-                                        <th scope="col">Subject</th>
+                                        <th scope="col">Course</th>
                                         <th scope="col">Batch year</th>
                                         <th scope="col">Semester</th>
                                         <th scope="col">College</th>
@@ -503,7 +1304,7 @@
                                                 <br>
                                                 <span class="ref"> - contributed by <b>{{ i.user.username }}</b></span>
                                             </td>
-                                            <td style="vertical-align:middle"><span>{{ i.subject }}</span></td>
+                                            <td style="vertical-align:middle"><span>{{ i.course }}</span></td>
                                             <td style="vertical-align:middle"><span>{{ i.batch_year }}</span></td>
                                             <td style="vertical-align:middle"><span>{{ i.semester }}</span></td>
                                             <td style="vertical-align:middle"><span>{{ i.college }}</span></td>
@@ -562,13 +1363,14 @@
                                 <button type="submit" class="formButton">Go</button>
                             </form>
                             <div>
-                                <table class="table table-striped table-responsive-md" id="display_table">
+                                <table class="table table-striped dt-responsive table-responsive-md" id="display_table">
                                     <thead class="thead-dark">
                                     <tr>
                                         <th scope="col">Title</th>
-                                        <th scope="col">Subject</th>
+                                        <th scope="col">Course</th>
                                         <th scope="col">Author</th>
                                         <th scope="col">College</th>
+                                        <th scope="col">Type</th>
                                         {% if user.is_authenticated and user.is_superuser %}
                                             <th scope="col">Actions</th>
                                         {% endif %}
@@ -581,9 +1383,14 @@
                                                 {{ i.title }}</a><br>
                                                 <span class="ref"> - contributed by <b>{{ i.user.username }}</b></span>
                                             </td>
-                                            <td style="vertical-align:middle"><span>{{ i.subject }}</span></td>
+                                            <td style="vertical-align:middle"><span>{{ i.course }}</span></td>
                                             <td style="vertical-align:middle"><span>{{ i.author }}</span></td>
                                             <td style="vertical-align:middle"><span>{{ i.college }}</span></td>
+                                            {% if i.upload_type == 'L'%}
+                                                <td style="vertical-align:middle"><span>Link</span></td>
+                                            {%  else %}
+                                                <td style="vertical-align:middle"><span>PDF</span></td>
+                                            {%  endif %}
                                             {% if user.is_authenticated and user.is_superuser %}
                                                 <td scope="col">
                                                     {% if  i.is_approved %}
@@ -602,8 +1409,8 @@
                             </div>
                         </div>
                     </div>
-                    {%  else %}
-                        <div class="tabs-content" style="padding:0px">
+                    {% else %}
+                        <div class="tabs-content">
                         <div id="signup-tab-content">
                             <caption><h3 class="table_title">Notes - {{ cname|title }}</h3></caption>
 
@@ -646,7 +1453,7 @@
                                 <thead class="thead-dark">
                                 <tr>
                                     <th scope="col">Title</th>
-                                    <th scope="col">Subject</th>
+                                    <th scope="col">Course</th>
                                     <th scope="col">Likes</th>
                                     {% if user.is_authenticated and user.is_superuser %}
                                         <th scope="col">Actions</th>
@@ -662,7 +1469,7 @@
                                                 <br>
                                                 <span class="ref"> - contributed by <b>{{ i.user.username }}</b></span>
                                             </td>
-                                            <td style="vertical-align:middle"><span>{{ i.subject.title }}</span></td>
+                                            <td style="vertical-align:middle"><span>{{ i.course.title }}</span></td>
                                             {#                    href = {% url 'upvote/ i.note_id / user.id ' %}#}
                                             {% if  j %}
                                                 <td style="vertical-align:middle">
@@ -746,11 +1553,11 @@
                                 <button type="submit" class="formButton">Go</button>
                             </form>
                             <div>
-                                <table class="table table-striped table-responsive-md" id="display_table">
+                                <table class="table table-striped dt-responsive table-responsive-md" id="display_table">
                                     <thead class="thead-dark">
                                     <tr>
                                         <th scope="col">Title</th>
-                                        <th scope="col">Subject</th>
+                                        <th scope="col">Course</th>
                                         <th scope="col">Batch year</th>
                                         <th scope="col">Semester</th>
                                         <th scope="col">College</th>
@@ -767,7 +1574,7 @@
                                                 <br>
                                                 <span class="ref"> - contributed by <b>{{ i.user.username }}</b></span>
                                             </td>
-                                            <td style="vertical-align:middle"><span>{{ i.subject }}</span></td>
+                                            <td style="vertical-align:middle"><span>{{ i.course }}</span></td>
                                             <td style="vertical-align:middle"><span>{{ i.batch_year }}</span></td>
                                             <td style="vertical-align:middle"><span>{{ i.semester }}</span></td>
                                             <td style="vertical-align:middle"><span>{{ i.college }}</span></td>
@@ -826,13 +1633,14 @@
                                 <button type="submit" class="formButton">Go</button>
                             </form>
                             <div>
-                                <table class="table table-striped table-responsive-md" id="display_table">
+                                <table class="table table-striped dt-responsive table-responsive-md" id="display_table">
                                     <thead class="thead-dark">
                                     <tr>
                                         <th scope="col">Title</th>
-                                        <th scope="col">Subject</th>
+                                        <th scope="col">Course</th>
                                         <th scope="col">Author</th>
                                         <th scope="col">College</th>
+                                        <th scope="col">Type</th>
                                         {% if user.is_authenticated and user.is_superuser %}
                                             <th scope="col">Actions</th>
                                         {% endif %}
@@ -845,9 +1653,14 @@
                                                 {{ i.title }}</a><br>
                                                 <span class="ref"> - contributed by <b>{{ i.user.username }}</b></span>
                                             </td>
-                                            <td style="vertical-align:middle"><span>{{ i.subject }}</span></td>
+                                            <td style="vertical-align:middle"><span>{{ i.course }}</span></td>
                                             <td style="vertical-align:middle"><span>{{ i.author }}</span></td>
                                             <td style="vertical-align:middle"><span>{{ i.college }}</span></td>
+                                            {% if i.upload_type == 'L'%}
+                                                <td style="vertical-align:middle"><span>Link</span></td>
+                                            {%  else %}
+                                                <td style="vertical-align:middle"><span>PDF</span></td>
+                                            {%  endif %}
                                             {% if user.is_authenticated and user.is_superuser %}
                                                 <td scope="col">
                                                     {% if  i.is_approved %}
@@ -866,7 +1679,7 @@
                             </div>
                         </div>
                     </div>
-                    {%  endif %}
+                    {% endif %}
                 </div>
             </div>
         </div>

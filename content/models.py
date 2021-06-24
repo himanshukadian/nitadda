@@ -116,7 +116,6 @@ class Note(models.Model):
         super(Note, self).save(*args, **kwargs)
 
 
-
 class Note_Count(models.Model):
     note_cnt = models.IntegerField(default=0)
 
