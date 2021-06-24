@@ -10,7 +10,7 @@ The backend is completely build on Django and frontend using html, css, bootrap 
 * Student can download and view study materials.
 * Student can read blog post for upldated news on various contests and technologies.
 * Student can send messages and get notification.
-* Admin will aprove all study material.
+* Admin will approve all study material.
 * Admin will answer all the queries.
 * Student can like and report study materials.
 * Admin can report most reported materials.
