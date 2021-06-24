@@ -1,7 +1,7 @@
 # NITADDA
 This is a "NITADDA" which gives students from various colleges the ability to upload notes, books,and examination papers. It also helps students to stay updated with all latest technologies and news with blog posts.
 
-The backend is completely build on Django.
+The backend is completely build on Django and frontend using html, css, bootrap and javascript.
 ### Features
 * 2 different roles defined i.e Students and college moderators.
 * Login/Registration for students
