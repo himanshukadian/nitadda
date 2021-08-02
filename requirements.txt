@@ -4,7 +4,7 @@ Django==3.0.4
 django-cors-headers==3.5.0
 django-crispy-forms==1.6.1
 django-heroku==0.3.1
-django-leaflet==0.27.0.dev0
+#django-leaflet==0.27.0.dev0
 django-otp==1.0.0
 django-sendfile==0.3.11
 django-tinymce==3.0.2
